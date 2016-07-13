@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by André Kovac on 12/04/16.
  */
-public class RCTKontaktPackage implements ReactPackage {
+public class KontaktPackage implements ReactPackage {
 
 //    @Override
 //    public List<NativeModule> createNativeModules(ReactApplicationContext reactApplicationContext) {
-//        return Collections.<NativeModule>singletonList(new RCTKontaktModule(reactApplicationContext));
+//        return Collections.<NativeModule>singletonList(new KontaktModule(reactApplicationContext));
 //    }
 
     @Override
@@ -25,7 +25,7 @@ public class RCTKontaktPackage implements ReactPackage {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new RCTKontaktModule(reactContext));
+        modules.add(new KontaktModule(reactContext));
 
         return modules;
     }

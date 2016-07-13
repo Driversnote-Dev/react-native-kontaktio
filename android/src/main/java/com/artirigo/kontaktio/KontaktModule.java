@@ -56,8 +56,8 @@ import java.util.concurrent.TimeUnit;
  * Created by André Kovac on 12/04/16.
  *
  */
-public class RCTKontaktModule extends ReactContextBaseJavaModule implements ProximityManager.ProximityListener {
-    private static final String TAG = "RCTKontaktModule";
+public class KontaktModule extends ReactContextBaseJavaModule implements ProximityManager.ProximityListener {
+    private static final String TAG = "KontaktModule";
 
     private static ReactApplicationContext context;
     private static android.content.Context applicationContext;
@@ -78,7 +78,7 @@ public class RCTKontaktModule extends ReactContextBaseJavaModule implements Prox
     private ScanContext scanContext;
     private BeaconRegion region;
 
-    public RCTKontaktModule(ReactApplicationContext reactContext) {
+    public KontaktModule(ReactApplicationContext reactContext) {
         super(reactContext);
         context = reactContext;
         this.applicationContext = reactContext.getApplicationContext();
@@ -86,7 +86,7 @@ public class RCTKontaktModule extends ReactContextBaseJavaModule implements Prox
 
     @Override
     public String getName() {
-        return "RCTKontakt";
+        return "KontaktBeacons";
     }
 
     @Override
@@ -135,7 +135,7 @@ public class RCTKontaktModule extends ReactContextBaseJavaModule implements Prox
         proximityManager.initializeScan(_getScanContext(beaconRegions, scanContextParams), new OnServiceReadyListener() {
             @Override
             public void onServiceReady() {
-                proximityManager.attachListener(RCTKontaktModule.this);
+                proximityManager.attachListener(KontaktModule.this);
 
 //                Toast.makeText(getReactApplicationContext(), "beacon service is ready!", Toast.LENGTH_SHORT).show();
 
