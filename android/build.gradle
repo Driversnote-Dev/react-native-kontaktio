@@ -86,10 +86,6 @@ android {
         abortOnError false
         warning 'InvalidPackage'
     }
-    packagingOptions {
-        exclude 'main/AndroidManifest.xml'
-    }
-
 }
 
 dependencies {

@@ -39,7 +39,8 @@ import com.kontakt.sdk.android.common.profile.IBeaconRegion;
 import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 import com.kontakt.sdk.android.common.profile.RemoteBluetoothDevice;
 import com.kontakt.sdk.android.manager.KontaktProximityManager;
-import com.kontaktio.BuildConfig;
+
+import com.artirigo.kontaktio.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
