@@ -1,0 +1,7 @@
+build/
+.idea
+example/
+android/build/
+android/BUCK
+android/src/main/res/
+*.iml

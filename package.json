@@ -1,0 +1,33 @@
+{
+  "name": "react-native-kontaktio",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {},
+  "description": "React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to own some Kontakt.io beacons, configure them via their managment console and have your api-key handy.",
+  "main": "KontaktIo.js",
+  "keywords": [
+    "react-native",
+    "react-component",
+    "kontakt.io",
+    "beacon",
+    "beacons",
+    "ibeacon",
+    "eddystone",
+    "BLE",
+    "bluetooth low energy"
+  ],
+  "author": "Andruschenko",
+  "maintainers": [
+    {
+      "email": "dev@andrekovac.com",
+      "name": "André"
+    }
+  ], 
+  "license": "MIT",
+  "nativePackage": true,
+
+  "dependencies": {
+    "react": "^0.14.8",
+    "react-native": "^0.23.1"
+  }
+}
