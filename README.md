@@ -1,17 +1,8 @@
 # react-native-kontaktio
 
-Tested on Android 4.4.2 and 5.1.1.
+React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to be in possession of Kontakt.io beacons, configure them via their management console and have your api-key handy.
 
-Beacons are supported from Android 4.3 Jelly Bean (API level 18) and up.
-
-Crashes on Android version 4.1.2. Samsung Galaxy Fame S6810
-
-TODO: Test on a 4.3 device
-
-
-React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to own some Kontakt.io beacons, configure them via their managment console and have your api-key handy.
-
-With the Kontakt.io SDK (which this module is accessing in native Android) you have access to more values than a generic beacon library can offer, e.g. `batteryPower` or `txPower`.
+With the Kontakt.io SDK (which this module is accessing in native Android) you have access to more values than a generic beacon library like e.g. [altBeacon](http://altbeacon.org/) can offer, e.g. `batteryPower` or `txPower`.
 
 Parts of the code and namings of output have been based on and influenced by the projects [react-native-alt-beacon](https://github.com/octavioturra/react-native-alt-beacon) and [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon).
 
@@ -19,139 +10,141 @@ Parts of the code and namings of output have been based on and influenced by the
 
 * Only supports **Android** so far. For **iOS** please use [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon) until iOS support is added.
 * Own regions can be defined for iBeacons, Eddystone beacons can only range beacons in the hard-coded namespace `abcdef1234567890abcd` so far.
-* Supports Android versions 5.0.1. and up
+* Beacons support Android versions 4.3 and up.
+	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
 * A physical device has to be used for testing
-* Using the Kontakt.io `ProximityManager` class.
+* This module uses the Kontakt.io `ProximityManager` class.
 
 ## Setup
 
-Some [prerequisites](http://developer.kontakt.io/android-sdk/2.1.0/quickstart/#setup) have to be met.
-
-For react-native 0.19.0 and higher:
-
-	$ rnvm install --save react-native-kontaktio
-
-### Manual setup
+Some [Kontakt.io beacons prerequisites](http://developer.kontakt.io/android-sdk/2.1.0/quickstart/#setup) have to be met.
 
 #### Android
 
-see [the official kontakt.io Android SDK quick start guide](http://developer.kontakt.io/android-sdk/2.1.0/quickstart/)
+1. npm install
 
-Do the following in `Android Studio`:
+	```bash
+	$ npm install --save react-native-kontaktio
+	```
 
-##### Set gradle dependency with Android Studio
+2. In `android/app/src/main/java/.../MainApplication.java` import `KontaktPackage` and add it to the List:
 
-in `android/build.gradle`:
-
-Add maven link and packagingOptions
-
-```
-...
-android {
+	```java
+	import com.artirigo.kontaktio.KontaktPackage;
 	...
-    packagingOptions {
-        exclude 'main/AndroidManifest.xml'
-    }
-}
-...
-allprojects {
-    repositories {
-    	...
-       maven { url "http://repo.kontakt.io/repository/internal/" }
-    }
-}
+	return Arrays.<ReactPackage>asList(
+		new MainReactPackage(),
+		...
+		new KontaktPackage()
+       );
+	```
 
-```
+3. In `android/settings.gradle` add:
 
-in `android/app/build.gradle`:
+	```
+	include ':react-native-kontaktio'
+	project(':react-native-kontaktio').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-kontaktio/android')
+	```
 
-Add dependency
+4. In `android/app/src/main/AndroidManifest.xml` inside `<application />` add 
 
-```
-dependencies {
-...
-	compile "com.kontakt.sdk.android:kontakt.io-android-sdk:2.1.0"
-}
-```
+	```xml
+	<service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
+	```
 
-No **sync** gradle file changes
+5. In `android/app/build.gradle` 
 
-##### Set permissions
+	* Add dependency
 
-in `android/app/src/main/AndroidManifest.xml`:
+	```java
+	dependencies {
+		compile project(':react-native-kontaktio')
+		...
+	}
+	```
 
-Add service and permissions
+	* Add exclusion inside `android`, i.e.
 
-```
-...
-		<service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
-	</application>
+	```java
+	android {
+		...
+		packagingOptions {
+			exclude 'main/AndroidManifest.xml'
+		}
+	}
+	```
+
+4. The following step is inside the [Kontakt.io docs](http://developer.kontakt.io/android-sdk/2.1.0/quickstart/) but was not necessary on the devices I tested: In `android/build.gradle` add maven link:
 	
-	<!-- Ranging/monitoring beacons -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+	```java
+	allprojects {
+	    repositories {
+	    	...
+	    	maven {
+	    		// All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+	    		url "$rootDir/../node_modules/react-native/android"
+        	}
+	       maven { url "http://repo.kontakt.io/repository/internal/" }   // <-- Add this line
+	    }
+	}
+	
+	```
 
-    <!-- Connecting to beacons -->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+## Usage Example
 
-    <!-- Communicating with the Kontakt.io Proximity REST API -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-    <!-- Since Marshmallow -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- or -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
-
-</manifest>
-```
-
-##### Proguard
-
-in `android/app/proguard-rules.pro`:
-
-Add the following:
-
-```
-# Kontakt.io
-
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.** { *; }
--dontwarn com.squareup.okhttp.**
--dontwarn okio.**
-
--keep class com.kontakt.sdk.** { *; }
--keep interface com.kontakt.sdk.** { *; }
-```
+Basic example with five beacons. Run `react-native init KontaktTest`, install `react-native-kontaktio` as described above and replace the contents of `index.android.js` with the following code. Further replace `MY_KONTAKTIO_API_KEY `, `MY_UUID`, major and minor values with the values of your beacons. You should then see your beacons in a ScrollView sorted by their RSSI which reflects a measure of distance from the beacons to your mobile phone.
 
 
-## Usage
-
-Basic example which you can put into your `index.android.js`. Just replace `MY_KONTAKTIO_API_KEY `, `MY_UUID`, major and minor values with the values you need and you should be able to range beacons in your specified region.
+*index.android.js*
 
 ```js
-import React, {
-  ...
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
   DeviceEventEmitter,
+  Dimensions,
+  ScrollView,
 } from 'react-native';
 
-import Beacons from 'react-native-kontaktio';
+import KontaktBeacons from 'react-native-kontaktio';
 
-// Define beacon region
+// Define iBeacon region
 const region = {
   identifier: 'MY_BEACON_REGION',
   uuid: 'MY_UUID',
-  major: 123,
-  minor: null,
+  major: 1,
+  minor: KontaktBeacons.ANY_MINOR,
 };
 
-Beacons.initKontaktSDK("MY_KONTAKTIO_API_KEY");
+// Define eddystone namespace
+const namespace = {
+  namespaceId: "abcdef1234567890abcd"
+}
 
-class testBeacons extends Component {
+const scanContext = {
+  iBeaconDevicesUpdateCallbackInterval: 100,
+  eddystoneDevicesUpdateCallbackInterval: 1000,
+  iBeaconDistanceSort: KontaktBeacons.SORT_DESC,
+  eddystoneDistanceSort: KontaktBeacons.SORT_ASC,
+}
+
+KontaktBeacons.initKontaktSDKWithApiKey("MY_KONTAKTIO_API_KEY");
+
+/**
+ * Ranges beacons and sorts them by proximity
+ */
+class KontaktTest extends Component {
 
   constructor(props) {
     super(props);
-    Beacons.startRangingBeaconsInRegion(region); 
+    KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
+    // KontaktBeacons.startRangingBeaconsinNamespace(namespace, scanContext);
     this.state = {
+      scanStatus: "",
+      scanInitStatus: "",
       beacons: [],
     };
   }
@@ -163,160 +156,205 @@ class testBeacons extends Component {
         this.setState({
           beacons: data.beacons.filter(beacon => beacon.rssi < 0),
         });
+        // eslint-disable-next-line no-console
         data.beacons.map(beacon => console.log('minor', beacon.minor));
+      }
+    );
+    DeviceEventEmitter.addListener(
+      'scanStatus',
+      (data) => {
+        this.setState({
+          scanStatus: data.scanStatus,
+        });
       }
     );
   }
 
+  
   _renderBeacons = () => {
+    const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
+
     return this.state.beacons.sort((a, b) => (-1 * (a.rssi - b.rssi))).map((beacon, ind) => (
-        <View key={ind}>
+        <View key={ind} style={[styles.beacon, { backgroundColor: colors[beacon.minor - 1] }]}>
           <Text>Minor: {beacon.minor}, RSSI: {beacon.rssi}</Text>
+          <Text>Distance: {beacon.distance}, Proximity: {beacon.proximity}</Text>
+          <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
+          <Text>FirmwareVersion: {beacon.firmwareVersion}, UniqueID: {beacon.uniqueID}</Text>
         </View>
     ), this);
   };
 
+  _renderWaitingForBeacons = () => {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Searching for beacons in your vicinity...</Text>
+      </View>
+    )
+  }
+
   render() {
     return (
       <ScrollView>
-        { this._renderBeacons() }
+        { this.state.beacons.length > 0 ? this._renderBeacons() : this._renderWaitingForBeacons() }
       </ScrollView>
     );
   }
 }
 
-AppRegistry.registerComponent('testBeacons', () => testBeacons);
+const totalWidth = Dimensions.get('window').width;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  beacon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    width: totalWidth,
+    backgroundColor: 'yellow',
+  },
+  loadingText: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: 'bold',
+  }
+});
+
+AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
 ```
 
-## Events
+
+## Documentation
+
+### Events
+
+##### Bluetooth initialization events
 
 * `scanStatus`
 
 	```js
 	data
-		.status
+		.status	// values: START or STOP
 	```
-	`data.status` may have the following values:
 	
-	* `START` or `STOP` reflecting whether the beacon scan started or stopped
+	`START` or `STOP` reflect whether the beacon scan started or stopped
 
 * `scanInitStatus`
 
 	```js
 	data
-		.status
+		.status	// values: SUCCESS or FAILURE
 	```
-	`data.status` may have the following values:
 	
-	* `SUCCESS` or `FAILURE` reflecting the state of the initialization of the beacon scan.
+	`SUCCESS` or `FAILURE` reflect the state of the initialization of the beacon scan.
 
-#### Data structure of beacon events
-
-```js
-data
-	.timestamp  	// timestamp of event
-	.region		// region in which event occured
-		.identifier
-		.uuid
-		.major
-		.minor
-```
-
-#### Event specific response
-
-returns an array of beacons with updated information
+##### Beacon events
 
 * `beaconsDidRange`
 
+	returns information about beacons with updated information
+
 	```js
 	...
-	.beacons  // Array of all beacons
-		// each beacon contains
-		.name
-		.address
-		.rssi
-		.proximity  // either IMMEDIATE, NEAR, FAR or UNKNOWN
-		.distance
-		.batteryPower
-		.txPower
-		.firmwareVersion
-		.uniqueID
-		// if iBeacon additionally
-		.uuid
-		.major
-		.minor
-		// if Eddystone additionally
-		.instanceId
-		.namespaceId
-		.url
-		.temperature
-		.telemetryVersion
-		.batteryVoltage
-		.timeSincePowerUp
+	data
+		.timestamp	// timestamp of event
+		.region		// region in which event occured
+			.identifier
+			.uuid
+			.major
+			.minor
+		.beacons		// Array of all beacons
+			// each beacon contains:
+			.name
+			.address
+			.rssi
+			.proximity	// values: IMMEDIATE, NEAR, FAR or UNKNOWN
+			.distance
+			.batteryPower
+			.txPower
+			.firmwareVersion
+			.uniqueID
+			// if iBeacon additionally:
+			.uuid
+			.major
+			.minor
+			// if Eddystone additionally:
+			.instanceId
+			.namespaceId
+			.url
+			.temperature
+			.telemetryVersion
+			.batteryVoltage
+			.timeSincePowerUp
 	```
 * `beaconDidAppear`
 
-returns data about the beacon if it is in range for the first time
-
-```js
-data
-	.timestamp
-	.region  // as above
-	.beacon  // a single beacon
-		// inside structure of beacon as above
-```
+	returns data about the beacon if it is in range for the first time
+	
+	```js
+	data
+		.timestamp
+		.region  // as above
+		.beacon  // a single beacon
+			// inside structure of beacon as above
+	```
 
 * `beaconDidDisappear`
 
-returns data about the beacon if it is not in range anymore
-
-```js
-data
-	.timestamp
-	.region  // as above
-	.beacon  // a single beacon
-		// inside structure of beacon as above
-```
+	returns data about the beacon if it is not in range anymore
+	
+	```js
+	data
+		.timestamp
+		.region  // as above
+		.beacon  // a single beacon
+			// inside structure of beacon as above
+	```
 
 * `regionDidEnter`
 
-returns the region entered in structure as above
-
-```js
-data
-	.timestamp
-	.region
-		.identifier
-		.uuid
-		.major
-		.minor
-```
+	returns the region entered in structure as above
+	
+	```js
+	data
+		.timestamp
+		.region
+			.identifier
+			.uuid
+			.major
+			.minor
+	```
 
 * `regionDidExit`
 
-returns the region abandoned
+	returns the region abandoned
+	
+	```js
+	data
+		.timestamp
+		.region
+			.identifier
+			.uuid
+			.major
+			.minor
+	```
 
-```js
-data
-	.timestamp
-	.region
-		.identifier
-		.uuid
-		.major
-		.minor
-```
+### Methods
 
-## Methods
-
-* `initKontaktSDKWithApiKey`
+* `initKontaktSDKWithApiKey('123456')`
 
 	Call this method before starting to range for beacons.
 
 	```js
-	Beacons.initKontaktSDKWithApiKey("MY_KONTAKTIO_API_KEY")
+	KontaktBeacons.initKontaktSDKWithApiKey('MY_KONTAKTIO_API_KEY')
 	```
 
-* `startRangingBeaconsInRegion`
+* `startRangingBeaconsInRegion(region, scanContext)`
 
 	Example: Range for beacons in the provided `region` with parameters provided in `scanContext`.
 
@@ -325,41 +363,41 @@ data
 	  identifier: 'Living Room',
 	  uuid: 'YOUR_UUID_HERE',
 	  major: 123,
-	  minor: BEACONS.ANY_MINOR,
+	  minor: KontaktBeacons.ANY_MINOR,
 	};
 	
 	const scanContext = {
 	  devicesUpdateCallbackInterval: 3000,
-	  distanceSort: BEACONS.SORT_DESC,
+	  distanceSort: KontaktBeacons.SORT_DESC,
 	}
 	
-	Beacons.startRangingBeaconsInRegion(region, scanContext)
+	KontaktBeacons.startRangingBeaconsInRegion(region, scanContext)
 	```
 
+	Check the Kontakt.io Android SDK docs for further information about how to define the `scanContext`.
 	
 
+### Constants
 
-## Constants
-
-#### Usage
+##### Usage
 
 If the module is importet as 
 
 ```js
-import Beacons from 'react-native-kontaktio';
+import KontaktBeacons from 'react-native-kontaktio';
 ```
 
 constants may be called as:
 
 ```js
-Beacons.PROXIMITY_FAR
+KontaktBeacons.PROXIMITY_FAR
 ```
 
-#### Definitions
+##### Definitions
 
 Defining a region:
 
-* `DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID`
+* `DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID`: A random UUID
 * `ANY_MAJOR`
 * `ANY_MINOR`
 
@@ -378,14 +416,13 @@ Defining sorting of beacon array:
 
 ## TODOs
 
-Here's an incomplete list of todos for this project which I am planing to work on in the future. Help via pull-requests are welcome!
+Here's an incomplete list of todos for this project. Help via pull-requests are welcome!
 
 * Define multiple regions
 * Customize `ScanContext`
-* Set permissions
+* Set permissions from JS code
 * Error handling
-* Example app
-* Include new security feature, i.e. use KontaktProximityManager with Shuffling
+* Include new Kontakt.io security feature, i.e. use KontaktProximityManager with Shuffling
 * Support custom eddystone namespaces, i.e. implement `startRangingBeaconsInNamespace` function and adapt other parts in code
-* Monitoring beacons
+* Add monitoring of beacons
 * iOS version
