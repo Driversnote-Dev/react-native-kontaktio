@@ -14,20 +14,24 @@
     "ibeacon",
     "eddystone",
     "BLE",
-    "bluetooth low energy"
+    "bluetooth"
   ],
-  "author": "Andruschenko",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artirigo/react-native-kontaktio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Artirigo/react-native-kontaktio/issues"
+  },
+  "author": "André Kovac",
   "maintainers": [
     {
+      "name": "Andruschenko"
       "email": "dev@andrekovac.com",
-      "name": "André"
     }
   ], 
   "license": "MIT",
   "nativePackage": true,
-
-  "dependencies": {
-    "react": "^0.14.8",
-    "react-native": "^0.23.1"
-  }
+  "dependencies": {}
 }
