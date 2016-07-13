@@ -1,7 +1,5 @@
 apply plugin: "com.android.library"
 
-import com.android.build.OutputFile
-
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -59,8 +57,6 @@ import com.android.build.OutputFile
  * ]
  */
 
-apply from: "react.gradle"
-
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -69,12 +65,12 @@ apply from: "react.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = false
+// def enableSeparateBuildPerCPUArchitecture = false
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+// def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
