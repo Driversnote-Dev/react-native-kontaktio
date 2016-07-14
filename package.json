@@ -27,8 +27,8 @@
   "author": "André Kovac",
   "maintainers": [
     {
-      "name": "Andruschenko"
       "email": "dev@andrekovac.com",
+      "name": "Andruschenko"
     }
   ], 
   "license": "MIT",
