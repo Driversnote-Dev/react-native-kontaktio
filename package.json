@@ -1,8 +1,6 @@
 {
   "name": "react-native-kontaktio",
   "version": "0.0.1",
-  "private": true,
-  "scripts": {},
   "description": "React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to own some Kontakt.io beacons, configure them via their managment console and have your api-key handy.",
   "main": "KontaktIo.js",
   "keywords": [
@@ -17,6 +15,7 @@
     "bluetooth"
   ],
   "license": "MIT",
+  "homepage": "https://github.com/Artirigo/react-native-kontaktio",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Artirigo/react-native-kontaktio.git"
@@ -32,6 +31,7 @@
     }
   ], 
   "license": "MIT",
+  "scripts": {},
   "nativePackage": true,
   "dependencies": {}
 }
