@@ -8,7 +8,8 @@ Parts of the code and namings of output have been based on and influenced by the
 
 ## Some notes
 
-* Only supports **Android** so far. For **iOS** please use [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon) until iOS support is added.
+* Only supports **Android** so far. 
+* This library works perfectly well in unison with [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon) to deal with the **iOS** part because most of the events and output values are named the same.
 * Own regions can be defined for iBeacons, Eddystone beacons can only range beacons in the hard-coded namespace `abcdef1234567890abcd` so far.
 * Beacons support Android versions 4.3 and up.
 	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
@@ -121,17 +122,17 @@ const region = {
 
 // Define eddystone namespace
 const namespace = {
-  namespaceId: "abcdef1234567890abcd"
-}
+  namespaceId: 'abcdef1234567890abcd',
+};
 
 const scanContext = {
   iBeaconDevicesUpdateCallbackInterval: 100,
   eddystoneDevicesUpdateCallbackInterval: 1000,
   iBeaconDistanceSort: KontaktBeacons.SORT_DESC,
   eddystoneDistanceSort: KontaktBeacons.SORT_ASC,
-}
+};
 
-KontaktBeacons.initKontaktSDKWithApiKey("MY_KONTAKTIO_API_KEY");
+KontaktBeacons.initKontaktSDKWithApiKey('MY_KONTAKTIO_API_KEY');
 
 /**
  * Ranges beacons and sorts them by proximity
@@ -143,8 +144,8 @@ class KontaktTest extends Component {
     KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
     // KontaktBeacons.startRangingBeaconsinNamespace(namespace, scanContext);
     this.state = {
-      scanStatus: "",
-      scanInitStatus: "",
+      scanStatus: '',
+      scanInitStatus: '',
       beacons: [],
     };
   }
@@ -156,7 +157,6 @@ class KontaktTest extends Component {
         this.setState({
           beacons: data.beacons.filter(beacon => beacon.rssi < 0),
         });
-        // eslint-disable-next-line no-console
         data.beacons.map(beacon => console.log('minor', beacon.minor));
       }
     );
