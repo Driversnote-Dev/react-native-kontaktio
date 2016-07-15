@@ -358,7 +358,7 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         b.putString("proximity", String.valueOf(beacon.getProximity()));
 
         // Kontakt.io beacon stuff
-        b.putDouble("distance", beacon.getDistance());
+        b.putDouble("accuracy", beacon.getDistance());
         b.putInt("batteryPower", beacon.getBatteryPower());
         b.putInt("txPower", beacon.getTxPower());
         b.putString("firmwareVersion", beacon.getFirmwareVersion());
@@ -378,7 +378,7 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         b.putString("proximity", String.valueOf(beacon.getProximity()));
 
         // Kontakt.io beacon stuff
-        b.putDouble("distance", beacon.getDistance());
+        b.putDouble("accuracy", beacon.getDistance());
         b.putInt("batteryPower", beacon.getBatteryPower());
         b.putInt("txPower", beacon.getTxPower());
         b.putString("firmwareVersion", beacon.getFirmwareVersion());

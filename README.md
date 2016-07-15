@@ -177,7 +177,7 @@ class KontaktTest extends Component {
     return this.state.beacons.sort((a, b) => (-1 * (a.rssi - b.rssi))).map((beacon, ind) => (
         <View key={ind} style={[styles.beacon, { backgroundColor: colors[beacon.minor - 1] }]}>
           <Text>Minor: {beacon.minor}, RSSI: {beacon.rssi}</Text>
-          <Text>Distance: {beacon.distance}, Proximity: {beacon.proximity}</Text>
+          <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
           <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
           <Text>FirmwareVersion: {beacon.firmwareVersion}, UniqueID: {beacon.uniqueID}</Text>
         </View>
@@ -274,7 +274,7 @@ AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
 			.address
 			.rssi
 			.proximity	// values: IMMEDIATE, NEAR, FAR or UNKNOWN
-			.distance
+			.accuracy		// distance in meters
 			.batteryPower
 			.txPower
 			.firmwareVersion
