@@ -139,7 +139,7 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
     @ReactMethod
     public void stopRangingBeaconsInRegion() {
         proximityManager.finishScan();
-        proximityManager.detachListener(RCTKontaktModule.this);
+        proximityManager.detachListener(KontaktModule.this);
     }
 
     @ReactMethod
@@ -160,7 +160,7 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         proximityManager.restartScan(_getScanContext(beaconRegions, scanContextParams), new OnServiceReadyListener() {
             @Override
             public void onServiceReady() {
-                proximityManager.attachListener(RCTKontaktModule.this);
+                proximityManager.attachListener(KontaktModule.this);
                 map.putString("status", "SUCCESS_RESTART");
                 sendEvent(context, "scanInitStatus", map);
             }
@@ -179,7 +179,7 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         proximityManager.initializeScan(_getScanContext(beaconRegions, scanContextParams), new OnServiceReadyListener() {
             @Override
             public void onServiceReady() {
-                proximityManager.attachListener(RCTKontaktModule.this);
+                proximityManager.attachListener(KontaktModule.this);
                 map.putString("status", "SUCCESS");
                 sendEvent(context, "scanInitStatus", map);
             }
