@@ -107,6 +107,10 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         return constants;
     }
 
+    // ------------
+    // Methods exposed to React Native
+    // ------------
+
     @ReactMethod
     public void initKontaktSDKWithApiKey(String apiKey) {
         KontaktSDK.initialize(apiKey)
@@ -114,6 +118,8 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
                 .setLogLevelEnabled(LogLevel.DEBUG, true);
         proximityManager = new KontaktProximityManager(context);
     }
+
+    // --- Ranging
 
     @ReactMethod
     public void startRangingBeaconsInRegion(ReadableMap regionParams, ReadableMap scanContextParams) {
@@ -130,51 +136,60 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         // TODO: Implement for Eddystone beacons
     }
 
+    @ReactMethod
+    public void stopRangingBeaconsInRegion() {
+        proximityManager.finishScan();
+        proximityManager.detachListener(RCTKontaktModule.this);
+    }
+
+    @ReactMethod
+    public void restartRangingBeaconsInRegion(ReadableMap regionParams, ReadableMap scanContextParams) {
+        Collection<IBeaconRegion> beaconRegions = new ArrayList<>();
+        beaconRegions.add(_getRegion(regionParams));
+
+        _restartScan(beaconRegions, scanContextParams);
+    }
+
+    // ------------
+    // Scanning
+    // ------------
+
+    private void _restartScan(Collection<IBeaconRegion> beaconRegions, ReadableMap scanContextParams) {
+        final WritableMap map = Arguments.createMap();
+
+        proximityManager.restartScan(_getScanContext(beaconRegions, scanContextParams), new OnServiceReadyListener() {
+            @Override
+            public void onServiceReady() {
+                proximityManager.attachListener(RCTKontaktModule.this);
+                map.putString("status", "SUCCESS_RESTART");
+                sendEvent(context, "scanInitStatus", map);
+            }
+
+            @Override
+            public void onConnectionFailure() {
+                map.putString("status", "FAILURE_RESTART");
+                sendEvent(context, "scanInitStatus", map);
+            }
+        });
+    }
+
     private void _initializeScan(Collection<IBeaconRegion> beaconRegions, ReadableMap scanContextParams) {
         final WritableMap map = Arguments.createMap();
 
         proximityManager.initializeScan(_getScanContext(beaconRegions, scanContextParams), new OnServiceReadyListener() {
             @Override
             public void onServiceReady() {
-                proximityManager.attachListener(KontaktModule.this);
-
-//                Toast.makeText(getReactApplicationContext(), "beacon service is ready!", Toast.LENGTH_SHORT).show();
-
+                proximityManager.attachListener(RCTKontaktModule.this);
                 map.putString("status", "SUCCESS");
                 sendEvent(context, "scanInitStatus", map);
             }
 
             @Override
             public void onConnectionFailure() {
-//                Toast.makeText(getReactApplicationContext(), "beacon connection failed", Toast.LENGTH_SHORT).show();
-
                 map.putString("status", "FAILURE");
                 sendEvent(context, "scanInitStatus", map);
             }
         });
-    }
-
-    /**
-     * Build beacon region from incoming data
-     * @param regionParams
-     * @return
-     */
-    private BeaconRegion _getRegion(ReadableMap regionParams) {
-        if (region == null) {
-            String identifier = regionParams.isNull("identifier") ? "default" : regionParams.getString("identifier");
-            UUID uuid = regionParams.isNull("uuid") ? KontaktSDK.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID : UUID.fromString(regionParams.getString("uuid"));
-            int major = regionParams.isNull("major") ? BeaconRegion.ANY_MAJOR : regionParams.getInt("major");
-            int minor = regionParams.isNull("minor") ? BeaconRegion.ANY_MINOR : regionParams.getInt("minor");
-
-            // Currently only one region supported
-            region = new BeaconRegion.Builder()
-                    .setIdentifier(identifier)
-                    .setProximity(uuid)
-                    .setMajor(major)
-                    .setMinor(minor)
-                    .build();
-        }
-        return region;
     }
 
     // Set ScanContext details
@@ -194,19 +209,19 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
                     .setActivityCheckConfiguration(ActivityCheckConfiguration.MINIMAL)
                     .setForceScanConfiguration(ForceScanConfiguration.MINIMAL)
                     .setIBeaconScanContext(new IBeaconScanContext.Builder()
-                                    // .setIBeaconFilters(filterList)
-                                    .setDevicesUpdateCallbackInterval(iBeaconTime)
-                                    .setDistanceSort(iBeaconSort)
-                                    .setIBeaconRegions(beaconRegions)
-                                    .build()
+                            // .setIBeaconFilters(filterList)
+                            .setDevicesUpdateCallbackInterval(iBeaconTime)
+                            .setDistanceSort(iBeaconSort)
+                            .setIBeaconRegions(beaconRegions)
+                            .build()
                     )
                     .setEddystoneScanContext(new EddystoneScanContext.Builder()
-                                    .setDevicesUpdateCallbackInterval(eddystoneTime)
-                                    .setDistanceSort(eddystoneSort)
-                                    .setEddystoneNamespaces(Collections.<IEddystoneNamespace>singletonList(
-                                            new EddystoneNamespace("abcdef1234567890abcd", KontaktSDK.DEFAULT_KONTAKT_NAMESPACE_ID)
-                                    ))
-                                    .build()
+                            .setDevicesUpdateCallbackInterval(eddystoneTime)
+                            .setDistanceSort(eddystoneSort)
+                            .setEddystoneNamespaces(Collections.<IEddystoneNamespace>singletonList(
+                                    new EddystoneNamespace("abcdef1234567890abcd", KontaktSDK.DEFAULT_KONTAKT_NAMESPACE_ID)
+                            ))
+                            .build()
                     )
                     .setForceScanConfiguration(ForceScanConfiguration.MINIMAL)
                     .build();
@@ -214,13 +229,10 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         return scanContext;
     }
 
-    private void sendEvent(ReactContext reactContext,
-                           String eventName,
-                           @Nullable WritableMap params) {
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
-    }
+
+    // ------------
+    // Functions which implements the ProximityManager.ProximityListener Interface
+    // ------------
 
     @Override
     public void onScanStart() {
@@ -319,6 +331,37 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         }
 
     }
+
+    // ------------
+    // Beacon region
+    // ------------
+
+    /**
+     * Build beacon region from incoming data
+     * @param regionParams
+     * @return
+     */
+    private BeaconRegion _getRegion(ReadableMap regionParams) {
+        if (region == null) {
+            String identifier = regionParams.isNull("identifier") ? "default" : regionParams.getString("identifier");
+            UUID uuid = regionParams.isNull("uuid") ? KontaktSDK.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID : UUID.fromString(regionParams.getString("uuid"));
+            int major = regionParams.isNull("major") ? BeaconRegion.ANY_MAJOR : regionParams.getInt("major");
+            int minor = regionParams.isNull("minor") ? BeaconRegion.ANY_MINOR : regionParams.getInt("minor");
+
+            // Currently only one region supported
+            region = new BeaconRegion.Builder()
+                    .setIdentifier(identifier)
+                    .setProximity(uuid)
+                    .setMajor(major)
+                    .setMinor(minor)
+                    .build();
+        }
+        return region;
+    }
+
+    // ------------
+    // Create Maps and Arrays to send to JS
+    // ------------
 
     /**
      * Creates an array with all beacons in iBeaconDeviceList
@@ -423,6 +466,19 @@ public class KontaktModule extends ReactContextBaseJavaModule implements Proximi
         regionMap.putInt("minor", region.getMinor());
 
         return regionMap;
+    }
+
+
+    // ------------
+    // Helper function to send Event
+    // ------------
+
+    private void sendEvent(ReactContext reactContext,
+                           String eventName,
+                           @Nullable WritableMap params) {
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 
 }

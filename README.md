@@ -93,7 +93,7 @@ Some [Kontakt.io beacons prerequisites](http://developer.kontakt.io/android-sdk/
 
 ## Usage Example
 
-Basic example with five beacons. Run `react-native init KontaktTest`, install `react-native-kontaktio` as described above and replace the contents of `index.android.js` with the following code. Further replace `MY_KONTAKTIO_API_KEY `, `MY_UUID`, major and minor values with the values of your beacons. You should then see your beacons in a ScrollView sorted by their RSSI which reflects a measure of distance from the beacons to your mobile phone.
+Basic example with five beacons. Run `react-native init KontaktTest`, install `react-native-kontaktio` as described above and replace the contents of `index.android.js` with the following code. Further replace `MY_KONTAKTIO_API_KEY `, `MY_UUID`, major and minor values with the values of your beacons. If you press on `Start scanning` you should then very soon see your beacons in a ScrollView sorted by their RSSI which reflects a measure of distance from the beacons to your mobile phone.
 
 
 *index.android.js*
@@ -108,6 +108,7 @@ import {
   DeviceEventEmitter,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 
 import KontaktBeacons from 'react-native-kontaktio';
@@ -141,8 +142,6 @@ class KontaktTest extends Component {
 
   constructor(props) {
     super(props);
-    KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
-    // KontaktBeacons.startRangingBeaconsinNamespace(namespace, scanContext);
     this.state = {
       scanStatus: '',
       scanInitStatus: '',
@@ -158,6 +157,14 @@ class KontaktTest extends Component {
           beacons: data.beacons.filter(beacon => beacon.rssi < 0),
         });
         data.beacons.map(beacon => console.log('minor', beacon.minor));
+      }
+    );
+    DeviceEventEmitter.addListener(
+      'scanInitStatus',
+      (data) => {
+        this.setState({
+          scanInitStatus: data.status,
+        });
       }
     );
     DeviceEventEmitter.addListener(
@@ -191,12 +198,51 @@ class KontaktTest extends Component {
       </View>
     )
   }
+  
+  _startScanning = () => {
+    KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
+  };
+
+  _stopScanning = () => {
+    KontaktBeacons.stopRangingBeaconsInRegion();
+  };
+
+  _restartScanning = () => {
+    KontaktBeacons.restartRangingBeaconsInRegion(region, scanContext);
+  };
 
   render() {
     return (
-      <ScrollView>
-        { this.state.beacons.length > 0 ? this._renderBeacons() : this._renderWaitingForBeacons() }
-      </ScrollView>
+      <View>
+        <View>
+          <View style={styles.buttonContainer}>
+            <View>
+              <TouchableOpacity style={styles.button} onPress={this._startScanning}>
+                <Text>Start scanning</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity style={styles.button} onPress={this._stopScanning}>
+                <Text>Stop scanning</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity style={styles.button} onPress={this._restartScanning}>
+                <Text>Restart scanning</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View>
+        </View>
+        <View style={styles.scanStatus}>
+          <Text>Scan status: {this.state.scanStatus}</Text>
+          <Text>ScanInit status: {this.state.scanInitStatus}</Text>
+        </View>
+        <ScrollView>
+          { this.state.beacons.length > 0 ? this._renderBeacons() : this._renderWaitingForBeacons() }
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -222,7 +268,18 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
-  }
+  },
+  scanStatus: {
+    padding: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: {
+    padding: 10,
+  },
 });
 
 AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
@@ -233,7 +290,7 @@ AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
 
 ### Events
 
-##### Bluetooth initialization events
+##### Bluetooth initialization and restart events
 
 * `scanStatus`
 
@@ -251,7 +308,8 @@ AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
 		.status	// values: SUCCESS or FAILURE
 	```
 	
-	`SUCCESS` or `FAILURE` reflect the state of the initialization of the beacon scan.
+	* `SUCCESS` or `FAILURE` reflect the state of the initialization of the beacon scan.
+	* `SUCCESS_RESTART` or `FAILURE_RESTART` reflect the state of the restart of the beacon scan.
 
 ##### Beacon events
 
@@ -356,6 +414,8 @@ AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
 
 * `startRangingBeaconsInRegion(region, scanContext)`
 
+	Starts ranging for beacons. Changes the scan status.
+
 	Example: Range for beacons in the provided `region` with parameters provided in `scanContext`.
 
 	```js
@@ -375,7 +435,18 @@ AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
 	```
 
 	Check the Kontakt.io Android SDK docs for further information about how to define the `scanContext`.
-	
+
+* `stopRangingBeaconsInRegion()`
+
+	Stop ranging for beacons. Changes the scan status.
+
+* `restartRangingBeaconsInRegion(region, scanContext)`
+
+	Stop and start ranging for beacons in one command.
+
+* `startRangingBeaconsInNamespace(namespace, scanContext)`
+
+	Not implemented yet.
 
 ### Constants
 
