@@ -178,11 +178,12 @@ class KontaktTest extends Component {
   }
 
   
-  _renderBeacons = () => {
+_renderBeacons = () => {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
 
     return this.state.beacons.sort((a, b) => (-1 * (a.rssi - b.rssi))).map((beacon, ind) => (
-        <View key={ind} style={[styles.beacon, { backgroundColor: colors[beacon.minor - 1] }]}>
+        <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
+          <Text style={{fontWeight: 'bold'}}>{beacon.uniqueID}</Text>
           <Text>Minor: {beacon.minor}, RSSI: {beacon.rssi}</Text>
           <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
           <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
@@ -194,11 +195,11 @@ class KontaktTest extends Component {
   _renderWaitingForBeacons = () => {
     return (
       <View style={styles.container}>
-        <Text style={styles.loadingText}>Searching for beacons in your vicinity...</Text>
+        <Text style={styles.loadingText}>Searching for BEACONS in your vicinity...</Text>
       </View>
     )
   }
-  
+
   _startScanning = () => {
     KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
   };
@@ -213,35 +214,29 @@ class KontaktTest extends Component {
 
   render() {
     return (
-      <View>
-        <View>
-          <View style={styles.buttonContainer}>
-            <View>
-              <TouchableOpacity style={styles.button} onPress={this._startScanning}>
-                <Text>Start scanning</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.button} onPress={this._stopScanning}>
-                <Text>Stop scanning</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.button} onPress={this._restartScanning}>
-                <Text>Restart scanning</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View>
-        </View>
+      <View style={styles.container}>               
         <View style={styles.scanStatus}>
           <Text>Scan status: {this.state.scanStatus}</Text>
           <Text>ScanInit status: {this.state.scanInitStatus}</Text>
         </View>
-        <ScrollView>
+
+        <ScrollView style={styles.scrollView}>
           { this.state.beacons.length > 0 ? this._renderBeacons() : this._renderWaitingForBeacons() }
         </ScrollView>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={this._startScanning}>
+            <Text>Start scan</Text>
+          </TouchableOpacity>
+              
+          <TouchableOpacity style={styles.button} onPress={this._stopScanning}>
+            <Text>Stop scan</Text>
+          </TouchableOpacity>
+              
+          <TouchableOpacity style={styles.button} onPress={this._restartScanning}>
+            <Text>Restart scan</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -252,37 +247,47 @@ const totalWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
+    alignItems: 'stretch',
   },
+
   beacon: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     padding: 10,
-    width: totalWidth,
-    backgroundColor: 'yellow',
   },
+
   loadingText: {
+    margin: 10,
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
   },
+
+  scrollView: {
+    flex: 6,
+  },
+
   scanStatus: {
+    flex: 1,
     padding: 10,
   },
+
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-around',
+    margin: 10,
   },
   button: {
     padding: 10,
+    backgroundColor: '#5db34b',
+    borderRadius: 10,
   },
 });
 
-AppRegistry.registerComponent('KontaktTest', () => KontaktTest);
+AppRegistry.registerComponent('BeaconBasics', () => KontaktTest);
 ```
 
 
