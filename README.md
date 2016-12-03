@@ -6,15 +6,36 @@ With the Kontakt.io SDK (which this module is accessing in native Android) you h
 
 Parts of the code and namings of output have been based on and influenced by the projects [react-native-alt-beacon](https://github.com/octavioturra/react-native-alt-beacon) and [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon).
 
-## Some notes
+## Run Example
 
-* Only supports **Android** so far. 
-* This library works perfectly well in unison with [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon) to deal with the **iOS** part because most of the events and output values are named the same.
-* Own regions can be defined for iBeacons, Eddystone beacons can only range beacons in the hard-coded namespace `abcdef1234567890abcd` so far.
-* Beacons support Android versions 4.3 and up.
-	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
-* A physical device has to be used for testing
-* This module uses the Kontakt.io `ProximityManager` class.
+1. Clone this repository
+2. Bash to the `Example/` folder, run npm install and start the react-native server
+
+	```bash
+	$ cd react-native-kontaktio/Example
+	$ npm install
+	$ npm start
+	```
+
+2. Configure five beacons and enter their UUID and MAJOR values in the `region` in the file `react-native-kontaktio/Example/src/IBeaconExample.js` :
+
+	```js
+	...
+	const region = {
+	  identifier: 'MY_BEACON_REGION',
+	  uuid: 'MY_UUID',
+	  major: 1,
+	  minor: KontaktBeacons.ANY_MINOR,
+	};
+	...
+	```
+	
+3. Inside the `Example/` folder, start connect a real Android device to your computer, check that it's there with `android adb` and run the Example:
+
+	```bash
+	$ adb devices
+	$ react-native run-android
+	```
 
 ## Setup
 
@@ -96,17 +117,15 @@ Some [Kontakt.io beacons prerequisites](http://developer.kontakt.io/android-sdk/
 Basic example with five beacons. Run `react-native init KontaktTest`, install `react-native-kontaktio` as described above and replace the contents of `index.android.js` with the following code. Further replace `MY_KONTAKTIO_API_KEY `, `MY_UUID`, major and minor values with the values of your beacons. If you press on `Start scanning` you should then very soon see your beacons in a ScrollView sorted by their RSSI which reflects a measure of distance from the beacons to your mobile phone.
 
 
-*index.android.js*
+*Example/src/IBeaconExample.js*
 
 ```js
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   DeviceEventEmitter,
-  Dimensions,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -133,23 +152,22 @@ const scanContext = {
   eddystoneDistanceSort: KontaktBeacons.SORT_ASC,
 };
 
-KontaktBeacons.initKontaktSDKWithApiKey('MY_KONTAKTIO_API_KEY');
-
 /**
  * Ranges beacons and sorts them by proximity
  */
-class KontaktTest extends Component {
-
+export default class IBeaconExample extends Component {
   constructor(props) {
     super(props);
     this.state = {
       scanStatus: '',
       scanInitStatus: '',
+      scanning: false,
       beacons: [],
     };
   }
 
   componentDidMount() {
+    KontaktBeacons.initKontaktSDKWithApiKey('MY_KONTAKTIO_API_KEY');
     DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
@@ -162,132 +180,110 @@ class KontaktTest extends Component {
     DeviceEventEmitter.addListener(
       'scanInitStatus',
       (data) => {
-        this.setState({
-          scanInitStatus: data.status,
-        });
+        this.setState({ scanInitStatus: data.status });
       }
     );
     DeviceEventEmitter.addListener(
       'scanStatus',
       (data) => {
-        this.setState({
-          scanStatus: data.scanStatus,
-        });
+        this.setState({ scanStatus: data.scanStatus });
       }
     );
   }
 
-  
-_renderBeacons = () => {
+  _startScanning = () => {
+    KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
+    this.setState({ scanning: true });
+  };
+  _stopScanning = () => {
+    KontaktBeacons.stopRangingBeaconsInRegion();
+    this.setState({
+      scanning: false,
+      beacons: [],
+    });
+  };
+  _restartScanning = () => {
+    KontaktBeacons.restartRangingBeaconsInRegion(region, scanContext);
+    this.setState({ scanning: true });
+  };
+
+  _renderBeacons = () => {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
 
     return this.state.beacons.sort((a, b) => (-1 * (a.rssi - b.rssi))).map((beacon, ind) => (
-        <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
-          <Text style={{fontWeight: 'bold'}}>{beacon.uniqueID}</Text>
-          <Text>Minor: {beacon.minor}, RSSI: {beacon.rssi}</Text>
-          <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
-          <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
-          <Text>FirmwareVersion: {beacon.firmwareVersion}, UniqueID: {beacon.uniqueID}</Text>
-        </View>
+      <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
+        <Text style={{fontWeight: 'bold'}}>{beacon.uniqueID}</Text>
+        <Text>Minor: {beacon.minor}, RSSI: {beacon.rssi}</Text>
+        <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
+        <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
+        <Text>FirmwareVersion: {beacon.firmwareVersion}, UniqueID: {beacon.uniqueID}</Text>
+      </View>
     ), this);
   };
 
-  _renderWaitingForBeacons = () => {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Searching for BEACONS in your vicinity...</Text>
-      </View>
-    )
-  }
+  // _renderWaitingForBeacons = () => (
+  //   <View>
+  //     <Text style={styles.loadingText}>Searching for BEACONS in your vicinity...</Text>
+  //   </View>
+  // );
 
-  _startScanning = () => {
-    KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
-  };
-
-  _stopScanning = () => {
-    KontaktBeacons.stopRangingBeaconsInRegion();
-  };
-
-  _restartScanning = () => {
-    KontaktBeacons.restartRangingBeaconsInRegion(region, scanContext);
-  };
+  _renderButton = (text, onPress) => (
+    <TouchableOpacity style={styles.button} onPress={onPress}>
+      <Text>{text}</Text>
+    </TouchableOpacity>
+  );
 
   render() {
     return (
-      <View style={styles.container}>               
+      <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          {this._renderButton('Start scan', this._startScanning)}
+          {this._renderButton('Stop scan', this._stopScanning)}
+          {this._renderButton('Restart scan', this._restartScanning)}
+        </View>
         <View style={styles.scanStatus}>
           <Text>Scan status: {this.state.scanStatus}</Text>
           <Text>ScanInit status: {this.state.scanInitStatus}</Text>
         </View>
 
         <ScrollView style={styles.scrollView}>
-          { this.state.beacons.length > 0 ? this._renderBeacons() : this._renderWaitingForBeacons() }
+          {this._renderBeacons()}
         </ScrollView>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={this._startScanning}>
-            <Text>Start scan</Text>
-          </TouchableOpacity>
-              
-          <TouchableOpacity style={styles.button} onPress={this._stopScanning}>
-            <Text>Stop scan</Text>
-          </TouchableOpacity>
-              
-          <TouchableOpacity style={styles.button} onPress={this._restartScanning}>
-            <Text>Restart scan</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
 }
 
-const totalWidth = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'stretch',
   },
-
   beacon: {
-    flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
     padding: 10,
   },
-
   loadingText: {
     margin: 10,
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
   },
-
-  scrollView: {
-    flex: 6,
-  },
-
   scanStatus: {
-    flex: 1,
-    padding: 10,
+    margin: 10,
   },
-
   buttonContainer: {
-    flex: 1,
+    marginVertical: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    margin: 10,
   },
   button: {
     padding: 10,
-    backgroundColor: '#5db34b',
+    backgroundColor: '#5BF759',
     borderRadius: 10,
   },
 });
-
-AppRegistry.registerComponent('BeaconBasics', () => KontaktTest);
 ```
 
 
@@ -489,6 +485,16 @@ Defining sorting of beacon array:
 * `SORT_ASC`
 * `SORT_DESC`
 * `SORT_DISABLED`
+
+## Some notes
+
+* Only supports **Android** so far. 
+* This library works perfectly well in unison with [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon) to deal with the **iOS** part because most of the events and output values are named the same.
+* Own regions can be defined for iBeacons, Eddystone beacons can only range beacons in the hard-coded namespace `abcdef1234567890abcd` so far.
+* Beacons support Android versions 4.3 and up.
+	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
+* A physical device has to be used for testing
+* This module uses the Kontakt.io `ProximityManager` class.
 
 ## TODOs
 
