@@ -1,4 +1,4 @@
-# react-native-kontaktio
+# react-native-kontaktio [![npm version](https://badge.fury.io/js/react-native-kontaktio.svg)](https://badge.fury.io/js/react-native-kontaktio)
 
 React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to be in possession of Kontakt.io beacons, configure them via their management console and have your api-key handy.
 
