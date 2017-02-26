@@ -30,7 +30,9 @@
       "name": "Andruschenko"
     }
   ],
-  "scripts": {},
+  "scripts": {
+    "wml": "watchman watch-del . && wml start"
+  },
   "nativePackage": true,
   "dependencies": {}
 }
