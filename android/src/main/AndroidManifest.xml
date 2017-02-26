@@ -5,7 +5,7 @@
     <!-- Ranging/monitoring beacons -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <!-- Connecting to beacons -->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!--<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>-->
     <!-- Communicating with the Kontakt.io Proximity REST API -->
     <!--<uses-permission android:name="android.permission.INTERNET" />-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
