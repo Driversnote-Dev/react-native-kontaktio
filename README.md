@@ -405,6 +405,53 @@ const styles = StyleSheet.create({
 
 ### Methods
 
+* Configuration
+
+	A config object can be passed with the following options (see [](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about all possible configurations). When using the first time, you don't have to pass any configuration and can safely use the default values:
+	
+	Default values:
+	
+	```js
+	{
+	  scanMode: BALANCED,
+	  scanPeriod: RANGING,
+	  activeCheckConfiguration: DEFAULT,
+	  forceScanConfiguration: DISABLED,
+	  deviceUpdateCallbackInterval: DEFAULT = 3000 MilliSec,
+	  monitoringEnabled: true,
+	  monitoringSyncInterval: 10 Sec,
+	}
+	```
+	
+	Possible values:
+	
+	```js
+	{
+	  scanMode: LOW_POWER | BALANCED | LOW_LATENCY,
+	  scanPeriod: RANGING | MONITORING | {
+	  	  activePeriod: MINIMAL_ACTIVE_SCAN_PERIOD = 3000 | int (MilliSec)
+	  	  passivePeriod: MINIMAL_PASSIVE_SCAN_PERIOD = 2000 | int (MilliSec)
+	  	},
+	  activityCheckConfiguration: DISABLED | MINIMAL | DEFAULT
+	  forceScanConfiguration: DISABLED | MINIMAL | {
+	  		forceScanActivePeriod: int (MilliSec > 1000)
+	  		forceScanPassivePeriod: int (MilliSec > 500)
+	  	},
+	  deviceUpdateCallbackInterval: DEFAULT = 3000 | int (MilliSec),
+	  monitoringEnabled: bool,
+	  monitoringSyncInterval: int (Sec),
+	}
+	```
+	
+	Notes:
+	
+	* `monitoringEnabled` here refers to collecting monitoring events e.g. battery level of device.
+	* `monitoringSyncInterval`: Interval between next monitoring events sync attempts with Kontakt.io Web Panel
+	* Special info for `ForceScanConfiguration`: It is advisable to make SDK-based application configurable per Android device e.g. by allowing changing ForceScanConfiguration parameters in preferences. Ignoring it may cause poor performance of features provided for the SDK.
+	* Use `ScanMode = LOW_LATENCY` only when running the app in the foreground.
+	* `forceScanConfiguration` causes the app to 
+	
+
 * `initKontaktSDKWithApiKey('123456')`
 
 	Call this method before starting to range for beacons.
