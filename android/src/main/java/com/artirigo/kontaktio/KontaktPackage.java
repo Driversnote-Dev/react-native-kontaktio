@@ -11,14 +11,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by André Kovac on 12/04/16.
+ * Range and Monitor Kontakt.io beacons
  */
 public class KontaktPackage implements ReactPackage {
 
-//    @Override
-//    public List<NativeModule> createNativeModules(ReactApplicationContext reactApplicationContext) {
-//        return Collections.<NativeModule>singletonList(new KontaktModule(reactApplicationContext));
-//    }
+    @Override
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+        return Collections.emptyList();
+    }
 
     @Override
     public List<NativeModule> createNativeModules(
@@ -29,16 +34,5 @@ public class KontaktPackage implements ReactPackage {
 
         return modules;
     }
-
-    @Override
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return new ArrayList<>();
-    }
-
 
 }
