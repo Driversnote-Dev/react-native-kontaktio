@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
 			.batteryPower
 			.txPower
 			.firmwareVersion
-			.uniqueID
+			.uniqueId
 			// if iBeacon additionally:
 			.uuid
 			.major
