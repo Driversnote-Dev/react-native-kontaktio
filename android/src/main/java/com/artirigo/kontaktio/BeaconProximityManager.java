@@ -1,7 +1,5 @@
 package com.artirigo.kontaktio;
 
-import android.util.Log;
-
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -9,10 +7,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerFactory;
 import com.kontakt.sdk.android.common.KontaktSDK;
-import com.kontakt.sdk.android.common.profile.IBeaconRegion;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Set up and initialize a ProximityManager
@@ -45,7 +39,7 @@ class BeaconProximityManager {
 
         // Instantiate helpers
         beaconListeners = new BeaconListeners(reactAppContext);
-        scanManager = new ScanManager(reactAppContext, proximityManager);
+        scanManager = new ScanManager(proximityManager);
         regionManager = new RegionManager(proximityManager);
         configuration = new Configuration(proximityManager);
 

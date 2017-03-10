@@ -333,6 +333,8 @@ final class BeaconListeners {
     }
 
 
+// Former general beacon methods (revise and adapt to current SDK version as above)
+
 //    private WritableMap createMapWithBeacon(RemoteBluetoothDevice beacon, DeviceProfile deviceProfile) {
 //
 //        WritableMap b = new WritableNativeMap();

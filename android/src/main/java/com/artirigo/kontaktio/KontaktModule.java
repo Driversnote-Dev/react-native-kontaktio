@@ -25,7 +25,6 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     private static final String TAG = "KontaktModule";
 
     private static ReactApplicationContext reactAppContext;
-//    private static android.content.Context applicationContext;
 
     private static final String DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID = "DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID";
     private static final String DEFAULT_KONTAKT_NAMESPACE_ID = "DEFAULT_KONTAKT_NAMESPACE_ID";
@@ -49,7 +48,6 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     public KontaktModule(ReactApplicationContext reactAppContext) {
         super(reactAppContext);
         this.reactAppContext = reactAppContext;
-//         this.applicationContext = reactAppContext.getApplicationContext();
     }
 
     @Override

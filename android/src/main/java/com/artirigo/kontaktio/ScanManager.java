@@ -1,7 +1,6 @@
 package com.artirigo.kontaktio;
 
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 
 import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
@@ -10,7 +9,7 @@ import com.kontakt.sdk.android.ble.manager.ProximityManager;
 public class ScanManager {
     private ProximityManager proximityManager;
 
-    ScanManager(ReactApplicationContext reactAppContext, ProximityManager proximityManager) {
+    ScanManager(ProximityManager proximityManager) {
         this.proximityManager = proximityManager;
     }
 

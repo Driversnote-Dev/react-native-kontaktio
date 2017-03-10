@@ -11,8 +11,6 @@ import com.kontakt.sdk.android.ble.configuration.ScanMode;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Configure a ProximityManager with beacon ranging/monitoring details
  */
@@ -35,7 +33,7 @@ class Configuration {
         this.scanMode = ScanMode.BALANCED;
         this.scanPeriod = ScanPeriod.RANGING;
         this.activityCheckConfiguration = ActivityCheckConfiguration.DEFAULT;
-        this.forceScanConfiguration = new ForceScanConfiguration(5000, 2000);
+        this.forceScanConfiguration = new ForceScanConfiguration(5000, 1000);
         this.deviceUpdateCallbackInterval = ScanContext.DEFAULT_DEVICES_UPDATE_CALLBACK_INTERVAL; // 3000 ms
         this.monitoringEnabled = ScanContext.DEFAULT_MONITORING_ENABLED; // true
         this.monitoringSyncInterval = ScanContext.DEFAULT_MONITORING_SYNC_INTERVAL; // 10 sec
@@ -43,11 +41,12 @@ class Configuration {
 
     void configureProximityManager(ReadableMap params, Promise promise) {
         try {
+            // ScanMode (constant ranging or selective monitoring)
             if (params.hasKey("scanMode") && !params.isNull("scanMode")) {
                 scanMode = getScanMode(params.getInt("scanMode"), promise);
             }
 
-            // ScanPeriod
+            // ScanPeriod (active and passive scan periods)
             if (params.hasKey("scanPeriod") && !params.isNull("scanPeriod")) {
                 if (params.getType("scanPeriod") == ReadableType.String) {
                     scanPeriod = getScanPeriod(params.getString("scanPeriod"), promise);
@@ -65,12 +64,16 @@ class Configuration {
                 }
             }
 
-            // ActivityCheckConfiguration
+            // ActivityCheckConfiguration (governs Beacon disappearance)
             if (params.hasKey("activityCheckConfiguration") && !params.isNull("activityCheckConfiguration")) {
                 getActivityCheckConfiguration(params.getString("activityCheckConfiguration"), promise);
             }
 
-            // ForceScanConfiguration
+            // ForceScanConfiguration (Concerns a bug on some Android devices)
+
+            // monitoringEnabled (send data to Kontakt.io panel)
+
+            // monitoringSyncInterval (how often should data be sent to Kontakt.io panel)
 
 
             proximityManager.configuration()

@@ -24,13 +24,13 @@ import {
 } from 'react-native-kontaktio';
 
 const region1 = {
-  identifier: 'Andre beacons',
+  identifier: 'Test beacons 1',
   uuid: 'B0702880-A295-A8AB-F734-031A98A512D3',
   major: 2,
 };
 
 const region2 = {
-  identifier: 'Andre beacons',
+  identifier: 'Test beacons 2',
   uuid: 'B0702880-A295-A8AB-F734-031A98A512D3',
   major: 4,
 };
@@ -56,7 +56,7 @@ export default class IBeaconExampleNew extends Component {
       .then(() => configure({
         scanMode: ScanMode.BALANCED.getConfig(),
         scanPeriod: ScanPeriod.RANGING.getConfig(),
-        activityCheckConfiguration: ActivityCheckConfiguration.DEFAULT.getConfig(),
+        activityCheckConfiguration: ActivityCheckConfiguration.MINIMAL.getConfig(),
       }))
       .then(() => console.log('config was successful'))
       .then(() => setBeaconRegions([region1, region2]))
