@@ -3,8 +3,8 @@ import {
   AppRegistry,
 } from 'react-native';
 
-import IBeaconExample from './IBeaconExample';
+import IBeaconExampleNew from './IBeaconExampleNew';
 
 export default function native() {
-  AppRegistry.registerComponent('KontaktIoSimpleTest', () => IBeaconExample);
+  AppRegistry.registerComponent('KontaktIoSimpleTest', () => IBeaconExampleNew);
 }
