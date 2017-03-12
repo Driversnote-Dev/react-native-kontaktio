@@ -57,7 +57,7 @@ final class BeaconListeners {
                 outputMap = Arguments.createMap();
                 outputMap.putArray("beacons", createArrayWithIBeacons(iBeacons));
                 outputMap.putMap("region", createMapWithRegion(region));
-                sendEvent(reactAppContext, "beaconsDidRange", outputMap);
+                sendEvent(reactAppContext, "beaconsDidUpdate", outputMap);
             }
 
             @Override
