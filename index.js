@@ -44,9 +44,9 @@ export default Kontakt = {
   ANY_MAJOR,
   ANY_MINOR,
   // Configurations
-  ScanMode,
-  ScanPeriod,
-  ActivityCheckConfiguration,
+  scanMode,
+  scanPeriod,
+  activityCheckConfiguration,
 };
 
 export {
