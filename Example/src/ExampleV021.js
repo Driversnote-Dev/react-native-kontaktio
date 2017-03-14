@@ -31,9 +31,12 @@ const scanContext = {
 };
 
 /**
+ * NB: Example for an OLD version of this package
+ * (for react-native-kontaktio v0.2.1 and below)
+ * ---------
  * Ranges beacons and sorts them by proximity
  */
-export default class IBeaconExample extends Component {
+export default class ExampleV021 extends Component {
   constructor(props) {
     super(props);
     this.state = {
