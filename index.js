@@ -2,9 +2,9 @@ import { NativeModules } from 'react-native';
 import {
   IBEACON,
   EDDYSTONE,
-  ScanMode,
-  ScanPeriod,
-  ActivityCheckConfiguration,
+  scanMode,
+  scanPeriod,
+  activityCheckConfiguration,
 } from './configurations';
 
 // If the native module (i.e. Java module) is prefixed with "RCT", 
@@ -66,7 +66,7 @@ export {
   ANY_MAJOR,
   ANY_MINOR,
   // Configurations
-  ScanMode,
-  ScanPeriod,
-  ActivityCheckConfiguration,
+  scanMode,
+  scanPeriod,
+  activityCheckConfiguration,
 }
