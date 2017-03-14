@@ -11,6 +11,7 @@ import {
 import {
   init,
   configure,
+  disconnect,
   startScanning,
   stopScanning,
   restartScanning,
@@ -18,9 +19,10 @@ import {
   setBeaconRegions,
   IBEACON,
   EDDYSTONE,
-  ScanMode,
-  ScanPeriod,
-  ActivityCheckConfiguration,
+  // Configurations
+  scanMode,
+  scanPeriod,
+  activityCheckConfiguration,
 } from 'react-native-kontaktio';
 
 const region1 = {
@@ -40,8 +42,14 @@ const region2 = {
 /**
  * Monitors beacons in two regions and sorts them by proximity,
  * color-coded by minors with values 1 through 5.
+ *
+ * Just change the values in the regions to work with your beacons.
+ *
+ * Press `Start scanning` and you should very soon see your beacons in a ScrollView
+ * sorted by their RSSI which reflects a measure of distance from the beacons
+ * to your mobile phone.
  */
-export default class IBeaconExampleNew extends Component {
+export default class IBeaconExample extends Component {
   state = {
     scanning: false,
     beacons: [],
@@ -50,12 +58,12 @@ export default class IBeaconExampleNew extends Component {
   componentDidMount() {
     init(
       'MY_KONTAKTIO_API_KEY',
-      [IBEACON, EDDYSTONE],
+      [IBEACON],
     )
       .then(() => configure({
-        scanMode: ScanMode.BALANCED.getConfig(),
-        scanPeriod: ScanPeriod.MONITORING.getConfig(),
-        activityCheckConfiguration: ActivityCheckConfiguration.MINIMAL.getConfig(),
+        scanMode: scanMode.BALANCED,
+        scanPeriod: scanPeriod.MONITORING,
+        activityCheckConfiguration: activityCheckConfiguration.MINIMAL,
       }))
       .then(() => setBeaconRegions([region1, region2]))
       .catch(error => alert('error', error));
@@ -89,6 +97,7 @@ export default class IBeaconExampleNew extends Component {
     DeviceEventEmitter.addListener(
       'beaconsDidUpdate',
       ({ beacons: updatedBeacons, region }) => {
+        console.log('beaconsDidUpdate', updatedBeacons, region);
         const { beacons } = this.state;
         updatedBeacons.forEach(updatedBeacon => {
           const index = beacons.findIndex(beacon =>
@@ -100,7 +109,6 @@ export default class IBeaconExampleNew extends Component {
             )
           })
         });
-        console.log('beaconsDidUpdate', beacons, region);
       }
     );
 
@@ -120,7 +128,6 @@ export default class IBeaconExampleNew extends Component {
     );
 
     // Add beacon monitoring listener
-
     DeviceEventEmitter.addListener(
       'monitoringCycle',
       ({ status }) => {
@@ -128,6 +135,11 @@ export default class IBeaconExampleNew extends Component {
       }
     );
 
+  }
+
+  componentWillUnmount() {
+    // Disconnect beaconManager and set to it to null
+    disconnect();
   }
 
   _startScanning = () => {
