@@ -1,47 +1,46 @@
 # react-native-kontaktio [![npm version](https://badge.fury.io/js/react-native-kontaktio.svg)](https://badge.fury.io/js/react-native-kontaktio)
 
-React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to be in possession of Kontakt.io beacons, configure them via their management console and have your api-key handy.
+React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons.
 
-With the Kontakt.io SDK (which this module is accessing in native Android) you have access to more values than a generic beacon library like e.g. [altBeacon](http://altbeacon.org/) can offer, e.g. `batteryPower` or `txPower`.
+Only work on **Android** for now. **iOS** version is in development and will be added soon.
 
-Parts of the code and namings of output have been based on and influenced by the projects [react-native-alt-beacon](https://github.com/octavioturra/react-native-alt-beacon) and [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon).
+Implements version **3.2.3.** of the [Kontakt.io SDK](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/).
 
-## Run Example
+You have to be in possession of Kontakt.io beacons, configure them via their management console and have your api-key handy.
 
-1. Clone this repository
-2. Bash to the `Example/` folder, run npm install and start the react-native server
+##### Why should I use this module and not a generic beacon package?
+
+If you use have beacons from Kontakt.io at your disposal, with each scan you get additional features, like the unique id which is printed on the back of each beacon or the battery power (`batteryPower`), which is also synchronized with your Kontakt.io online panel. Besides, beacons from other manufacturers can also be ranged nevertheless, just without that extra information.
+
+## Run Example to test the module
+
+1. Clone this repository, connect an Android device to your computer and have some beacons handy
+
+2. Bash to the `Example/` folder, run `npm install` and start the react-native server
 
 	```bash
 	$ cd react-native-kontaktio/Example
 	$ npm install
 	$ npm start
 	```
-
-2. Configure five beacons and enter their UUID and MAJOR values in the `region` in the file `react-native-kontaktio/Example/src/IBeaconExample.js` :
-
-	```js
-	...
-	const region = {
-	  identifier: 'MY_BEACON_REGION',
-	  uuid: 'MY_UUID',
-	  major: 1,
-	  minor: KontaktBeacons.ANY_MINOR,
-	};
-	...
-	```
 	
-3. Inside the `Example/` folder, start connect a real Android device to your computer, check that it's there with `android adb` and run the Example:
+3. Build the example and run it on your android device:
 
 	```bash
-	$ adb devices
 	$ react-native run-android
 	```
 
 ## Setup
 
-Some [Kontakt.io beacons prerequisites](http://developer.kontakt.io/android-sdk/2.1.0/quickstart/#setup) have to be met.
+Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk/quickstart/#setup) have to be met.
 
-#### Android
+### Android
+
+#### Automatic setup
+
+After the update the manual setup should should be easier when using `react-native link react-native-kontaktio`. However this was not tested yet. Will be tested soon and this section updated. For now, please refer to the manual setup.
+
+#### Manual setup
 
 1. npm install
 
@@ -112,446 +111,185 @@ Some [Kontakt.io beacons prerequisites](http://developer.kontakt.io/android-sdk/
 	
 	```
 
-## Usage Example
+## Minimal Example
 
-Basic example with five beacons. Run `react-native init KontaktTest`, install `react-native-kontaktio` as described above and replace the contents of `index.android.js` with the following code. Further replace `MY_KONTAKTIO_API_KEY `, `MY_UUID`, major and minor values with the values of your beacons. If you press on `Start scanning` you should then very soon see your beacons in a ScrollView sorted by their RSSI which reflects a measure of distance from the beacons to your mobile phone.
+This is a minimal example with the default configuration and no specifically set regions. Thus, the default region `everywhere` (i.e. all beacons) is used.
 
+Please take a look at *Example/src/Example.js* for an bigger usage example including configuration settings and multiple regions.
 
-*Example/src/IBeaconExample.js*
+*Example/src/MinimalExample.js*
 
 ```js
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  DeviceEventEmitter,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, DeviceEventEmitter } from 'react-native';
 
-import KontaktBeacons from 'react-native-kontaktio';
-
-// Define iBeacon region
-const region = {
-  identifier: 'MY_BEACON_REGION',
-  uuid: 'MY_UUID',
-  major: 1,
-  minor: KontaktBeacons.ANY_MINOR,
-};
-
-// Define eddystone namespace
-const namespace = {
-  namespaceId: 'abcdef1234567890abcd',
-};
-
-const scanContext = {
-  iBeaconDevicesUpdateCallbackInterval: 100,
-  eddystoneDevicesUpdateCallbackInterval: 1000,
-  iBeaconDistanceSort: KontaktBeacons.SORT_DESC,
-  eddystoneDistanceSort: KontaktBeacons.SORT_ASC,
-};
+import { init, startScanning } from 'react-native-kontaktio';
 
 /**
- * Ranges beacons and sorts them by proximity
+ * Minimal example of react-native-kontaktio
  */
-export default class IBeaconExample extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      scanStatus: '',
-      scanInitStatus: '',
-      scanning: false,
-      beacons: [],
-    };
-  }
-
+export default class MinimalExample extends Component {
   componentDidMount() {
-    KontaktBeacons.initKontaktSDKWithApiKey('MY_KONTAKTIO_API_KEY');
+    init()
+      .then(() => startScanning())
+      .catch(error => alert('error', error));
+
+    // Add beacon listeners
     DeviceEventEmitter.addListener(
-      'beaconsDidRange',
-      (data) => {
-        this.setState({
-          beacons: data.beacons.filter(beacon => beacon.rssi < 0),
-        });
-        data.beacons.map(beacon => console.log('minor', beacon.minor));
-      }
-    );
-    DeviceEventEmitter.addListener(
-      'scanInitStatus',
-      (data) => {
-        this.setState({ scanInitStatus: data.status });
-      }
-    );
-    DeviceEventEmitter.addListener(
-      'scanStatus',
-      (data) => {
-        this.setState({ scanStatus: data.scanStatus });
+      'beaconsDidUpdate',
+      ({ beacons, region }) => {
+        console.log('beaconsDidUpdate', beacons, region);
       }
     );
   }
-
-  _startScanning = () => {
-    KontaktBeacons.startRangingBeaconsInRegion(region, scanContext);
-    this.setState({ scanning: true });
-  };
-  _stopScanning = () => {
-    KontaktBeacons.stopRangingBeaconsInRegion();
-    this.setState({
-      scanning: false,
-      beacons: [],
-    });
-  };
-  _restartScanning = () => {
-    KontaktBeacons.restartRangingBeaconsInRegion(region, scanContext);
-    this.setState({ scanning: true });
-  };
-
-  _renderBeacons = () => {
-    const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
-
-    return this.state.beacons.sort((a, b) => (-1 * (a.rssi - b.rssi))).map((beacon, ind) => (
-      <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
-        <Text style={{fontWeight: 'bold'}}>{beacon.uniqueID}</Text>
-        <Text>Minor: {beacon.minor}, RSSI: {beacon.rssi}</Text>
-        <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
-        <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
-        <Text>FirmwareVersion: {beacon.firmwareVersion}, UniqueID: {beacon.uniqueID}</Text>
-      </View>
-    ), this);
-  };
-
-  // _renderWaitingForBeacons = () => (
-  //   <View>
-  //     <Text style={styles.loadingText}>Searching for BEACONS in your vicinity...</Text>
-  //   </View>
-  // );
-
-  _renderButton = (text, onPress) => (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text>{text}</Text>
-    </TouchableOpacity>
-  );
 
   render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.buttonContainer}>
-          {this._renderButton('Start scan', this._startScanning)}
-          {this._renderButton('Stop scan', this._stopScanning)}
-          {this._renderButton('Restart scan', this._restartScanning)}
-        </View>
-        <View style={styles.scanStatus}>
-          <Text>Scan status: {this.state.scanStatus}</Text>
-          <Text>ScanInit status: {this.state.scanInitStatus}</Text>
-        </View>
-
-        <ScrollView style={styles.scrollView}>
-          {this._renderBeacons()}
-        </ScrollView>
-      </View>
-    );
+    return <View />;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  beacon: {
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    padding: 10,
-  },
-  loadingText: {
-    margin: 10,
-    flex: 1,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  scanStatus: {
-    margin: 10,
-  },
-  buttonContainer: {
-    marginVertical: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  button: {
-    padding: 10,
-    backgroundColor: '#5BF759',
-    borderRadius: 10,
-  },
-});
 ```
 
 
-## Documentation
+## API Documentation
+
+### Main objects: `beacon` and `region`
+
+The following two objects are the main players of this module and will be referred to multiple times throughout this documentation:
+
+##### `beacon`
+
+```js
+{
+	// each beacon contains:
+	name: string
+	address: string
+	rssi: number
+	proximity: string (either IMMEDIATE, NEAR, FAR or UNKNOWN)
+	// if Kontakt.io beacon this is useful, otherwise mostly -1 or similar
+	accuracy: string (distance in meters)
+	batteryPower: number (percentage as int)
+	txPower: number
+	firmwareVersion: string
+	uniqueId: string
+	isShuffled: string
+	// if its of type IBEACON additionally:
+	uuid: string
+	major: number
+	minor: number
+	// if its of type EDDYSTONE additionally:
+	namespace: string
+	instanceId: string
+	url: string
+	eid: string
+	encryptedTelemetry: string,
+	telemetry: {
+		batteryVoltage: number
+		temperature: number,
+		pduCount: number
+		timeSincePowerUp: number,
+		version: number,
+	}
+}
+```
+
+##### `region`
+
+```js
+.region
+	.identifier
+	.uuid
+	.secureUuid
+	.major
+	.minor
+```
 
 ### Events
 
-##### Bluetooth initialization and restart events
+#### Event flow
 
-* `scanStatus`
+In case regions are defined, events will commonly occur in this order if 1) a beacon signal is detected, 2) the signal changes and 3) the signal is lost:
 
-	```js
-	data
-		.status	// values: START or STOP
-	```
-	
-	`START` or `STOP` reflect whether the beacon scan started or stopped
+1. detected
+	* regionDidEnter
+	* beaconDidAppear
 
-* `scanInitStatus`
+2. changed
+	* beaconsDidRange
+		* Sent whenever a change in proximity is detected.
+		* This event is sent separately for each currently scanned region if at least one of its beacons has changed.
 
-	```js
-	data
-		.status	// values: SUCCESS or FAILURE
-	```
-	
-	* `SUCCESS` or `FAILURE` reflect the state of the initialization of the beacon scan.
-	* `SUCCESS_RESTART` or `FAILURE_RESTART` reflect the state of the restart of the beacon scan.
+3. lost
+	* beaconDidDisappear
+	* regionDidExit
 
-##### Beacon events
 
-* `beaconsDidRange`
+#### Event overview
 
-	returns information about beacons with updated information
-
-	```js
-	...
-	data
-		.timestamp	// timestamp of event
-		.region		// region in which event occured
-			.identifier
-			.uuid
-			.major
-			.minor
-		.beacons		// Array of all beacons
-			// each beacon contains:
-			.name
-			.address
-			.rssi
-			.proximity	// values: IMMEDIATE, NEAR, FAR or UNKNOWN
-			.accuracy		// distance in meters
-			.batteryPower
-			.txPower
-			.firmwareVersion
-			.uniqueId
-			// if iBeacon additionally:
-			.uuid
-			.major
-			.minor
-			// if Eddystone additionally:
-			.instanceId
-			.namespaceId
-			.url
-			.temperature
-			.telemetryVersion
-			.batteryVoltage
-			.timeSincePowerUp
-	```
-* `beaconDidAppear`
-
-	returns data about the beacon if it is in range for the first time
-	
-	```js
-	data
-		.timestamp
-		.region  // as above
-		.beacon  // a single beacon
-			// inside structure of beacon as above
-	```
-
-* `beaconDidDisappear`
-
-	returns data about the beacon if it is not in range anymore
-	
-	```js
-	data
-		.timestamp
-		.region  // as above
-		.beacon  // a single beacon
-			// inside structure of beacon as above
-	```
-
-* `regionDidEnter`
-
-	returns the region entered in structure as above
-	
-	```js
-	data
-		.timestamp
-		.region
-			.identifier
-			.uuid
-			.major
-			.minor
-	```
-
-* `regionDidExit`
-
-	returns the region abandoned
-	
-	```js
-	data
-		.timestamp
-		.region
-			.identifier
-			.uuid
-			.major
-			.minor
-	```
+| Event                      | Description                       |
+|:---------------------------|:----------------------------------|
+| **beaconDidAppear**        | Sends `{ beacon, region }` if a beacon appears for the first time. `region` is one of the regions defined with `setBeaconRegion` or `setBeaconRegions` or the region *everywhere* if no region was defined. `beacon` and `region` have the form as defined above. |
+| **beaconDidDisappear**     | Sends `{ beacon, region }` if a beacon which was previously scanned is out of the range of the device. `region` is one of the regions defined with `setBeaconRegion` or `setBeaconRegions` or the region *everywhere* if no region was defined. `beacon` and `region` have the form as defined above. |
+| **beaconsDidUpdate**       | Sends `{ beacons, region }` if some property of beacons in that `region` changed. `beacons` is an array of beacons (with its `length` >= `1`) which changed in that `region`. Each `beacon` in that array has the form as described above. |
+| **regionDidEnter**         | Sends `{ region }`, the beacon region which was just entered (i.e. at least one beacon of that region was detected). `region` has the form as described above |
+| **regionDidExit**          | Sends `{ region }`, the beacon region which was just lost (i.e. the last remaining beacon of that region was not anymore in range and the time for keeping the beacon in the internal cache ran out as set with `activeCheckConfiguration`, i.e. never removed from cache with `DISABLED`, `3` seconds with `MINIMAL` and `10` seconds with `DEFAULT`). `region` has the form as described above |
+| **scanStatus**             | Sends `{ status }` where `status` is either `START`, `STOP` or `ERROR` depending on whether the scan for beacons started, stopped or a sudden error occurred while scanning |
+| **monitoringCycle**        | Sends `{ status }` where `status` is either `START` `STOP` depending on whether a scan cycle just started or stopped. The active period of a monitoring scan cycle is 8 seconds, the inactive (passive) period is 30 seconds long. 
+Attention: Only sends events if `scanMode` is set to `MONITORING` |
 
 ### Methods
 
-* Configuration
+#### Some infos
 
-	A config object can be passed with the following options (see [](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about all possible configurations). When using the first time, you don't have to pass any configuration and can safely use the default values:
-	
-	Default values:
-	
-	```js
-	{
-	  scanMode: BALANCED,
-	  scanPeriod: RANGING,
-	  activeCheckConfiguration: DEFAULT,
-	  forceScanConfiguration: DISABLED,
-	  deviceUpdateCallbackInterval: DEFAULT = 3000 MilliSec,
-	  monitoringEnabled: true,
-	  monitoringSyncInterval: 10 Sec,
-	}
-	```
-	
-	Possible values:
-	
-	```js
-	{
-	  scanMode: LOW_POWER | BALANCED | LOW_LATENCY,
-	  scanPeriod: RANGING | MONITORING | {
-	  	  activePeriod: MINIMAL_ACTIVE_SCAN_PERIOD = 3000 | int (MilliSec)
-	  	  passivePeriod: MINIMAL_PASSIVE_SCAN_PERIOD = 2000 | int (MilliSec)
-	  	},
-	  activityCheckConfiguration: DISABLED | MINIMAL | DEFAULT
-	  forceScanConfiguration: DISABLED | MINIMAL | {
-	  		forceScanActivePeriod: int (MilliSec > 1000)
-	  		forceScanPassivePeriod: int (MilliSec > 500)
-	  	},
-	  deviceUpdateCallbackInterval: DEFAULT = 3000 | int (MilliSec),
-	  monitoringEnabled: bool,
-	  monitoringSyncInterval: int (Sec),
-	}
-	```
-	
-	Notes:
-	
-	* `monitoringEnabled` here refers to collecting monitoring events e.g. battery level of device.
-	* `monitoringSyncInterval`: Interval between next monitoring events sync attempts with Kontakt.io Web Panel
-	* Special info for `ForceScanConfiguration`: It is advisable to make SDK-based application configurable per Android device e.g. by allowing changing ForceScanConfiguration parameters in preferences. Ignoring it may cause poor performance of features provided for the SDK.
-	* Use `ScanMode = LOW_LATENCY` only when running the app in the foreground.
-	* `forceScanConfiguration` causes the app to 
-	
+* All methods may be imported globally (i.e. `import Kontakt from 'react-native-kontaktio`) or one-by-one (i.e. `import { init, startScanning } from 'react-native-kontaktio`).
+* All methods return a **Promise** which returns an error statement in case something went wrong. Care was taken to include useful error messages.
+* The best way to explore the usage of these methods is to take a look at the example in *Example/src/Example.js*.
 
-* `initKontaktSDKWithApiKey('123456')`
+#### Method overview
 
-	Call this method before starting to range for beacons.
+| Method                                          | Description                     |
+|:------------------------------------------------|:--------------------------------|
+| **init('KontaktAPIKey', [IBEACON, EDDYSTONE])** | (*mandatory*) Initialize scanning for beacons. The first argument is your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but if you e.g. want the battery level of a beacon to be sent to your Konakt.io web panel in regular intervals (every 10 seconds). The second argument is an array of the beacon types you want to scan for. Two options are possible, the provided constants `IBEACON` or `EDDYSTONE`. The default call `init()`  |
+| **configure({ ... })**          | (*optional*) Configure scanning with the configuration options described below |
+| **setBeaconRegion(region)**      | (*optional*) Only beacons which fall into the provided `region` will be scanned and returned with the events described above. |
+| **setBeaconRegions([region1, region2, ... ])**     | (*optional*) Only beacons which fall into one of the provided regions in the array `regions` will be scanned and returned with the events described above. |
+| **startScanning**        | starts scanning of beacons with given configuration and provided regions |
+| **stopScanning**         | stops scanning for all provided regions |
+| **restartScanning**      | stops and starts scanning again. In case device was not scanning before, scanning is just started. |
+| **disconnect**           | disconnect the Kontakt.io beacon scanner and set it to `null` |
 
-	```js
-	KontaktBeacons.initKontaktSDKWithApiKey('MY_KONTAKTIO_API_KEY')
-	```
 
-* `startRangingBeaconsInRegion(region, scanContext)`
+### Configuration
 
-	Starts ranging for beacons. Changes the scan status.
+A config object can be passed with the following options (see [](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about all possible configurations). When using the first time, you don't have to pass any configuration and can safely use the default values:
 
-	Example: Range for beacons in the provided `region` with parameters provided in `scanContext`.
-
-	```js
-	const region = {
-	  identifier: 'Living Room',
-	  uuid: 'YOUR_UUID_HERE',
-	  major: 123,
-	  minor: KontaktBeacons.ANY_MINOR,
-	};
-	
-	const scanContext = {
-	  devicesUpdateCallbackInterval: 3000,
-	  distanceSort: KontaktBeacons.SORT_DESC,
-	}
-	
-	KontaktBeacons.startRangingBeaconsInRegion(region, scanContext)
-	```
-
-	Check the Kontakt.io Android SDK docs for further information about how to define the `scanContext`.
-
-* `stopRangingBeaconsInRegion()`
-
-	Stop ranging for beacons. Changes the scan status.
-
-* `restartRangingBeaconsInRegion(region, scanContext)`
-
-	Stop and start ranging for beacons in one command.
-
-* `startRangingBeaconsInNamespace(namespace, scanContext)`
-
-	Not implemented yet.
+| Configuration              | Description                       |
+|:---------------------------|:----------------------------------|
+| **scanMode**        | Possible values: `scanMode.LOW_POWER`, `scanMode.BALANCED` or `scanMode.LOW_LATENCY`. Tipp: `BALANCED` is the default value and mostly the best compromise between battery demand on the device and signal quality. Use `LOW_LATENCY` only when running the app in the foreground. |
+| **scanPeriod**     | Possible values: `scanPeriod.RANGING` or `scanPeriod.MONITORING`. `RANGING` scans beacons all the time, `MONITORING` operates in scan-cycles; it scans for **8** seconds, then pauses scanning for **30** seconds, then scans for **8** seconds again and so forth. |
+| **activeCheckConfiguration**       | Possible values: `activeCheckConfiguration.DISABLED`, `activeCheckConfiguration.MINIMAL` or `activeCheckConfiguration.DEFAULT`. It sets the time it takes the device to "forget" a formerly scanned beacon when it can't detect it anymore. Once successfully scanned beacons remain in the internal cache and are never removed from the cache (`DISABLED`), removed after not scanning them for `3` seconds (`MINIMAL`) or after `10` seconds (`DEFAULT`) |
 
 ### Constants
 
-##### Usage
+Some constants are provided which may be used while creating a `region`. These are the default values if the corresponding fields are not provided, but may be used for a more declarative api call.
 
-If the module is importet as 
+The other two constants are the two different beacon types.
 
-```js
-import KontaktBeacons from 'react-native-kontaktio';
-```
+| Constant                                    | Where to use?                |
+|:--------------------------------------------|:-----------------------------|
+| **DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID**   | uuid (region)                |
+| **BEACON_REGION_ANY_MAJOR**                 | major (region)               |
+| **BEACON_REGION_ANY_MINOR**                 | minor (region)               |
+| **DEFAULT_KONTAKT_NAMESPACE_ID**            | namespace (region)           |
+| **IBEACON**                                 | init (second argument)       |
+| **EDDYSTONE**                               | init  (second argument)      |
 
-constants may be called as:
+## Further notes
 
-```js
-KontaktBeacons.PROXIMITY_FAR
-```
-
-##### Definitions
-
-Defining a region:
-
-* `DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID`: A random UUID
-* `ANY_MAJOR`
-* `ANY_MINOR`
-
-Evaluating proximity:
-
-* `PROXIMITY_IMMEDIATE`
-* `PROXIMITY_NEAR`
-* `PROXIMITY_FAR`
-* `PROXIMITY_UNKNOWN`
-
-Defining sorting of beacon array:
-
-* `SORT_ASC`
-* `SORT_DESC`
-* `SORT_DISABLED`
-
-## Some notes
-
-* Only supports **Android** so far. 
-* This library works perfectly well in unison with [react-native-ibeacon](https://github.com/frostney/react-native-ibeacon) to deal with the **iOS** part because most of the events and output values are named the same.
-* Own regions can be defined for iBeacons, Eddystone beacons can only range beacons in the hard-coded namespace `abcdef1234567890abcd` so far.
 * Beacons support Android versions 4.3 and up.
 	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
 * A physical device has to be used for testing
-* This module uses the Kontakt.io `ProximityManager` class.
 
-## TODOs
+## Coming soon:
 
-Here's an incomplete list of todos for this project. Help via pull-requests are welcome!
-
-* Define multiple regions
-* Customize `ScanContext`
-* Set permissions from JS code
-* Error handling
-* Include new Kontakt.io security feature, i.e. use KontaktProximityManager with Shuffling
-* Support custom eddystone namespaces, i.e. implement `startRangingBeaconsInNamespace` function and adapt other parts in code
-* Add monitoring of beacons
 * iOS version
+* Eddystone support (Currently `EDDYSTONE` beacons can be scanned, but the corresponding functions are not yet exposed to the JS side because it wasn't fully tested yet)
