@@ -193,12 +193,13 @@ The following two objects are the main players of this module and will be referr
 ##### `region`
 
 ```js
-.region
-	.identifier
-	.uuid
-	.secureUuid
-	.major
-	.minor
+{
+	identifier
+	uuid
+	secureUuid
+	major
+	minor
+}
 ```
 
 ### Events
