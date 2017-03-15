@@ -23,6 +23,9 @@ import {
   scanMode,
   scanPeriod,
   activityCheckConfiguration,
+  forceScanConfiguration,
+  monitoringEnabled,
+  monitoringSyncInterval,
 } from 'react-native-kontaktio';
 
 const region1 = {
@@ -71,11 +74,17 @@ export default class IBeaconExample extends Component {
     )
       .then(() => configure({
         scanMode: scanMode.BALANCED,
-        scanPeriod: scanPeriod.MONITORING,
-        activityCheckConfiguration: activityCheckConfiguration.MINIMAL,
+        scanPeriod: scanPeriod.create({
+          activePeriod: 6000,
+          passivePeriod: 20000,
+        }),
+        activityCheckConfiguration: activityCheckConfiguration.DEFAULT,
+        forceScanConfiguration: forceScanConfiguration.MINIMAL,
+        monitoringEnabled: monitoringEnabled.TRUE,
+        monitoringSyncInterval: monitoringSyncInterval.DEFAULT,
       }))
       .then(() => setBeaconRegions([region1, region2]))
-      .catch(error => alert('error', error));
+      .catch(error => console.log('error', error));
 
     // Beacon listeners
     DeviceEventEmitter.addListener(

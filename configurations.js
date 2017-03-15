@@ -10,15 +10,39 @@ export const scanMode = {
 export const scanPeriod = {
   RANGING: "RANGING",
   MONITORING: "MONITORING",
-  // NB: Disabled for now, see https://github.com/Artirigo/react-native-kontaktio/issues/11
-  // custom: (activePeriod = 8000, passivePeriod = 30000) => ({
-  //   activePeriod,
-  //   passivePeriod,
-  // }),
+  // Default values equal configuration MONITORING
+  create: ({ activePeriod = 8000, passivePeriod = 30000 }) => ({
+    activePeriod,
+    passivePeriod,
+  }),
 };
 
 export const activityCheckConfiguration = {
   DISABLED: "DISABLED",
   MINIMAL: "MINIMAL",
   DEFAULT: "DEFAULT",
+  // Default values equal configuration MINIMAL
+  create: ({ inactivityTimeout = 3000, checkPeriod = 1000 }) => ({
+    inactivityTimeout,
+    checkPeriod,
+  }),
+};
+
+export const forceScanConfiguration = {
+  DISABLED: "DISABLED",
+  MINIMAL: "MINIMAL",
+  // Default values equal configuration MINIMAL
+  create: ({ forceScanActivePeriod = 1000, forceScanPassivePeriod = 500 }) => ({
+    forceScanActivePeriod,
+    forceScanPassivePeriod,
+  }),
+};
+
+export const monitoringEnabled = {
+  TRUE: true,
+  FALSE: false,
+};
+
+export const monitoringSyncInterval = {
+  DEFAULT: 10, // 10 seconds
 };

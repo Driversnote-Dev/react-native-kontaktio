@@ -5,6 +5,9 @@ import {
   scanMode,
   scanPeriod,
   activityCheckConfiguration,
+  forceScanConfiguration,
+  monitoringEnabled,
+  monitoringSyncInterval,
 } from './configurations';
 
 // If the native module (i.e. Java module) is prefixed with "RCT", 
@@ -47,6 +50,9 @@ export default Kontakt = {
   scanMode,
   scanPeriod,
   activityCheckConfiguration,
+  forceScanConfiguration,
+  monitoringEnabled,
+  monitoringSyncInterval,
 };
 
 export {
@@ -69,4 +75,7 @@ export {
   scanMode,
   scanPeriod,
   activityCheckConfiguration,
+  forceScanConfiguration,
+  monitoringEnabled,
+  monitoringSyncInterval,
 }
