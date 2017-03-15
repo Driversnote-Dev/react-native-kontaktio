@@ -2,15 +2,13 @@
 
 React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons.
 
-Only work on **Android** for now. **iOS** version is in development and will be added soon.
+Only works on **Android** for now. **iOS** version is in development and will be added soon.
 
 Implements version **3.2.3.** of the [Kontakt.io SDK](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/).
 
-You have to be in possession of Kontakt.io beacons, configure them via their management console and have your api-key handy.
+#### Why should I use this module and not a generic beacon package?
 
-##### Why should I use this module and not a generic beacon package?
-
-If you use have beacons from Kontakt.io at your disposal, with each scan you get additional features, like the unique id which is printed on the back of each beacon or the battery power (`batteryPower`), which is also synchronized with your Kontakt.io online panel. Besides, beacons from other manufacturers can also be ranged nevertheless, just without that extra information.
+If you use this module with Kontakt.io beacons, you get additional information with each scan, like the unique id which is printed on the back of each beacon or the current battery level (`batteryPower`), which is also synchronized with your Kontakt.io online panel. Besides, beacons from other manufacturers can also be ranged nevertheless, just without that extra information.
 
 ## Run Example to test the module
 
@@ -24,7 +22,7 @@ If you use have beacons from Kontakt.io at your disposal, with each scan you get
 	$ npm start
 	```
 	
-3. Build the example and run it on your android device:
+3. Build the example and run it on your android device. The app will appear under the name `KontaktIoSimpleTest`:
 
 	```bash
 	$ react-native run-android
@@ -233,8 +231,7 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 | **regionDidEnter**         | Sends `{ region }`, the beacon region which was just entered (i.e. at least one beacon of that region was detected). `region` has the form as described above |
 | **regionDidExit**          | Sends `{ region }`, the beacon region which was just lost (i.e. the last remaining beacon of that region was not anymore in range and the time for keeping the beacon in the internal cache ran out as set with `activeCheckConfiguration`, i.e. never removed from cache with `DISABLED`, `3` seconds with `MINIMAL` and `10` seconds with `DEFAULT`). `region` has the form as described above |
 | **scanStatus**             | Sends `{ status }` where `status` is either `START`, `STOP` or `ERROR` depending on whether the scan for beacons started, stopped or a sudden error occurred while scanning |
-| **monitoringCycle**        | Sends `{ status }` where `status` is either `START` `STOP` depending on whether a scan cycle just started or stopped. The active period of a monitoring scan cycle is 8 seconds, the inactive (passive) period is 30 seconds long. 
-Attention: Only sends events if `scanMode` is set to `MONITORING` |
+| **monitoringCycle**        | Sends `{ status }` where `status` is either `START` `STOP` depending on whether a scan cycle just started or stopped. The active period of a monitoring scan cycle is 8 seconds, the inactive (passive) period is 30 seconds long. Attention: Only sends events if `scanMode` is set to `MONITORING` |
 
 ### Methods
 
@@ -242,7 +239,7 @@ Attention: Only sends events if `scanMode` is set to `MONITORING` |
 
 * All methods may be imported globally (i.e. `import Kontakt from 'react-native-kontaktio`) or one-by-one (i.e. `import { init, startScanning } from 'react-native-kontaktio`).
 * All methods return a **Promise** which returns an error statement in case something went wrong. Care was taken to include useful error messages.
-* The best way to explore the usage of these methods is to take a look at the example in *Example/src/Example.js*.
+* The best way to explore the usage of these methods is to take a look at the example in [Example/src/Example.js](/Example/src/Example.js).
 
 #### Method overview
 
@@ -251,7 +248,7 @@ Attention: Only sends events if `scanMode` is set to `MONITORING` |
 | **init('KontaktAPIKey', [IBEACON, EDDYSTONE])** | (*mandatory*) Initialize scanning for beacons. The first argument is your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but if you e.g. want the battery level of a beacon to be sent to your Konakt.io web panel in regular intervals (every 10 seconds). The second argument is an array of the beacon types you want to scan for. Two options are possible, the provided constants `IBEACON` or `EDDYSTONE`. The default call `init()`  |
 | **configure({ ... })**          | (*optional*) Configure scanning with the configuration options described below |
 | **setBeaconRegion(region)**      | (*optional*) Only beacons which fall into the provided `region` will be scanned and returned with the events described above. |
-| **setBeaconRegions([region1, region2, ... ])**     | (*optional*) Only beacons which fall into one of the provided regions in the array `regions` will be scanned and returned with the events described above. |
+| **setBeaconRegions([region1, region2, ... ])**     | (*optional*) Only beacons which fall into one of the provided regions in the array `regions` will be scanned and returned with the events described above. *Note*: In case you want to dynamically add or remove regions after scanning started you have call `restartScanning` right after `setBeaconRegions` for the change of regions to take effect. That is, first call `setBeaconRegions` with the changed array of regions (i.e. with the additional region you want to add or without the region you want to remove) and then call `restartScanning` right thereafter. |
 | **startScanning**        | starts scanning of beacons with given configuration and provided regions |
 | **stopScanning**         | stops scanning for all provided regions |
 | **restartScanning**      | stops and starts scanning again. In case device was not scanning before, scanning is just started. |
@@ -260,13 +257,13 @@ Attention: Only sends events if `scanMode` is set to `MONITORING` |
 
 ### Configuration
 
-A config object can be passed with the following options (see [](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about all possible configurations). When using the first time, you don't have to pass any configuration and can safely use the default values:
+A config object can be passed with the following options (see the [Kontakt.io quickstart guide](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about the possible configurations). Currently not all configurations are available here but will be in the near future:
 
 | Configuration              | Description                       |
 |:---------------------------|:----------------------------------|
 | **scanMode**        | Possible values: `scanMode.LOW_POWER`, `scanMode.BALANCED` or `scanMode.LOW_LATENCY`. Tipp: `BALANCED` is the default value and mostly the best compromise between battery demand on the device and signal quality. Use `LOW_LATENCY` only when running the app in the foreground. |
 | **scanPeriod**     | Possible values: `scanPeriod.RANGING` or `scanPeriod.MONITORING`. `RANGING` scans beacons all the time, `MONITORING` operates in scan-cycles; it scans for **8** seconds, then pauses scanning for **30** seconds, then scans for **8** seconds again and so forth. |
-| **activeCheckConfiguration**       | Possible values: `activeCheckConfiguration.DISABLED`, `activeCheckConfiguration.MINIMAL` or `activeCheckConfiguration.DEFAULT`. It sets the time it takes the device to "forget" a formerly scanned beacon when it can't detect it anymore. Once successfully scanned beacons remain in the internal cache and are never removed from the cache (`DISABLED`), removed after not scanning them for `3` seconds (`MINIMAL`) or after `10` seconds (`DEFAULT`) |
+| **activeCheckConfiguration**       | Possible values: `activeCheckConfiguration.DISABLED`, `activeCheckConfiguration.MINIMAL` or `activeCheckConfiguration.DEFAULT`. It sets the time it takes the device to "forget" a formerly scanned beacon when it can't detect it anymore. Once successfully scanned beacons remain in the internal cache and are never removed from the cache (`DISABLED`), removed after not scanning them for `3` seconds (`MINIMAL`) or after `10` seconds (`DEFAULT`). These are the official numbers used in the Kontakt.io SDK documentation. However I found that in each configuration it takes a bit longer than that until the beacons are really removed from the cache. |
 
 ### Constants
 
@@ -287,7 +284,7 @@ The other two constants are the two different beacon types.
 
 * Beacons support Android versions 4.3 and up.
 	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
-* A physical device has to be used for testing
+* A physical device must be used for testing, at best you have some Kontakt.io beacons at your disposal, configure them via their management console and have your API-key handy.
 
 ## Coming soon:
 
