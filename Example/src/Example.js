@@ -44,6 +44,14 @@ const region2 = {
  * color-coded by minors with values 1 through 5.
  *
  * Just change the values in the regions to work with your beacons.
+ * Then press `Start scanning` and you should very soon see your beacons
+ * in a ScrollView sorted by their 'accuracy' which reflects a measure of
+ * distance from the beacons to your mobile phone in meters.
+ *
+ * This example makes use of regions to limit scanning to beacons
+ * belonging to one of these two regions.
+ * Of course regions can also be used to separately process the data later.
+ * Such logic may be built inside the listeners.
  *
  * Press `Start scanning` and you should very soon see your beacons in a ScrollView
  * sorted by their RSSI which reflects a measure of distance from the beacons
@@ -56,6 +64,7 @@ export default class IBeaconExample extends Component {
   };
 
   componentDidMount() {
+    // Initialization, configuration and adding of beacon regions
     init(
       'MY_KONTAKTIO_API_KEY',
       [IBEACON],
@@ -68,12 +77,12 @@ export default class IBeaconExample extends Component {
       .then(() => setBeaconRegions([region1, region2]))
       .catch(error => alert('error', error));
 
-    // Add beacon listeners
-
+    // Beacon listeners
     DeviceEventEmitter.addListener(
       'beaconDidAppear',
       ({ beacon: newBeacon, region }) => {
         console.log('beaconDidAppear', newBeacon, region);
+
         this.setState({
           beacons: this.state.beacons.concat(newBeacon)
         });
@@ -83,14 +92,18 @@ export default class IBeaconExample extends Component {
       'beaconDidDisappear',
       ({ beacon: lostBeacon, region }) => {
         console.log('beaconDidDisappear', lostBeacon, region);
+
         const { beacons } = this.state;
         const index = beacons.findIndex(beacon =>
           this._isIdenticalBeacon(lostBeacon, beacon)
         );
         this.setState({
-          beacons: beacons.reduce((result, val, ind) =>
-            ind === index ? result : result.push(val), []
-          )
+          beacons: beacons.reduce((result, val, ind) => {
+            // don't add disappeared beacon to array
+            if (ind === index) return result;
+            // add all other beacons to array
+            else return result.push(val);
+          }, [])
         });
       }
     );
@@ -98,22 +111,24 @@ export default class IBeaconExample extends Component {
       'beaconsDidUpdate',
       ({ beacons: updatedBeacons, region }) => {
         console.log('beaconsDidUpdate', updatedBeacons, region);
+
         const { beacons } = this.state;
         updatedBeacons.forEach(updatedBeacon => {
           const index = beacons.findIndex(beacon =>
             this._isIdenticalBeacon(updatedBeacon, beacon)
           );
           this.setState({
-            beacons: beacons.reduce((result, val, ind) =>
-              ind === index ? result.push(updatedBeacon) : result.push(val), []
-            )
+            beacons: beacons.reduce((result, val, ind) => {
+              // replace current beacon values for updatedBeacon, keep current value for others
+              ind === index ? result.push(updatedBeacon) : result.push(val);
+              return result;
+            }, [])
           })
         });
       }
     );
 
-    // Add region listeners
-
+    // Region listeners
     DeviceEventEmitter.addListener(
       'regionDidEnter',
       ({ region }) => {
@@ -127,7 +142,7 @@ export default class IBeaconExample extends Component {
       }
     );
 
-    // Add beacon monitoring listener
+    // Beacon monitoring listener
     DeviceEventEmitter.addListener(
       'monitoringCycle',
       ({ status }) => {
@@ -161,6 +176,9 @@ export default class IBeaconExample extends Component {
       .catch(error => console.log('[restartScanning]', error));
   };
 
+  /**
+   * Helper function used to identify equal beacons
+   */
   _isIdenticalBeacon = (b1, b2) => (
     (b1.identifier === b2.identifier) &&
     (b1.uuid === b2.uuid) &&
@@ -171,13 +189,13 @@ export default class IBeaconExample extends Component {
   _renderBeacons = () => {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
 
-    return this.state.beacons.sort((a, b) => (-1 * (a.rssi - b.rssi))).map((beacon, ind) => (
+    return this.state.beacons.sort((a, b) => a.accuracy - b.accuracy).map((beacon, ind) => (
       <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
         <Text style={{fontWeight: 'bold'}}>{beacon.uniqueId}</Text>
         <Text>Major: {beacon.major}, Minor: {beacon.minor}</Text>
         <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
         <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
-        <Text>FirmwareVersion: {beacon.firmwareVersion}, Address: {beacon.uniqueID}</Text>
+        <Text>FirmwareVersion: {beacon.firmwareVersion}, Address: {beacon.uniqueId}</Text>
       </View>
     ), this);
   };
@@ -185,7 +203,7 @@ export default class IBeaconExample extends Component {
   _renderEmpty = () => {
     const { scanning, beacons } = this.state;
     let text;
-    if (!scanning) text = "Start scanning to listen to beacon signals!";
+    if (!scanning) text = "Start scanning to listen for beacon signals!";
     if (scanning && !beacons.length) text = "No beacons detected yet...";
     return (
       <View style={styles.textContainer}>
