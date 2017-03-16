@@ -113,9 +113,9 @@ After the update the manual setup should should be easier when using `react-nati
 
 This is a minimal example with the default configuration and no specifically set regions. Thus, the default region `everywhere` (i.e. all beacons) is used.
 
-Please take a look at *Example/src/Example.js* for an bigger usage example including configuration settings and multiple regions.
+Please take a look at [Example/src/Example.js](/Example/src/Example.js) for an bigger usage example including configuration settings and multiple regions.
 
-*Example/src/MinimalExample.js*
+[Example/src/MinimalExample.js](/Example/src/MinimalExample.js):
 
 ```js
 import React, { Component } from 'react';
@@ -123,16 +123,12 @@ import { View, DeviceEventEmitter } from 'react-native';
 
 import { init, startScanning } from 'react-native-kontaktio';
 
-/**
- * Minimal example of react-native-kontaktio
- */
 export default class MinimalExample extends Component {
   componentDidMount() {
     init()
       .then(() => startScanning())
-      .catch(error => alert('error', error));
+      .catch(error => console.log('error', error));
 
-    // Add beacon listeners
     DeviceEventEmitter.addListener(
       'beaconsDidUpdate',
       ({ beacons, region }) => {
@@ -264,7 +260,12 @@ A config object can be passed with the following options (see the [Kontakt.io qu
 |:---------------------------|:----------------------------------|
 | **scanMode**        | Possible values: `scanMode.LOW_POWER`, `scanMode.BALANCED` or `scanMode.LOW_LATENCY`. Tipp: `BALANCED` is the default value and mostly the best compromise between battery demand on the device and signal quality. Use `LOW_LATENCY` only when running the app in the foreground. |
 | **scanPeriod**     | Possible values: `scanPeriod.RANGING` or `scanPeriod.MONITORING`. `RANGING` scans beacons all the time, `MONITORING` operates in scan-cycles; it scans for **8** seconds, then pauses scanning for **30** seconds, then scans for **8** seconds again and so forth. |
-| **activeCheckConfiguration**       | Possible values: `activeCheckConfiguration.DISABLED`, `activeCheckConfiguration.MINIMAL` or `activeCheckConfiguration.DEFAULT`. It sets the time it takes the device to "forget" a formerly scanned beacon when it can't detect it anymore. Once successfully scanned beacons remain in the internal cache and are never removed from the cache (`DISABLED`), removed after not scanning them for `3` seconds (`MINIMAL`) or after `10` seconds (`DEFAULT`). These are the official numbers used in the Kontakt.io SDK documentation. However I found that in each configuration it takes a bit longer than that until the beacons are really removed from the cache. |
+| **activeCheckConfiguration**       | Possible values: `activeCheckConfiguration.DISABLED`, `activeCheckConfiguration.MINIMAL` or `activeCheckConfiguration.DEFAULT`. It sets the time it takes the device to "forget" a formerly scanned beacon when it can't detect it anymore. Once successfully scanned beacons remain in the internal cache and are never removed from the cache (`DISABLED`), removed after not scanning them for `3` seconds (`MINIMAL`) or after `10` seconds (`DEFAULT`). |
+| **forceScanConfiguration**        | Possible values: `forceScanConfiguration.DISABLED` or `forceScanConfiguration.MINIMAL`. Used to circumvent buggy behavior which may be found on a few Android devices. |
+| **monitoringEnabled**        | Possible values: `monitoringEnabled.TRUE` or `monitoringEnabled.FALSE`. Attention: This is not the same "monitoring" as the **scanPeriod** with the same name. This is to set whether some data (e.g. the battery power shell be sent to the Kontakt.io web panel. |
+| **monitoringSyncInterval**        | Possible values: `monitoringSyncInterval.DEFAULT` (which is equal to `10` seconds. Any other integer may be used. Denotes the time interval in which data is sent to the Kontakt.io web panel (as described at point **monitoringEnabled**. |
+
+Next to these values, **scanPeriod**, **activityCheckConfiguration** and **forceScanConfiguration** can also be set individually with `create` functions you can find in [configurations.js](/configurations.js). Please refer to the [Kontakt.io SDK Javadoc](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/) for more information about the parameters.
 
 ### Constants
 
