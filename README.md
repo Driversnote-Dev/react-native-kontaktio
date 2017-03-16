@@ -254,7 +254,7 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 
 ### Configuration
 
-A config object can be passed with the following options (see the [Kontakt.io quickstart guide](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about the possible configurations). Currently not all configurations are available here but will be in the near future:
+A config object can be passed with the following options (see the [Kontakt.io quickstart guide](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about the possible configurations):
 
 | Configuration              | Description                       |
 |:---------------------------|:----------------------------------|
