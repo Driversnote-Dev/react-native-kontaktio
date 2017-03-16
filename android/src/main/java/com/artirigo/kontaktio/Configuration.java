@@ -33,7 +33,7 @@ class Configuration {
         this.scanMode = ScanMode.BALANCED;
         this.scanPeriod = ScanPeriod.RANGING;
         this.activityCheckConfiguration = ActivityCheckConfiguration.DEFAULT;
-        this.forceScanConfiguration = new ForceScanConfiguration(5000, 1000);
+        this.forceScanConfiguration = ForceScanConfiguration.MINIMAL;
         this.deviceUpdateCallbackInterval = ScanContext.DEFAULT_DEVICES_UPDATE_CALLBACK_INTERVAL; // 3000 ms
         this.monitoringEnabled = ScanContext.DEFAULT_MONITORING_ENABLED; // true
         this.monitoringSyncInterval = ScanContext.DEFAULT_MONITORING_SYNC_INTERVAL; // 10 sec
