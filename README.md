@@ -258,14 +258,30 @@ A config object can be passed with the following options (see the [Kontakt.io qu
 
 | Configuration              | Description                       |
 |:---------------------------|:----------------------------------|
-| **scanMode**        | Possible values: `scanMode.LOW_POWER`, `scanMode.BALANCED` or `scanMode.LOW_LATENCY`. Tipp: `BALANCED` is the default value and mostly the best compromise between battery demand on the device and signal quality. Use `LOW_LATENCY` only when running the app in the foreground. |
-| **scanPeriod**     | Possible values: `scanPeriod.RANGING` or `scanPeriod.MONITORING`. `RANGING` scans beacons all the time, `MONITORING` operates in scan-cycles; it scans for **8** seconds, then pauses scanning for **30** seconds, then scans for **8** seconds again and so forth. |
-| **activeCheckConfiguration**       | Possible values: `activeCheckConfiguration.DISABLED`, `activeCheckConfiguration.MINIMAL` or `activeCheckConfiguration.DEFAULT`. It sets the time it takes the device to "forget" a formerly scanned beacon when it can't detect it anymore. Once successfully scanned beacons remain in the internal cache and are never removed from the cache (`DISABLED`), removed after not scanning them for `3` seconds (`MINIMAL`) or after `10` seconds (`DEFAULT`). |
-| **forceScanConfiguration**        | Possible values: `forceScanConfiguration.DISABLED` or `forceScanConfiguration.MINIMAL`. Used to circumvent buggy behavior which may be found on a few Android devices. |
-| **monitoringEnabled**        | Possible values: `monitoringEnabled.TRUE` or `monitoringEnabled.FALSE`. Attention: This is not the same "monitoring" as the **scanPeriod** with the same name. This is to set whether some data (e.g. the battery power shell be sent to the Kontakt.io web panel. |
-| **monitoringSyncInterval**        | Possible values: `monitoringSyncInterval.DEFAULT` (which is equal to `10` seconds. Any other integer may be used. Denotes the time interval in which data is sent to the Kontakt.io web panel (as described at point **monitoringEnabled**. |
+| **scanMode**        | Possible values: `scanMode.LOW_POWER`, `scanMode.BALANCED` or `scanMode.LOW_LATENCY`. <br> Tipp: `BALANCED` is the default value and mostly the best trade-off between scan frequency (i.e. signal quality) and power consumption. Use `LOW_LATENCY` only when running the app in the foreground. |
+| **scanPeriod**     | Possible values: `scanPeriod.RANGING`, `scanPeriod.MONITORING` or `create({ activePeriod: Integer (time in ms), passivePeriod: Integer (time in ms) })`. <br> `RANGING` scans beacons all the time, `MONITORING` operates in scan-cycles; it scans for **8** seconds, then pauses scanning for **30** seconds, then scans for **8** seconds again and so forth. |
+| **activityCheckConfiguration**       | Possible values: `activityCheckConfiguration.DISABLED`, `activityCheckConfiguration.MINIMAL`, `activityCheckConfiguration.DEFAULT` or `create({ inactivityTimeout: Integer (time in ms), checkPeriod: Integer (time in ms) })`. <br> It sets the time the device should wait until it "forgets" a formerly scanned beacon when it can't detect it anymore (`inactivityTimeout`) and the time period it searches for inactive beacons (`checkPeriod`). I didn't play around with the latter value a lot. <br> The `inactivityTimeout` has the following logic: Once a beacon was successfully scanned it remains in the internal cache and is never removed from there (`DISABLED`), removed after not being detected for `3` seconds (`MINIMAL`) or not for `10` seconds (`DEFAULT`). |
+| **forceScanConfiguration**        | Possible values: `forceScanConfiguration.DISABLED`, `forceScanConfiguration.MINIMAL` or `create({ forceScanActivePeriod: Integer (time in ms), forceScanPassivePeriod: Integer (time in ms) })`. <br> Used to circumvent some buggy behavior which may be found on a few Android devices. |
+| **monitoringEnabled**        | Possible values: `monitoringEnabled.TRUE` or `monitoringEnabled.FALSE`. <br> Attention: This is not the same "monitoring" as the **scanPeriod** with the same name. This is to set whether some data (e.g. the battery power shell be sent to the Kontakt.io web panel. |
+| **monitoringSyncInterval**        | Possible values: `monitoringSyncInterval.DEFAULT` (which is equal to `10` seconds or any other integer value. <br> Denotes the time interval in which data is sent to the Kontakt.io web panel (as described at point **monitoringEnabled**. |
 
-Next to these values, **scanPeriod**, **activityCheckConfiguration** and **forceScanConfiguration** can also be set individually with `create` functions you can find in [configurations.js](/configurations.js). Please refer to the [Kontakt.io SDK Javadoc](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/) for more information about the parameters.
+**Attention**: When changing configurations after starting scanning, you have to call the method `restartScanning` for the new configurations to take effect.
+
+#### Default values
+
+When just calling `init()` without the object of parameters, the following default values are used:
+	
+```js
+{
+  scanMode: scanMode.BALANCED,
+  scanPeriod: scanPeriod.RANGING, // activePeriod = 60000ms, passivePeriod = 0ms
+  activeCheckConfiguration: activeCheckConfiguration.DEFAULT,
+  forceScanConfiguration: forceScanConfiguration.MINIMAL, // forceScanActivePeriod = 1000ms, forceScanPassivePeriod = 500ms
+  deviceUpdateCallbackInterval: deviceUpdateCallbackInterval.DEFAULT // 3000ms,
+  monitoringEnabled: monitoringEnabled.TRUE,
+  monitoringSyncInterval: monitoringSyncInterval.DEFAULT, // 10sec,
+}
+```
 
 ### Constants
 
