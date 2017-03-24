@@ -33,7 +33,7 @@ public class ScanManager {
                 proximityManager.stopScanning();
                 promise.resolve(null);
             } else {
-                promise.reject(Constants.ERROR, "Can't stop scanning because device is currently not scanning.");
+                throw new Exception("Cannot stop scanning because device is currently not scanning.");
             }
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
@@ -44,12 +44,11 @@ public class ScanManager {
         try {
             if (proximityManager.isScanning()) {
                 proximityManager.restartScanning();
-                promise.resolve(null);
             } else {
                 // start scanning if device is not scanning already
                 proximityManager.startScanning();
-//                promise.reject(Constants.ERROR, "Can't restart scanning because device is currently not scanning.");
             }
+            promise.resolve(null);
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
         }
