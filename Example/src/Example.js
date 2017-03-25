@@ -111,7 +111,10 @@ export default class IBeaconExample extends Component {
             // don't add disappeared beacon to array
             if (ind === index) return result;
             // add all other beacons to array
-            else return result.push(val);
+            else {
+              result.push(val);
+              return result;
+            }
           }, [])
         });
       }
@@ -180,7 +183,7 @@ export default class IBeaconExample extends Component {
   };
   _restartScanning = () => {
     restartScanning()
-      .then(() => this.setState({ scanning: true }))
+      .then(() => this.setState({ scanning: true, beacons: [] }))
       .then(() => console.log('restarted scanning'))
       .catch(error => console.log('[restartScanning]', error));
   };
