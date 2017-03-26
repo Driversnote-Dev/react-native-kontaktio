@@ -66,7 +66,7 @@ export default class IBeaconExample extends Component {
   state = {
     scanning: false,
     beacons: [],
-    statusText: '',
+    statusText: null,
   };
 
   componentDidMount() {
@@ -174,32 +174,36 @@ export default class IBeaconExample extends Component {
 
   _startScanning = () => {
     startScanning()
-      .then(() => this.setState({ scanning: true, statusRequest: false }))
+      .then(() => this.setState({ scanning: true, statusText: null }))
       .then(() => console.log('started scanning'))
       .catch(error => console.log('[startScanning]', error));
   };
   _stopScanning = () => {
     stopScanning()
-      .then(() => this.setState({ scanning: false, beacons: [], statusRequest: false }))
+      .then(() => this.setState({ scanning: false, beacons: [], statusText: null }))
       .then(() => console.log('stopped scanning'))
       .catch(error => console.log('[stopScanning]', error));
   };
   _restartScanning = () => {
     restartScanning()
-      .then(() => this.setState({ scanning: true, beacons: [], statusRequest: false }))
+      .then(() => this.setState({ scanning: true, beacons: [], statusText: null }))
       .then(() => console.log('restarted scanning'))
       .catch(error => console.log('[restartScanning]', error));
   };
   _isScanning = () => {
     isScanning()
-      .then(result => console.log('Is device scanning?', result))
-      .then(() => this.setState({ statusText: 'Device is currently scanning!' }))
+      .then(result => {
+        this.setState({ statusText: `Device is currently ${result ? '' : 'NOT '}scanning.` });
+        console.log('Is device scanning?', result);
+      })
       .catch(error => console.log('[isScanning]', error));
   };
   _isConnected = () => {
     isConnected()
-      .then(result => console.log('Is device connected?', result))
-      .then(() => this.setState({ statusText: 'Device is ready to scan beacons!' }))
+      .then(result => {
+        this.setState({ statusText: `Device is ${result ? '' : 'NOT '}ready to scan beacons.` });
+        console.log('Is device connected?', result);
+      })
       .catch(error => console.log('[isConnected]', error));
   };
 
@@ -239,6 +243,15 @@ export default class IBeaconExample extends Component {
     );
   };
 
+  _renderStatusText = () => {
+    const { statusText } = this.state;
+    return statusText ? (
+      <View style={styles.textContainer}>
+        <Text style={[styles.text, { color: 'red' }]}>{statusText}</Text>
+      </View>
+    ) : null;
+  };
+
   _renderButton = (text, onPress, backgroundColor) => (
     <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress}>
       <Text>{text}</Text>
@@ -246,7 +259,7 @@ export default class IBeaconExample extends Component {
   );
 
   render() {
-    const { scanning, beacons } = this.state;
+    const { scanning, beacons, statusText } = this.state;
 
     return (
       <View style={styles.container}>
@@ -259,6 +272,7 @@ export default class IBeaconExample extends Component {
           {this._renderButton('Is scanning?', this._isScanning, '#f2a2a2')}
           {this._renderButton('Is connected?', this._isConnected, '#f2a2a2')}
         </View>
+        {this._renderStatusText()}
         <ScrollView>
           {scanning && beacons.length ? this._renderBeacons() : this._renderEmpty()}
         </ScrollView>
