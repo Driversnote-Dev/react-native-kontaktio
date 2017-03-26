@@ -12,9 +12,11 @@ import {
   init,
   configure,
   disconnect,
+  isConnected,
   startScanning,
   stopScanning,
   restartScanning,
+  isScanning,
   // setBeaconRegion,
   setBeaconRegions,
   IBEACON,
@@ -64,6 +66,7 @@ export default class IBeaconExample extends Component {
   state = {
     scanning: false,
     beacons: [],
+    statusText: '',
   };
 
   componentDidMount() {
@@ -171,21 +174,33 @@ export default class IBeaconExample extends Component {
 
   _startScanning = () => {
     startScanning()
-      .then(() => this.setState({ scanning: true }))
+      .then(() => this.setState({ scanning: true, statusRequest: false }))
       .then(() => console.log('started scanning'))
       .catch(error => console.log('[startScanning]', error));
   };
   _stopScanning = () => {
     stopScanning()
-      .then(() => this.setState({ scanning: false, beacons: [] }))
+      .then(() => this.setState({ scanning: false, beacons: [], statusRequest: false }))
       .then(() => console.log('stopped scanning'))
       .catch(error => console.log('[stopScanning]', error));
   };
   _restartScanning = () => {
     restartScanning()
-      .then(() => this.setState({ scanning: true, beacons: [] }))
+      .then(() => this.setState({ scanning: true, beacons: [], statusRequest: false }))
       .then(() => console.log('restarted scanning'))
       .catch(error => console.log('[restartScanning]', error));
+  };
+  _isScanning = () => {
+    isScanning()
+      .then(result => console.log('Is device scanning?', result))
+      .then(() => this.setState({ statusText: 'Device is currently scanning!' }))
+      .catch(error => console.log('[isScanning]', error));
+  };
+  _isConnected = () => {
+    isConnected()
+      .then(result => console.log('Is device connected?', result))
+      .then(() => this.setState({ statusText: 'Device is ready to scan beacons!' }))
+      .catch(error => console.log('[isConnected]', error));
   };
 
   /**
@@ -224,8 +239,8 @@ export default class IBeaconExample extends Component {
     );
   };
 
-  _renderButton = (text, onPress) => (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+  _renderButton = (text, onPress, backgroundColor) => (
+    <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress}>
       <Text>{text}</Text>
     </TouchableOpacity>
   );
@@ -236,11 +251,14 @@ export default class IBeaconExample extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          {this._renderButton('Start scan', this._startScanning)}
-          {this._renderButton('Stop scan', this._stopScanning)}
-          {this._renderButton('Restart scan', this._restartScanning)}
+          {this._renderButton('Start scan', this._startScanning, '#84e2f9')}
+          {this._renderButton('Stop scan', this._stopScanning, '#84e2f9')}
+          {this._renderButton('Restart scan', this._restartScanning, '#84e2f9')}
         </View>
-
+        <View style={styles.buttonContainer}>
+          {this._renderButton('Is scanning?', this._isScanning, '#f2a2a2')}
+          {this._renderButton('Is connected?', this._isConnected, '#f2a2a2')}
+        </View>
         <ScrollView>
           {scanning && beacons.length ? this._renderBeacons() : this._renderEmpty()}
         </ScrollView>
@@ -266,14 +284,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   button: {
     padding: 10,
-    backgroundColor: '#84e2f9',
     borderRadius: 10,
   },
 });
