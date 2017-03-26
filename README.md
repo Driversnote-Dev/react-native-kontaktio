@@ -246,12 +246,12 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 | **configure({ ... })**          | (*optional*) Configure scanning with the configuration options described below |
 | **setBeaconRegion(region)**      | (*optional*) Only beacons which fall into the provided `region` will be scanned and returned with the events described above. |
 | **setBeaconRegions([region1, region2, ... ])**     | (*optional*) Only beacons which fall into one of the provided regions in the array `regions` will be scanned and returned with the events described above. *Note*: In case you want to dynamically add or remove regions after scanning started you have call `restartScanning` right after `setBeaconRegions` for the change of regions to take effect. That is, first call `setBeaconRegions` with the changed array of regions (i.e. with the additional region you want to add or without the region you want to remove) and then call `restartScanning` right thereafter. |
-| **startScanning**        | starts scanning of beacons with given configuration and provided regions |
+| **startScanning**        | starts scanning of beacons with given configuration and provided regions. At the first call it connects the set regions and configurations which is a prerequisite for scanning |
 | **stopScanning**         | stops scanning for all provided regions |
 | **restartScanning**      | stops and starts scanning again. In case device was not scanning before, scanning is just started. |
-| **isScanning**      | *true* if scanning is currently in progress. |
+| **isScanning**      | fulfills the Promise with *true* if scanning is currently in progress. |
 | **disconnect**           | disconnect the Kontakt.io beacon scanner and set it to `null` |
-| **isConnected**           | *true* if `init` was successful and module is ready to scan (i.e. call `startScanning`. |
+| **isConnected**           | fulfills the Promise with *true* if device is ready to scan (i.e. if `startScanning` or `restartScanning` was called at least once. |
 
 
 ### Configuration

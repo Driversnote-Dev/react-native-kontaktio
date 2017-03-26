@@ -15,12 +15,17 @@ public class ScanManager {
 
     void startScanning(Promise promise) {
         try {
-            proximityManager.connect(new OnServiceReadyListener() {
-                @Override
-                public void onServiceReady() {
-                    proximityManager.startScanning();
-                }
-            });
+            if (proximityManager.isConnected()) {
+                proximityManager.startScanning();
+            } else {
+                // connect if not connected yet
+                proximityManager.connect(new OnServiceReadyListener() {
+                    @Override
+                    public void onServiceReady() {
+                        proximityManager.startScanning();
+                    }
+                });
+            }
             promise.resolve(null);
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
@@ -46,7 +51,16 @@ public class ScanManager {
                 proximityManager.restartScanning();
             } else {
                 // start scanning if device is not scanning already
-                proximityManager.startScanning();
+                if (proximityManager.isConnected()) {
+                    proximityManager.startScanning();
+                } else {
+                    proximityManager.connect(new OnServiceReadyListener() {
+                        @Override
+                        public void onServiceReady() {
+                            proximityManager.startScanning();
+                        }
+                    });
+                }
             }
             promise.resolve(null);
         } catch (Exception e) {
