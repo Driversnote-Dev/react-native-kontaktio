@@ -249,7 +249,9 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 | **startScanning**        | starts scanning of beacons with given configuration and provided regions |
 | **stopScanning**         | stops scanning for all provided regions |
 | **restartScanning**      | stops and starts scanning again. In case device was not scanning before, scanning is just started. |
+| **isScanning**      | *true* if scanning is currently in progress. |
 | **disconnect**           | disconnect the Kontakt.io beacon scanner and set it to `null` |
+| **isConnected**           | *true* if `init` was successful and module is ready to scan (i.e. call `startScanning`. |
 
 
 ### Configuration

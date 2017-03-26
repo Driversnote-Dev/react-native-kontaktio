@@ -53,4 +53,13 @@ public class ScanManager {
             promise.reject(Constants.EXCEPTION, e);
         }
     }
+
+    void isScanning(Promise promise) {
+        try {
+            boolean isScanning = proximityManager.isScanning();
+            promise.resolve(isScanning);
+        } catch (Exception e) {
+            promise.reject(Constants.EXCEPTION, e);
+        }
+    }
 }
