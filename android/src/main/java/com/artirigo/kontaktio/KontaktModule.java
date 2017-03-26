@@ -100,6 +100,10 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     public void disconnect(Promise promise) {
         beaconProximityManager.disconnect(promise);
     }
+    @ReactMethod
+    public void isConnected(Promise promise) {
+        beaconProximityManager.isConnected(promise);
+    }
 
     // From ScanManager
     @ReactMethod
@@ -113,6 +117,10 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void restartScanning(Promise promise) {
         scanManager.restartScanning(promise);
+    }
+    @ReactMethod
+    public void isScanning(Promise promise) {
+        scanManager.isScanning(promise);
     }
 
     // From Configuration

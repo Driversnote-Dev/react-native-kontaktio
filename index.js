@@ -21,7 +21,9 @@ const configure = KontaktModule.configure;
 const startScanning = KontaktModule.startScanning;
 const stopScanning = KontaktModule.stopScanning;
 const restartScanning = KontaktModule.restartScanning;
+const isScanning = KontaktModule.isScanning;
 const disconnect = KontaktModule.disconnect;
+const isConnected = KontaktModule.isConnected;
 const setBeaconRegion = (region = null) => KontaktModule.setBeaconRegion(region);
 const setBeaconRegions = (regionsArray = null) => KontaktModule.setBeaconRegions(regionsArray);
 
@@ -34,9 +36,11 @@ export default Kontakt = {
   init,
   configure,
   disconnect,
+  isConnected,
   startScanning,
   stopScanning,
   restartScanning,
+  isScanning,
   setBeaconRegion,
   setBeaconRegions,
   // Constants
@@ -59,9 +63,11 @@ export {
   init,
   configure,
   disconnect,
+  isConnected,
   startScanning,
   stopScanning,
   restartScanning,
+  isScanning,
   setBeaconRegion,
   setBeaconRegions,
   // Constants
