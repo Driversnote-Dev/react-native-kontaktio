@@ -113,7 +113,7 @@ After the update the manual setup should should be easier when using `react-nati
 
 This is a minimal example with the default configuration and no specifically set regions. Thus, the default region `everywhere` (i.e. all beacons) is used.
 
-Please take a look at [Example/src/Example.js](/Example/src/Example.js) for an bigger usage example including configuration settings and multiple regions.
+Please take a look at [Example/src/Example.android.js](/Example/src/Example.android.js) for an bigger usage example including configuration settings and multiple regions.
 
 [Example/src/MinimalExample.js](/Example/src/MinimalExample.js):
 
@@ -236,7 +236,7 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 
 * All methods may be imported globally (i.e. `import Kontakt from 'react-native-kontaktio`) or one-by-one (i.e. `import { init, startScanning } from 'react-native-kontaktio`).
 * All methods return a **Promise** which returns an error statement in case something went wrong. Care was taken to include useful error messages.
-* The best way to explore the usage of these methods is to take a look at the example in [Example/src/Example.js](/Example/src/Example.js).
+* The best way to explore the usage of these methods is to take a look at the example in [Example/src/Example.android.js](/Example/src/Example.android.js).
 
 #### Method overview
 

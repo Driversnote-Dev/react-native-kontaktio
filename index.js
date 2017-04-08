@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 import {
   IBEACON,
   EDDYSTONE,
@@ -17,6 +17,7 @@ const KontaktModule = NativeModules.KontaktBeacons;
 const init = (apiKey = null, beaconTypes = null) => (
   KontaktModule.init(apiKey, beaconTypes)
 );
+const initBeacons = KontaktModule.initBeacons;
 const configure = KontaktModule.configure;
 const startScanning = KontaktModule.startScanning;
 const stopScanning = KontaktModule.stopScanning;
@@ -32,8 +33,12 @@ const DEFAULT_KONTAKT_NAMESPACE_ID = KontaktModule.DEFAULT_KONTAKT_NAMESPACE_ID;
 const ANY_MINOR = KontaktModule.ANY_MINOR;
 const ANY_MAJOR = KontaktModule.ANY_MAJOR;
 
+const ANDRE_CONSTANT = KontaktModule.ANDRE_CONSTANT;
+
 export default Kontakt = {
   init,
+  KontaktModule,
+  initBeacons,
   configure,
   disconnect,
   isConnected,
@@ -50,6 +55,7 @@ export default Kontakt = {
   DEFAULT_KONTAKT_NAMESPACE_ID,
   ANY_MAJOR,
   ANY_MINOR,
+  ANDRE_CONSTANT,
   // Configurations
   scanMode,
   scanPeriod,
@@ -61,6 +67,8 @@ export default Kontakt = {
 
 export {
   init,
+  KontaktModule,
+  initBeacons,
   configure,
   disconnect,
   isConnected,
@@ -77,6 +85,7 @@ export {
   DEFAULT_KONTAKT_NAMESPACE_ID,
   ANY_MAJOR,
   ANY_MINOR,
+  ANDRE_CONSTANT,
   // Configurations
   scanMode,
   scanPeriod,
