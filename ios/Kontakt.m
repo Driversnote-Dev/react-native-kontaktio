@@ -1,6 +1,12 @@
 #import "Kontakt.h"
-#import <React/RCTLog.h>
-#import <React/RCTConvert.h>
+
+#if __has_include("RCTConvert.h")
+  #import "RCTLog.h"
+  #import "RCTConvert.h"
+#else
+  #import <React/RCTLog.h>
+  #import <React/RCTConvert.h>
+#endif
 
 @interface Kontakt() <KTKBeaconManagerDelegate>
 
