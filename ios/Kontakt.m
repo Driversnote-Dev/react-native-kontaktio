@@ -1,23 +1,21 @@
 #import "Kontakt.h"
 
 #if __has_include("RCTConvert.h")
-  #import "RCTLog.h"
   #import "RCTConvert.h"
 #else
-  #import <React/RCTLog.h>
   #import <React/RCTConvert.h>
 #endif
 
-@interface Kontakt() <KTKBeaconManagerDelegate>
-
-@property (strong, nonatomic) KTKBeaconManager *beaconManager;
-
-@end
+#if __has_include("RCTLog.h")
+  #import "RCTLog.h"
+#else
+  #import <React/RCTLog.h>
+#endif
 
 
 @implementation Kontakt
 
-RCT_EXPORT_MODULE(KontaktModule)
+RCT_EXPORT_MODULE(KontaktBeacons)
 
 - (NSDictionary *)constantsToExport
 {
