@@ -5,14 +5,14 @@ import {
   View,
   // DeviceEventEmitter,
   NativeEventEmitter,
+  NativeModules,
 } from 'react-native';
 
-import Kontakt, {
-  KontaktModule,
-  ANDRE_CONSTANT,
-} from 'react-native-kontaktio';
+import Kontakt from 'react-native-kontaktio';
 
-const kontaktEmitter = new NativeEventEmitter(KontaktModule);
+// const kontaktEmitter = new NativeEventEmitter(KontaktModule);
+
+// const kontakt = NativeModules.KontaktBeacons;
 
 export default class IBeaconExample extends Component {
   state = {
@@ -21,20 +21,22 @@ export default class IBeaconExample extends Component {
 
   componentDidMount() {
     // Initialization, configuration and adding of beacon regions
-    Kontakt.initBeacons()
-      .then(text => this.setState({ initText: text }))
-      .catch(error => this.setState({ initText: error }));
+    // Kontakt.initBeacons()
+    //   .then(text => this.setState({ initText: text }))
+    //   .catch(error => this.setState({ initText: error }));
 
-    const subscription = kontaktEmitter.addListener(
-      'didEnterRegion',
-      (region) => console.log('subscription result', region),
-    );
+    // const subscription = kontaktEmitter.addListener(
+    //   'didEnterRegion',
+    //   (region) => console.log('subscription result', region),
+    // );
 
-    console.log("andre constant", ANDRE_CONSTANT);
+    Kontakt.test();
+
+    console.log("andre constant", Kontakt.ANDRE_CONSTANT);
   }
 
   componentWillUnmount() {
-    subscription.remove();
+    // subscription.remove();
   }
 
   render() {
