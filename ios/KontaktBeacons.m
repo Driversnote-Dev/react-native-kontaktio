@@ -1,4 +1,4 @@
-#import "Kontakt.h"
+#import "KontaktBeacons.h"
 
 #if __has_include("RCTConvert.h")
   #import "RCTConvert.h"
@@ -14,18 +14,20 @@
 
 #import <KontaktSDK/KontaktSDK.h>
 
-@interface Kontakt() <KTKBeaconManagerDelegate>
+@interface KontaktBeacons() <KTKBeaconManagerDelegate>
 
 @property (strong, nonatomic) KTKBeaconManager *beaconManager;
 
 @end
 
-@implementation Kontakt
+
+@implementation KontaktBeacons
 {
     bool hasListeners;
 }
 
-RCT_EXPORT_MODULE(KontaktBeacons);
+RCT_EXPORT_MODULE()
+
 
 #pragma mark Initialization
 
@@ -33,17 +35,17 @@ RCT_EXPORT_MODULE(KontaktBeacons);
 {
     if (self = [super init]) {
         [Kontakt setAPIKey:@"yourSuperSecretAPIKey"];
-        
+
         // init of beaconManager has to happen here! I still don't understand why.. but
         // calling it later doesn't work..
         // TODO: Try separating it in two functions. 1. First init then 2. startMonitoring
         self.beaconManager = [[KTKBeaconManager alloc] initWithDelegate:self];
         NSLog(@"beacon manager is initialized!");
-        
+
         //    self.locationManager = [[CLLocationManager alloc] init];
         //    self.locationManager.delegate = self;
     }
-    
+
     return self;
 }
 
@@ -110,29 +112,29 @@ RCT_REMAP_METHOD(initBeacons,
                  initBeacons_rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
-        
+
         //    [self.beaconManager requestLocationAlwaysAuthorization];
-        
+
         // define region
         NSUUID *myProximityUUID = [[NSUUID alloc] initWithUUIDString:@"b0702880-a295-a8ab-f734-031a98a512de"];
         KTKBeaconRegion *region1 = [[KTKBeaconRegion alloc] initWithProximityUUID:myProximityUUID identifier:@"Beacon region 1"];
-        
-        
+
+
         switch ([KTKBeaconManager locationAuthorizationStatus]) {
             case kCLAuthorizationStatusNotDetermined:
                 [self.beaconManager requestLocationAlwaysAuthorization];
                 break;
-                
+
             case kCLAuthorizationStatusDenied:
             case kCLAuthorizationStatusRestricted:
                 // No access to Location Services
                 break;
-                
+
             case kCLAuthorizationStatusAuthorizedWhenInUse:
                 // For most iBeacon-based app this type of
                 // permission is not adequate
                 break;
-                
+
             case kCLAuthorizationStatusAuthorizedAlways:
                 if ([KTKBeaconManager isMonitoringAvailable]) {
                     [self.beaconManager startMonitoringForRegion:region1];
@@ -148,7 +150,7 @@ RCT_REMAP_METHOD(initBeacons,
     } @finally {
         // Nothing
     }
-    
+
 }
 
 
@@ -185,6 +187,5 @@ RCT_REMAP_METHOD(initBeacons,
     NSLog(@"Beacons: didExitRegion");
     [manager stopRangingBeaconsInRegion:region];
 }
-
 
 @end

@@ -11,6 +11,6 @@
 #endif
 
 
-@interface Kontakt : RCTEventEmitter <RCTBridgeModule>
+@interface KontaktBeacons : RCTEventEmitter <RCTBridgeModule>
 
 @end
