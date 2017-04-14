@@ -10,9 +10,7 @@ import {
 
 import Kontakt, { KontaktModule } from 'react-native-kontaktio';
 
-// const kontaktEmitter = new NativeEventEmitter(KontaktModule);
-
-// const kontakt = NativeModules.KontaktBeacons;
+const kontaktEmitter = new NativeEventEmitter(KontaktModule);
 
 export default class IBeaconExample extends Component {
   state = {
@@ -21,17 +19,17 @@ export default class IBeaconExample extends Component {
 
   componentDidMount() {
     // Initialization, configuration and adding of beacon regions
-    // Kontakt.initBeacons()
-    //   .then(text => this.setState({ initText: text }))
-    //   .catch(error => this.setState({ initText: error }));
+    KontaktModule.initBeacons()
+      .then(text => this.setState({ initText: text }))
+      .catch(error => this.setState({ initText: error }));
 
-    // const subscription = kontaktEmitter.addListener(
-    //   'didEnterRegion',
-    //   (region) => console.log('subscription result', region),
-    // );
+    const subscription = kontaktEmitter.addListener(
+      // 'didEnterRegion',
+      'EventReminder',
+      (region) => console.log('subscription result', region),
+    );
 
     Kontakt.test();
-
     console.log("andre constant", Kontakt.ANDRE_CONSTANT);
 
     /**
@@ -39,7 +37,7 @@ export default class IBeaconExample extends Component {
      */
     async function updateEvents() {
       try {
-        var events = await KontaktModule.findEvents();
+        const events = await KontaktModule.findEvents();
 
         console.log('events', events );
       } catch (e) {
@@ -52,7 +50,8 @@ export default class IBeaconExample extends Component {
   }
 
   componentWillUnmount() {
-    // subscription.remove();
+    // Don't forget to unsubscribe, typically in componentWillUnmount
+    subscription.remove();
   }
 
   render() {
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'blue',
   },
