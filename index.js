@@ -17,7 +17,7 @@ import {
 
 // If the native module (i.e. Java module) is prefixed with "RCT",
 // the NativeModules name does not include "RCT".
-const KontaktModule = NativeModules.KontaktBeacons;
+export const KontaktModule = NativeModules.KontaktBeacons;
 
 let Kontakt = {};
 

@@ -8,9 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import Kontakt from 'react-native-kontaktio';
-
-const {
+import {
   init,
   configure,
   disconnect,
@@ -30,7 +28,7 @@ const {
   forceScanConfiguration,
   monitoringEnabled,
   monitoringSyncInterval,
-} = Kontakt;
+} from 'react-native-kontaktio';
 
 const region1 = {
   identifier: 'Test beacons 1',
