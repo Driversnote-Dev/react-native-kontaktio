@@ -11,6 +11,6 @@
 #endif
 
 
-@interface Kontakt : NSObject <RCTBridgeModule>
+@interface Kontakt : RCTEventEmitter <RCTBridgeModule>
 
 @end

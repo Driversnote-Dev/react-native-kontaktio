@@ -8,7 +8,7 @@ import {
   NativeModules,
 } from 'react-native';
 
-import Kontakt from 'react-native-kontaktio';
+import Kontakt, { KontaktModule } from 'react-native-kontaktio';
 
 // const kontaktEmitter = new NativeEventEmitter(KontaktModule);
 
@@ -33,6 +33,22 @@ export default class IBeaconExample extends Component {
     Kontakt.test();
 
     console.log("andre constant", Kontakt.ANDRE_CONSTANT);
+
+    /**
+     * Test function with promise
+     */
+    async function updateEvents() {
+      try {
+        var events = await KontaktModule.findEvents();
+
+        console.log('events', events );
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    updateEvents();
+
   }
 
   componentWillUnmount() {
@@ -56,9 +72,12 @@ export default class IBeaconExample extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
+    color: 'blue',
   },
 });
