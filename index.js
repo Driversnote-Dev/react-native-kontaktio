@@ -19,17 +19,25 @@ import {
 // the NativeModules name does not include "RCT".
 export const KontaktModule = NativeModules.KontaktBeacons;
 
+/**
+ * Methods shared in android and iOS
+ */
+export const configure = KontaktModule.configure;
+export const startScanning = KontaktModule.startScanning;
+export const stopScanning = KontaktModule.stopScanning;
+export const restartScanning = KontaktModule.restartScanning;
+export const isScanning = KontaktModule.isScanning;
+
+
 let Kontakt = {};
 
+/**
+ * Android
+ */
 if (Platform.OS === "android") {
   const init = (apiKey = null, beaconTypes = null) => (
     KontaktModule.init(apiKey, beaconTypes)
   );
-  const configure = KontaktModule.configure;
-  const startScanning = KontaktModule.startScanning;
-  const stopScanning = KontaktModule.stopScanning;
-  const restartScanning = KontaktModule.restartScanning;
-  const isScanning = KontaktModule.isScanning;
   const disconnect = KontaktModule.disconnect;
   const isConnected = KontaktModule.isConnected;
   const setBeaconRegion = (region = null) => KontaktModule.setBeaconRegion(region);
@@ -72,16 +80,22 @@ if (Platform.OS === "android") {
   };
 }
 
+/**
+ * iOS
+ */
 if (Platform.OS === "ios") {
 
-  // const initBeacons = KontaktModule.initBeacons;
-  const test = KontaktModule.test;
-
-  const ANDRE_CONSTANT = KontaktModule.ANDRE_CONSTANT;
+  const init = (apiKey = null) => (
+    KontaktModule.init(apiKey)
+  );
 
   Kontakt = {
-    test,
-    ANDRE_CONSTANT,
+    init,
+    configure,
+    startScanning,
+    stopScanning,
+    restartScanning,
+    isScanning,
   };
 }
 

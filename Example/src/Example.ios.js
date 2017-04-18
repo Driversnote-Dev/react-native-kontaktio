@@ -26,10 +26,6 @@ const region2 = {
   // no minor provided: will detect all minors
 };
 
-// uuids (major always 1, minor as on back of beacon)
-// 24803f67-1a8a-4f40-9b3d-9ad76961bc0f
-// b0702880-a295-a8ab-f734-031a98a512de
-
 export default class IBeaconExample extends Component {
   state = {
     scanning: false,
@@ -49,14 +45,14 @@ export default class IBeaconExample extends Component {
 
   componentDidMount() {
     // Initialization, configuration and adding of beacon regions
-    KontaktModule.init('lQEbnQkPXICcbSEfIdrNOvxKrcwJTYwY')
-      .then(() => console.log('Successfully initialized beacon ranging, monitoring and scanning'))
+    KontaktModule.init('MY_KONTAKTIO_API_KEY')
       .then(() => KontaktModule.configure({
         dropEmptyRanges: true,    // don't trigger beacon events in case beacon array is empty
         connectNearbyBeacons: true,   // true not working yet
         invalidationAge: 5,   // time to forget lost beacon
       }))
-      .then(() => console.log('successfully configured'))
+      .then(() => KontaktModule.requestAlwaysAuthorization())
+      .then(() => console.log('Successfully initialized beacon ranging, monitoring and scanning'))
       .catch(error => console.log('error', error));
 
     // Monitoring events

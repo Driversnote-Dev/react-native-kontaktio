@@ -1,20 +1,24 @@
 # react-native-kontaktio [![npm version](https://badge.fury.io/js/react-native-kontaktio.svg)](https://badge.fury.io/js/react-native-kontaktio)
 
-React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons.
+Cross-platform React Native module for detecting beacons with **Android** and **iOS** devices.
+Especially useful with [Kontakt.io](http://kontakt.io/) beacons but may be used with any other beacon.
 
-Only works on **Android** for now. **iOS** version is in development and will be added soon.
+SDK Versions:
 
-Implements version **3.2.3.** of the [Kontakt.io SDK](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/).
+| OS             | SDK Version           |
+|:---------------|:----------------------|
+| **Android**    | [3.2.3](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/) |
+| **iOS**        | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/) |
 
 #### Why should I use this module and not a generic beacon package?
 
-If you use this module with Kontakt.io beacons, you get additional information with each scan, like the unique id which is printed on the back of each beacon or the current battery level (`batteryPower`), which is also synchronized with your Kontakt.io online panel. Besides, beacons from other manufacturers can also be ranged nevertheless, just without that extra information.
+If you use this module with Kontakt.io beacons, you get additional information with each scan, like the **unique id** which is printed on the back of each beacon or the current **battery power level** (`batteryPower`), which is also synchronized with your Kontakt.io online panel. Besides, beacons from other manufacturers can also be ranged nevertheless, just without that extra information.
 
 ## Run Example to test the module
 
-1. Clone this repository, connect an Android device to your computer and have some beacons handy
+1. Clone this repository, connect an Android and/or Apple device to your computer and have some (Kontakt.io) beacons handy
 
-2. Bash to the `Example/` folder, run `npm install` and start the react-native server
+2. Open a terminal window, bash to the `Example/` folder, run `npm install` and start the react-native server
 
 	```bash
 	$ cd react-native-kontaktio/Example
@@ -22,11 +26,19 @@ If you use this module with Kontakt.io beacons, you get additional information w
 	$ npm start
 	```
 	
-3. Build the example and run it on your android device. The app will appear under the name `KontaktIoSimpleTest`:
+3. Build the example and run it on your device. The app will appear under the name `KontaktIoSimpleTest`:
 
-	```bash
-	$ react-native run-android
-	```
+	* Android:
+	
+		```bash
+		$ react-native run-android
+		```
+	
+	* iOS
+
+		```bash
+		$ react-native run-ios
+		```
 
 ## Setup
 
@@ -35,6 +47,8 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
 ### Android
 
 #### Automatic setup
+
+// UNDER CONSTRUCTION
 
 After the update the manual setup should should be easier when using `react-native link react-native-kontaktio`. However this was not tested yet. Will be tested soon and this section updated. For now, please refer to the manual setup.
 
@@ -108,14 +122,59 @@ After the update the manual setup should should be easier when using `react-nati
 	}
 	
 	```
+	
+### iOS
+
+#### Mostly automatic setup
+
+1. Link module (use `rnpm` for React Native versions older than `0.27`)
+
+		react-native link react-native-kontaktio
+
+2. Manually link kontakt.io SDK
+
+	Select your build target in the **`Project navigator`**. Click **`General`** and then in the **`Embedded Binaries`** section, click the **`+`** button.
+	
+	- Click **`[Add Other...]`**.
+	- Navigate to **`node_modules/react-native-kontaktio/ios`**.
+	- Add **`KontaktSDK.framework`**.
+
+	It should now appear in the **`Linked Frameworks and Libraries`** section right below.
+
+3. Add Framework Search paths so that Xcode can find the added framework
+
+    - Go to the **Build Settings** tab and search for **"framework search paths"**.
+    - Add the following path (select **recursive [v]**):
+    
+    	```
+    	$(PROJECT_DIR)/../node_modules/react-native-kontaktio/ios
+    	```
+
+4. Add run script
+
+	- In the **`Build Phases`** tab, click the **`+`** button at the top and select **`New Run Script Phase`**. Enter the following code into the script text field:
+
+	```
+	bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/KontaktSDK.framework/strip-frameworks.sh"
+	```
+
+5. Add permissions
+
+	Go to the **Info** tab and add in the section **`Custom iOS Target Properties`** add the following the following item:
+	
+	| Key | Value | Description |
+	|---|---|---|
+	| NSLocationAlwaysUsageDescription | This app requires background tracking | The value here will be presented to the user when the plugin requests **Background Location** permission |
 
 ## Minimal Example
 
 This is a minimal example with the default configuration and no specifically set regions. Thus, the default region `everywhere` (i.e. all beacons) is used.
 
-Please take a look at [Example/src/Example.android.js](/Example/src/Example.android.js) for an bigger usage example including configuration settings and multiple regions.
+Please take a look at [Example/src/Example.android.js](/Example/src/Example.android.js) and [Example/src/Example.ios.js](/Example/src/Example.ios.js) for extended usage examples for both platforms.
 
-[Example/src/MinimalExample.js](/Example/src/MinimalExample.js):
+### Android
+
+[Example/src/MinimalExample.android.js](/Example/src/MinimalExample.android.js):
 
 ```js
 import React, { Component } from 'react';
@@ -143,10 +202,50 @@ export default class MinimalExample extends Component {
 }
 ```
 
+### iOS
+
+[Example/src/MinimalExample.ios.js](/Example/src/MinimalExample.ios.js):
+
+```js
+import React, { Component } from 'react';
+import { View, NativeEventEmitter } from 'react-native';
+
+import Kontakt, { KontaktModule } from 'react-native-kontaktio';
+
+const { init, startScanning } = Kontakt;
+
+const kontaktEmitter = new NativeEventEmitter(KontaktModule);
+
+/**
+ * Minimal example of react-native-kontaktio
+ */
+export default class MinimalExample extends Component {
+  componentDidMount() {
+    init()
+      .then(() => startScanning())
+      .catch(error => alert('error', error));
+
+    // Add beacon listener
+    kontaktEmitter.addListener(
+      'didDiscoverDevices',
+      ({ beacons }) => {
+        console.log('didDiscoverDevices', beacons);
+      }
+    );
+  }
+
+  render() {
+    return <View />;
+  }
+}
+```
+
 
 ## API Documentation
 
-### Main objects: `beacon` and `region`
+### **Android** API Documentation
+
+#### Main objects: `beacon` and `region`
 
 The following two objects are the main players of this module and will be referred to multiple times throughout this documentation:
 
@@ -198,9 +297,9 @@ The following two objects are the main players of this module and will be referr
 }
 ```
 
-### Events
+#### Events
 
-#### Event flow
+##### Event flow
 
 In case regions are defined, events will commonly occur in this order if 1) a beacon signal is detected, 2) the signal changes and 3) the signal is lost:
 
@@ -218,7 +317,7 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 	* regionDidExit
 
 
-#### Event overview
+##### Event overview
 
 | Event                      | Description                       |
 |:---------------------------|:----------------------------------|
@@ -230,15 +329,15 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 | **scanStatus**             | Sends `{ status }` where `status` is either `START`, `STOP` or `ERROR` depending on whether the scan for beacons started, stopped or a sudden error occurred while scanning |
 | **monitoringCycle**        | Sends `{ status }` where `status` is either `START` `STOP` depending on whether a scan cycle just started or stopped. The active period of a monitoring scan cycle is 8 seconds, the inactive (passive) period is 30 seconds long. Attention: Only sends events if `scanMode` is set to `MONITORING` |
 
-### Methods
+#### Methods
 
-#### Some infos
+##### General information
 
-* All methods may be imported globally (i.e. `import Kontakt from 'react-native-kontaktio`) or one-by-one (i.e. `import { init, startScanning } from 'react-native-kontaktio`).
-* All methods return a **Promise** which returns an error statement in case something went wrong. Care was taken to include useful error messages.
+* All are part of the global import (i.e. `import Kontakt from 'react-native-kontaktio`)
+* All methods return a **Promise** which returns an error statement in case something went wrong. If available the native error messages of the SDK are returned. Care was taken to include useful error messages.
 * The best way to explore the usage of these methods is to take a look at the example in [Example/src/Example.android.js](/Example/src/Example.android.js).
 
-#### Method overview
+##### Method overview
 
 | Method                                          | Description                     |
 |:------------------------------------------------|:--------------------------------|
@@ -254,7 +353,7 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 | **isConnected**           | fulfills the Promise with *true* if device is ready to scan (i.e. if `startScanning` or `restartScanning` was called at least once. |
 
 
-### Configuration
+#### Configuration
 
 A config object can be passed with the following options (see the [Kontakt.io quickstart guide](https://developer.kontakt.io/android-sdk/quickstart/#basic-usage-configuration) and [SDK docs](http://kontaktio.github.io/kontakt-android-sdk/3.2.1/Javadoc/) for more information about the possible configurations):
 
@@ -269,7 +368,7 @@ A config object can be passed with the following options (see the [Kontakt.io qu
 
 **Attention**: When changing configurations after starting scanning, you have to call the method `restartScanning` for the new configurations to take effect.
 
-#### Default values
+##### Default values
 
 When just calling `init()` without the object of parameters, the following default values are used:
 	
@@ -285,7 +384,7 @@ When just calling `init()` without the object of parameters, the following defau
 }
 ```
 
-### Constants
+#### Constants
 
 Some constants are provided which may be used while creating a `region`. These are the default values if the corresponding fields are not provided, but may be used for a more declarative api call.
 
@@ -300,13 +399,124 @@ The other two constants are the two different beacon types.
 | **IBEACON**                                 | init (second argument)       |
 | **EDDYSTONE**                               | init  (second argument)      |
 
+### **iOS** API Documentation
+
+#### Main objects: `beacon` and `region`
+
+The following two objects are the main players of this module and will be referred to multiple times throughout this documentation:
+
+##### `beacon`
+
+* In contrast to the *Android* version the `beacon` object has a different shape depending on whether 1) scanning or 2) ranging/monitoring is used.
+
+1. While ranging or monitoring
+
+	```js
+	{
+		uuid: string
+		major: number
+		minor: number
+		rssi: number
+		proximity: string (either IMMEDIATE, NEAR, FAR or UNKNOWN)
+		// if Kontakt.io beacon this is useful, otherwise mostly -1 or similar
+		accuracy: string (distance in meters)
+	}
+	```
+
+2. While scanning
+
+	```js
+	{
+		name: string  // 'Kontakt' by default for Kontakt.io beacons
+		uniqueId: string
+		firmwareVersion: string
+		batteryLevel: number (percentage as int) // batteryPower for Android
+		batteryPowered: boolean
+		hasConfigurationProfile: boolean
+		transmissionPower: number  // txPower for Android
+		rssi: number
+		model: string
+		locked: boolean
+		shuffled: boolean
+	}
+	```
+
+##### `region`
+
+```js
+{
+	identifier
+	uuid
+}
+```
+
+#### Events
+
+* Ranging, monitoring and scanning are three different processes. In contrast to the *Android* version they are separated into different events and methods. Pay attention to the type column.
+* Scanning (i.e. `didDiscoverDevices`) can only detect Kontakt.io beacons. Ranging and monitoring also works with beacons of other manufacturers.
+
+##### Event overview
+
+| Event                      | Type | Description                       |
+|:---------------------------|:-----|:----------------------------------|
+| **didDiscoverDevices**     | Scanning | Sends `{ beacons }` if Kontakt.io beacons are in range. `beacons` and `region` have the form as defined above. |
+| **devicesManagerDidFailToStartDiscovery**     | Scanning | Sends `{ error }` if scanning can't be started. |
+| **didRangeBeacons**       | Ranging | Sends `{ beacons, region }` with currently ranged beacons in the region. If the configuration `dropEmptyRanges` is set to `true`, the event is not send if the array of beacons is empty. |
+| **didStartMonitoringForRegion**         | Monitoring | Sends `{ region }`, the beacon region for which monitoring started. |
+| **monitoringDidFailForRegion**         | Monitoring | Sends `{ region, error }`, the beacon region for which the error `error` occurred. |
+| **didEnterRegion**         | Monitoring | Sends `{ region }`, the beacon region which was just entered (i.e. at least one beacon of that region was detected). |
+| **didExitRegion**          | Monitoring | Sends `{ region }`, the beacon region which was just lost (i.e. the last remaining beacon of that region was not anymore in range and the time for keeping the beacon in the internal cache ran out as set with `invalidationAge` |
+| **didChangeLocationAuthorizationStatus**        | Authorization | Sends `{ status }`, the current authorization status. |
+
+#### Methods
+
+##### General information
+
+* All methods are properties of the default import (i.e. `import Kontakt from 'react-native-kontaktio`).
+* All methods return a **Promise** which returns an error statement in case something went wrong.
+* The best way to explore the usage of these methods is to take a look at the example in [Example/src/Example.android.js](/Example/src/Example.android.js).
+
+##### Method overview
+
+| Method                         | Type |Description                     |
+|:-------------------------------|:-----|:--------------------------------|
+| **init('KontaktAPIKey')** | All |(*optional*) Add your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but for **connecting** to your beacons. |
+| **configure({ ... })**          | All | (*optional*) Configure scanning with the configuration options described below |
+| **startScanning**        | Scanning | starts general scanning for the discovery of beacons not constrained to any region. The argument ...  If beacons are discovered in the proximity of your device the **didDiscoverDevices** event will be triggered |
+| **stopScanning**         | Scanning | stops scanning for all provided regions |
+| **restartScanning**      | Scanning | stops and starts scanning again (NOT FULLY TESTED YET). |
+| **isScanning**      | Scanning | fulfills the Promise with *true* if scanning is currently in progress. |
+| **startRangingBeaconsInRegion**        | Ranging | starts ranging in provided `region`. If beacons are ranged in the proximity of your device the **didRangeBeacons** event will be triggered |
+| **stopRangingBeaconsInRegion**         | Ranging | stops ranging for the provided `region` |
+| **stopRangingBeaconsInAllRegions**         | Ranging | stops ranging for all regions |
+| **getRangedRegions**         | Ranging | returns all currently ranged `regions` |
+| **startMonitoringForRegion**        | Monitoring | starts monitoring in provided `region`. If beacons of a monitored region appear in the proximity of your device the **didEnterRegion** event will be triggered. |
+| **stopMonitoringForRegion**         | Monitoring | stops monitoring for the  provided region |
+| **stopMonitoringForAllRegions**         | Monitoring | stops monitoring for all currently monitored regions |
+| **getMonitoredRegions**         | Monitoring | Returns all currently monitored `regions` |
+| **getAuthorizationStatus**         | Authorization | returns the authorization `status` (`authorizedAlways` or `authorizedWhenInUse` or `denied` or `notDetermined` or `restricted`) |
+| **requestAlwaysAuthorization**         | Authorization | prompt the user to give authorization for the app to always scan for beacons, even if app is not in foreground. |
+| **requestWhenInUseAuthorization**         | Authorization | prompt the user to give authorization for the app to scan for beacons, if app is in use. |
+
+#### Configuration
+
+A config object can be passed to the call of the `configure` method with the following fields:
+
+**ATTENTION**: Configurations are not fully tested and don't work properly yet!
+
+| Configuration              | Description                       |
+|:---------------------------|:----------------------------------|
+| **dropEmptyRanges**        | If `true`, `didDiscoverDevices` and `didRangeBeacons` events don't fire if the array of beacons is empty. Default is true |
+| **connectNearbyBeacons**     | Connect to all discovered beacons in vicinity to get iBeacon values like major, minor and uuid while scanning. Default is false. CURRENTLY THIS VALUE HAS NO EFFECT. IN THE CURRENT VERSION beacon connection iS NOT IMPLEMENTED YET. |
+| **invalidationAge**       | In seconds. It sets the time the device should wait until it "forgets" a formerly scanned beacon when it can't detect it anymore. The default is 10 seconds. |
+
+
 ## Further notes
 
-* Beacons support Android versions 4.3 and up.
+* Beacons support is part of Android versions 4.3 and up.
 	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
 * A physical device must be used for testing, at best you have some Kontakt.io beacons at your disposal, configure them via their management console and have your API-key handy.
 
 ## Coming soon:
 
-* iOS version
-* Eddystone support (Currently `EDDYSTONE` beacons can be scanned, but the corresponding functions are not yet exposed to the JS side because it wasn't fully tested yet)
+* Android: Eddystone support (Currently `EDDYSTONE` beacons can be scanned, but the corresponding functions are not yet exposed to the JS side because it wasn't fully tested yet)
