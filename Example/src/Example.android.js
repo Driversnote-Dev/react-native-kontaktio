@@ -261,7 +261,7 @@ export default class IBeaconExample extends Component {
   );
 
   render() {
-    const { scanning, beacons, statusText } = this.state;
+    const { scanning, beacons } = this.state;
 
     return (
       <View style={styles.container}>

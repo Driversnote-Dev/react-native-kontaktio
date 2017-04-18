@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, DeviceEventEmitter } from 'react-native';
 
-import { init, startScanning } from 'react-native-kontaktio';
+import Kontakt from 'react-native-kontaktio';
+
+const { init, startScanning } = Kontakt;
 
 /**
  * Minimal example of react-native-kontaktio
@@ -12,7 +14,7 @@ export default class MinimalExample extends Component {
       .then(() => startScanning())
       .catch(error => alert('error', error));
 
-    // Add beacon listeners
+    // Add beacon listener
     DeviceEventEmitter.addListener(
       'beaconsDidUpdate',
       ({ beacons, region }) => {
