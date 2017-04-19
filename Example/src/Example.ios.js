@@ -10,6 +10,12 @@ import {
 
 import Kontakt, { KontaktModule } from 'react-native-kontaktio';
 
+// const {
+//   startScanning,
+//   stopScanning,
+//   restartScanning,
+// } = Kontakt;
+
 const kontaktEmitter = new NativeEventEmitter(KontaktModule);
 
 const region1 = {
@@ -48,8 +54,8 @@ export default class IBeaconExample extends Component {
     KontaktModule.init('MY_KONTAKTIO_API_KEY')
       .then(() => KontaktModule.configure({
         dropEmptyRanges: true,    // don't trigger beacon events in case beacon array is empty
-        connectNearbyBeacons: true,   // true not working yet
-        invalidationAge: 5,   // time to forget lost beacon
+        connectNearbyBeacons: false,   // true not working yet
+        invalidationAge: 5000,   // time to forget lost beacon
       }))
       .then(() => KontaktModule.requestAlwaysAuthorization())
       .then(() => console.log('Successfully initialized beacon ranging, monitoring and scanning'))
@@ -112,8 +118,8 @@ export default class IBeaconExample extends Component {
   /* --- Discovering beacons --- */
 
   _startScanning = () => {
-    KontaktModule.startScanning({ interval: 1.0 })
-      .then(() => this.setState({ scanning: true }))
+    KontaktModule.startScanning({ interval: 1000 })
+      .then(() => this.setState({ scanning: true, discoveredBeacons: [] }))
       .then(() => console.log('started scanning'))
       .catch(error => console.log('[startScanning]', error));
   };
@@ -134,13 +140,13 @@ export default class IBeaconExample extends Component {
 
   _startRanging = () => {
     KontaktModule.startRangingBeaconsInRegion(region1)
-      .then(() => this.setState({ ranging: true }))
+      .then(() => this.setState({ ranging: true, rangedBeacons: [] }))
       .then(() => console.log('started ranging'))
       .catch(error => console.log('[startRanging]', error));
   };
   _stopRanging = () => {
     KontaktModule.stopRangingBeaconsInRegion(region1)
-      .then(() => this.setState({ ranging: false }))
+      .then(() => this.setState({ ranging: false, rangedBeacons: [] }))
       .then(() => console.log('stopped ranging'))
       .catch(error => console.log('[stopRanging]', error));
   };
@@ -172,6 +178,10 @@ export default class IBeaconExample extends Component {
       .catch(error => console.log('[stopAllMonitoring]', error));
   };
 
+  /* --- Authorization --- */
+  // TODO: Add authorization methods
+  /* --- Regions --- */
+  // TODO: Add getters for ranged/monitored regions
 
   _renderDiscoveredBeacons = () => {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
@@ -203,7 +213,7 @@ export default class IBeaconExample extends Component {
 
   _renderEmpty = () => {
     const { scanning, ranging, monitoring, discoveredBeacons, rangedBeacons } = this.state;
-    let text;
+    let text = '';
     if (!scanning && !ranging && !monitoring) text = "Start scanning to listen for beacon signals!";
     if (scanning && !discoveredBeacons.length) text = "No beacons discovered yet...";
     if (ranging && !rangedBeacons.length) text = "No beacons ranged yet...";
@@ -213,14 +223,14 @@ export default class IBeaconExample extends Component {
       </View>) : null;
   };
 
-  // _renderAuthorizationStatusText = () => {
-  //   const { authorizationStatus } = this.state;
-  //   return authorizationStatus ? (
-  //       <View style={styles.textContainer}>
-  //         <Text style={[styles.text, { color: 'red' }]}>{authorizationStatus}</Text>
-  //       </View>
-  //     ) : null;
-  // };
+  _renderAuthorizationStatusText = () => {
+    const { authorizationStatus } = this.state;
+    return authorizationStatus ? (
+        <View style={styles.textContainer}>
+          <Text style={[styles.text, { color: 'red' }]}>{authorizationStatus}</Text>
+        </View>
+      ) : null;
+  };
 
   _renderButton = (text, onPress, backgroundColor) => (
     <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress}>
@@ -240,14 +250,15 @@ export default class IBeaconExample extends Component {
         </View>
         <View style={styles.buttonContainer}>
           {this._renderButton('Start ranging', this._startRanging, '#ABE88D')}
-          {this._renderButton('Stop ranging', this._stopRanging, '#ABE88D')}
+          {this._renderButton('Stop', this._stopRanging, '#ABE88D')}
           {this._renderButton('Stop all', this._stopAllRanging, '#ABE88D')}
         </View>
         <View style={styles.buttonContainer}>
           {this._renderButton('Start monitoring', this._startMonitoring, '#F48661')}
-          {this._renderButton('Stop monitoring', this._stopMonitoring, '#F48661')}
+          {this._renderButton('Stop', this._stopMonitoring, '#F48661')}
           {this._renderButton('Stop all', this._stopAllMonitoring, '#F48661')}
         </View>
+        {this._renderAuthorizationStatusText()}
         <ScrollView>
           {this._renderEmpty()}
           {(scanning && discoveredBeacons.length) && this._renderDiscoveredBeacons()}

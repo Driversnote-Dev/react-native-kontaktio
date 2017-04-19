@@ -53,11 +53,6 @@ RCT_EXPORT_MODULE()
         // DevicesManager for kontaktio specific fields like uniqueId
         self.devicesManager = [[KTKDevicesManager alloc] initWithDelegate:self];
 
-        NSLog(@"beacon manager is initialized!");
-
-        //    self.locationManager = [[CLLocationManager alloc] init];
-        //    self.locationManager.delegate = self;
-
         // Default values
         self.dropEmptyRanges = YES;
         self.connectNearbyBeacons = NO;
@@ -250,9 +245,15 @@ RCT_EXPORT_METHOD(init:(NSString *)apiKey
                  init_resolver:(RCTPromiseResolveBlock)resolve
                  init_rejecter:(RCTPromiseRejectBlock)reject)
 {
-    if (apiKey != nil) {
-        [Kontakt removeCaches];
-        [Kontakt setAPIKey:[RCTConvert NSString:apiKey]];
+    @try {
+        if (apiKey != nil) {
+            [Kontakt removeCaches];
+            [Kontakt setAPIKey:[RCTConvert NSString:apiKey]];
+        }
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Could not init beacon manager" }];
+        reject(@"not_init", @"Could not init beacon manager", error);
     }
 
 //    @try {
@@ -280,6 +281,7 @@ RCT_EXPORT_METHOD(init:(NSString *)apiKey
 //        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Could not init beacon manager" }];
 //        reject(@"not_init", @"Could not init beacon manager", error);
 //    }
+
 }
 
 RCT_EXPORT_METHOD(configure:(NSDictionary *)dict
@@ -292,7 +294,6 @@ RCT_EXPORT_METHOD(configure:(NSDictionary *)dict
         }
         if (dict[@"connectNearbyBeacons"] != nil) {
             self.connectNearbyBeacons = [RCTConvert BOOL:dict[@"connectNearbyBeacons"]];
-            NSLog(@"connectNearbyBeacons in configure: %@", @(self.connectNearbyBeacons));
         }
         if (dict[@"invalidationAge"] != nil) {
             self.invalidationAge = [RCTConvert NSTimeInterval:dict[@"invalidationAge"]];
@@ -318,6 +319,7 @@ RCT_EXPORT_METHOD(startScanning:(NSDictionary *)dict
             [self.devicesManager startDevicesDiscovery];
         } else {
             self.discoveryInterval = [RCTConvert NSTimeInterval:dict[@"interval"]];
+            NSLog(@"else case: interval from dict: %@, interval from variable: %@", dict[@"interval"], @(self.discoveryInterval));
             [self.devicesManager startDevicesDiscoveryWithInterval:self.discoveryInterval];
         }
         resolve(nil);

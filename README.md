@@ -10,9 +10,11 @@ SDK Versions:
 | **Android**    | [3.2.3](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/) |
 | **iOS**        | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/) |
 
-#### Why should I use this module and not a generic beacon package?
+#### Why should I use this module over other beacon modules?
 
-If you use this module with Kontakt.io beacons, you get additional information with each scan, like the **unique id** which is printed on the back of each beacon or the current **battery power level** (`batteryPower`), which is also synchronized with your Kontakt.io online panel. Besides, beacons from other manufacturers can also be ranged nevertheless, just without that extra information.
+* With Kontakt.io beacons, you get additional information with each scan, like the **unique id** which is printed on the back of each beacon or the current **battery power level** (`batteryPower`), which is also synchronized with your Kontakt.io online panel.
+* APIs offer a wide range of methods and configurations.
+* Beacons from other manufacturers can also be ranged, just without that extra information of the Kontakt.io manufacturer. I am happy to add a list of tested compatible beacon manufacturers here. Pull requests are more than welcome!
 
 ## Run Example to test the module
 
@@ -480,9 +482,9 @@ The following two objects are the main players of this module and will be referr
 
 | Method                         | Type |Description                     |
 |:-------------------------------|:-----|:--------------------------------|
-| **init('KontaktAPIKey')** | All |(*optional*) Add your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but for **connecting** to your beacons. |
-| **configure({ ... })**          | All | (*optional*) Configure scanning with the configuration options described below |
-| **startScanning**        | Scanning | starts general scanning for the discovery of beacons not constrained to any region. The argument ...  If beacons are discovered in the proximity of your device the **didDiscoverDevices** event will be triggered |
+| **init('KontaktAPIKey')** | General |(*optional*) Add your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but for **connecting** to your beacons. |
+| **configure({ ... })**          | General | (*optional*) Configure scanning with the configuration options described below |
+| **startScanning({ interval })**        | Scanning | starts general scanning for the discovery of beacons not constrained to any region. Optionally an object with the field `interval` with a time in milliseconds may be passed with the method call. Scanning will be paused for the time of the interval. If beacons are discovered in the proximity of your device the **didDiscoverDevices** event will be triggered |
 | **stopScanning**         | Scanning | stops scanning for all provided regions |
 | **restartScanning**      | Scanning | stops and starts scanning again (NOT FULLY TESTED YET). |
 | **isScanning**      | Scanning | fulfills the Promise with *true* if scanning is currently in progress. |
@@ -508,7 +510,7 @@ A config object can be passed to the call of the `configure` method with the fol
 |:---------------------------|:----------------------------------|
 | **dropEmptyRanges**        | If `true`, `didDiscoverDevices` and `didRangeBeacons` events don't fire if the array of beacons is empty. Default is true |
 | **connectNearbyBeacons**     | Connect to all discovered beacons in vicinity to get iBeacon values like major, minor and uuid while scanning. Default is false. CURRENTLY THIS VALUE HAS NO EFFECT. IN THE CURRENT VERSION beacon connection iS NOT IMPLEMENTED YET. |
-| **invalidationAge**       | In seconds. It sets the time the device should wait until it "forgets" a formerly scanned beacon when it can't detect it anymore. The default is 10 seconds. |
+| **invalidationAge**       | In milliseconds. It sets the time the device should wait until it "forgets" a formerly scanned beacon when it can't detect it anymore. The default is 10 seconds. |
 
 
 ## Further notes

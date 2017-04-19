@@ -22,8 +22,9 @@ export const KontaktModule = NativeModules.KontaktBeacons;
 /**
  * Methods shared in android and iOS
  */
-export const configure = KontaktModule.configure;
-export const startScanning = KontaktModule.startScanning;
+export const configure = (params = null) => (
+  KontaktModule.configure(params)
+);
 export const stopScanning = KontaktModule.stopScanning;
 export const restartScanning = KontaktModule.restartScanning;
 export const isScanning = KontaktModule.isScanning;
@@ -40,6 +41,7 @@ if (Platform.OS === "android") {
   );
   const disconnect = KontaktModule.disconnect;
   const isConnected = KontaktModule.isConnected;
+  const startScanning = KontaktModule.startScanning;
   const setBeaconRegion = (region = null) => KontaktModule.setBeaconRegion(region);
   const setBeaconRegions = (regionsArray = null) => KontaktModule.setBeaconRegions(regionsArray);
 
@@ -47,8 +49,6 @@ if (Platform.OS === "android") {
   const DEFAULT_KONTAKT_NAMESPACE_ID = KontaktModule.DEFAULT_KONTAKT_NAMESPACE_ID;
   const ANY_MINOR = KontaktModule.ANY_MINOR;
   const ANY_MAJOR = KontaktModule.ANY_MAJOR;
-
-  const ANDRE_CONSTANT = KontaktModule.ANDRE_CONSTANT;
 
   Kontakt = {
     init,
@@ -88,14 +88,22 @@ if (Platform.OS === "ios") {
   const init = (apiKey = null) => (
     KontaktModule.init(apiKey)
   );
+  const startScanning = (interval = null) => (
+    KontaktModule.startScanning(interval)
+  );
 
   Kontakt = {
     init,
     configure,
+    // discovery
     startScanning,
     stopScanning,
     restartScanning,
     isScanning,
+    // ranging
+
+    // monitoring
+
   };
 }
 
