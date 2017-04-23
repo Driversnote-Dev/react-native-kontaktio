@@ -560,7 +560,6 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 - (void)beaconManager:(KTKBeaconManager *)manager didStartMonitoringForRegion:(__kindof KTKBeaconRegion *)region {
     // Do something when monitoring for a particular
     // region is successfully initiated
-    NSLog(@"Beacons: didStartMonitoringForRegion");
 
     NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
     beaconRegion[@"identifier"] = region.identifier;
@@ -670,11 +669,8 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 }
 
 - (void)devicesManager:(KTKDevicesManager *)manager didDiscoverDevices:(NSArray<KTKNearbyDevice *> *)devices {
-    NSLog(@"Beacons: didDiscoverDevices, devices.count: %lu", (unsigned long)devices.count);
 
-    // TODO: Test dropEmptyRanges and fix it!
     if (self.dropEmptyRanges && devices.count == 0) {
-        NSLog(@"Devices: no devices nearby");
         return;
     }
 
@@ -737,7 +733,6 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 }
 
 - (void)devicesManagerDidFailToStartDiscovery:(KTKDevicesManager *)manager withError:(NSError *)error {
-    NSLog(@"Beacons: devicesManagerDidFailToStartDiscovery");
     if (hasListeners) {
         [self sendEventWithName:@"discoveryDidFail" body:@{ @"error": error.localizedDescription }];
     }

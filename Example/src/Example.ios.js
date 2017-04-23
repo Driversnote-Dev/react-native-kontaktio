@@ -10,11 +10,28 @@ import {
 
 import Kontakt, { KontaktModule } from 'react-native-kontaktio';
 
-// const {
-//   startScanning,
-//   stopScanning,
-//   restartScanning,
-// } = Kontakt;
+const {
+  init,
+  configure,
+  // authorization
+  getAuthorizationStatus,
+  requestWhenInUseAuthorization,
+  requestAlwaysAuthorization,
+  // discovery
+  startScanning,
+  stopScanning,
+  restartScanning,
+  // ranging
+  startRangingBeaconsInRegion,
+  stopRangingBeaconsInRegion,
+  stopRangingBeaconsInAllRegions,
+  getRangedRegions,
+  // monitoring
+  startMonitoringForRegion,
+  stopMonitoringForRegion,
+  stopMonitoringForAllRegions,
+  getMonitoredRegions,
+} = Kontakt;
 
 const kontaktEmitter = new NativeEventEmitter(KontaktModule);
 
@@ -57,14 +74,14 @@ export default class IBeaconExample extends Component {
 
   componentDidMount() {
     // Initialization, configuration and adding of beacon regions
-    KontaktModule.init('MY_KONTAKTIO_API_KEY')
-      .then(() => KontaktModule.configure({
+    init('MY_KONTAKTIO_API_KEY')
+      .then(() => configure({
         dropEmptyRanges: true,    // don't trigger beacon events in case beacon array is empty
-        connectNearbyBeacons: false,   // true not working yet
         invalidationAge: 5000,   // time to forget lost beacon
+        // connectNearbyBeacons: false,   // true not working yet
       }))
-      .then(() => KontaktModule.requestAlwaysAuthorization())
-      // .then(() => KontaktModule.requestWhenInUseAuthorization())
+      .then(() => requestAlwaysAuthorization())
+      // .then(() => requestWhenInUseAuthorization())
       .then(() => console.log('Successfully initialized beacon ranging, monitoring and scanning'))
       .catch(error => console.log('error', error));
 
@@ -169,19 +186,19 @@ export default class IBeaconExample extends Component {
   /* --- Discovering beacons --- */
 
   _startScanning = () => {
-    KontaktModule.startScanning({ interval: 1000 })
+    startScanning({ interval: 1000 })
       .then(() => this.setState({ scanning: true, discoveredBeacons: [] }))
       .then(() => console.log('started scanning'))
       .catch(error => console.log('[startScanning]', error));
   };
   _stopScanning = () => {
-    KontaktModule.stopScanning()
+    stopScanning()
       .then(() => this.setState({ scanning: false, discoveredBeacons: [] }))
       .then(() => console.log('stopped scanning'))
       .catch(error => console.log('[stopScanning]', error));
   };
   _restartScanning = () => {
-    KontaktModule.restartScanning()
+    restartScanning()
       .then(() => this.setState({ scanning: true, discoveredBeacons: [] }))
       .then(() => console.log('restarted scanning'))
       .catch(error => console.log('[restartScanning]', error));
@@ -190,19 +207,19 @@ export default class IBeaconExample extends Component {
   /* --- Ranging beacons --- */
 
   _startRanging = () => {
-    KontaktModule.startRangingBeaconsInRegion(region1)
+    startRangingBeaconsInRegion(region1)
       .then(() => this.setState({ ranging: true, rangedBeacons: [] }))
       .then(() => console.log('started ranging'))
       .catch(error => console.log('[startRanging]', error));
   };
   _stopRanging = () => {
-    KontaktModule.stopRangingBeaconsInRegion(region1)
+    stopRangingBeaconsInRegion(region1)
       .then(() => this.setState({ ranging: false, rangedBeacons: [] }))
       .then(() => console.log('stopped ranging'))
       .catch(error => console.log('[stopRanging]', error));
   };
   _stopAllRanging = () => {
-    KontaktModule.stopRangingBeaconsInAllRegions()
+    stopRangingBeaconsInAllRegions()
       .then(() => this.setState({ ranging: false, rangedBeacons: [] }))
       .then(() => console.log('stopped ranging in all regions'))
       .catch(error => console.log('[stopAllRanging]', error));
@@ -211,19 +228,19 @@ export default class IBeaconExample extends Component {
   /* --- Monitoring beacons --- */
 
   _startMonitoring = () => {
-    KontaktModule.startMonitoringForRegion(region1)
+    startMonitoringForRegion(region1)
       .then(() => this.setState({ monitoring: true }))
       .then(() => console.log('started monitoring'))
       .catch(error => console.log('[startMonitoring]', error));
   };
   _stopMonitoring = () => {
-    KontaktModule.stopMonitoringForRegion(region1)
+    stopMonitoringForRegion(region1)
       .then(() => this.setState({ monitoring: false }))
       .then(() => console.log('stopped monitoring'))
       .catch(error => console.log('[stopRanging]', error));
   };
   _stopAllMonitoring = () => {
-    KontaktModule.stopMonitoringForAllRegions()
+    stopMonitoringForAllRegions()
       .then(() => this.setState({ monitoring: false }))
       .then(() => console.log('stopped monitoring in all regions'))
       .catch(error => console.log('[stopAllMonitoring]', error));
@@ -232,7 +249,7 @@ export default class IBeaconExample extends Component {
   /* --- Authorization --- */
 
   _getAuthorizationStatus = () => {
-    KontaktModule.getAuthorizationStatus()
+    getAuthorizationStatus()
       .then(authorizationStatus => {
         alert(`Authorization status: ${authorizationStatus}`);
         console.log(`Authorization status: ${authorizationStatus}`);
@@ -241,13 +258,13 @@ export default class IBeaconExample extends Component {
   };
 
   _requestAlwaysAuthorization = () => {
-    KontaktModule.requestAlwaysAuthorization()
+    requestAlwaysAuthorization()
       .then(() => console.log('requested always authorization'))
       .catch(error => console.log('[requestAlwaysAuthorization]', error));
   };
 
   _requestWhenInUseAuthorization = () => {
-    KontaktModule.requestWhenInUseAuthorization()
+    requestWhenInUseAuthorization()
       .then(() => console.log('requested when in use authorization'))
       .catch(error => console.log('[requestWhenInUseAuthorization]', error));
   };
@@ -256,14 +273,14 @@ export default class IBeaconExample extends Component {
   /* --- Regions --- */
 
   _getRangedRegions = () => {
-    KontaktModule.getRangedRegions()
+    getRangedRegions()
       .then(regions => this.setState({ rangedRegions: regions }))
       .then(() => console.log('got ranged regions'))
       .catch(error => console.log('[getRangedRegions]', error));
   };
 
   _getMonitoredRegions = () => {
-    KontaktModule.getMonitoredRegions()
+    getMonitoredRegions()
       .then(regions => this.setState({ monitoredRegions: regions }))
       .then(() => console.log('got monitored regions'))
       .catch(error => console.log('[getMonitoredRegions]', error));
