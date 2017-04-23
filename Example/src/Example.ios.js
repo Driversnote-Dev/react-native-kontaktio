@@ -39,15 +39,21 @@ export default class IBeaconExample extends Component {
     monitoring: false,
     discoveredBeacons: [],
     rangedBeacons: [],
+    rangedRegions: [],
+    monitoredRegions: [],
+    monitoredRegionsCloseBy: [],
     authorizationStatus: '',
   };
 
+  startMonitoringSubscription = null;
+  monitoringFailSubscription = null;
   regionEnterSubscription = null;
   regionExitSubscription = null;
   regionRangeSubscription = null;
+  regionRangeFailSubscription = null;
   authorizationSubscription = null;
   discoverSubscription = null;
-  startMonitoringSubscription = null;
+  discoverFailSubscription = null;
 
   componentDidMount() {
     // Initialization, configuration and adding of beacon regions
@@ -58,6 +64,7 @@ export default class IBeaconExample extends Component {
         invalidationAge: 5000,   // time to forget lost beacon
       }))
       .then(() => KontaktModule.requestAlwaysAuthorization())
+      // .then(() => KontaktModule.requestWhenInUseAuthorization())
       .then(() => console.log('Successfully initialized beacon ranging, monitoring and scanning'))
       .catch(error => console.log('error', error));
 
@@ -68,18 +75,45 @@ export default class IBeaconExample extends Component {
         console.log('didStartMonitoringForRegion', region);
       }
     );
+    this.monitoringFailSubscription = kontaktEmitter.addListener(
+      'monitoringDidFailForRegion',
+      ({ region, error }) => (
+        console.log('monitoringDidFailForRegion', region , error)
+      )
+    );
     this.regionEnterSubscription = kontaktEmitter.addListener(
       'didEnterRegion',
       ({ region }) => {
         console.log('didEnterRegion', region);
+
+        this.setState({
+          monitoredRegionsCloseBy: this.state.monitoredRegionsCloseBy.concat(region)
+        });
       }
     );
     this.regionExitSubscription = kontaktEmitter.addListener(
       'didExitRegion',
-      ({ region }) => {
-        console.log('didExitRegion', region);
+      ({ region: exitRegion }) => {
+        console.log('didExitRegion', exitRegion);
+
+        const { monitoredRegionsCloseBy } = this.state;
+        const index = monitoredRegionsCloseBy.findIndex(region =>
+          this._isIdenticalRegion(exitRegion, region)
+        );
+        this.setState({
+          monitoredRegionsCloseBy: monitoredRegionsCloseBy.reduce((result, val, ind) => {
+            // don't add disappeared region to array
+            if (ind === index) return result;
+            // add all other regions to array
+            else {
+              result.push(val);
+              return result;
+            }
+          }, [])
+        });
       }
     );
+
     // Ranging event
     this.regionRangeSubscription = kontaktEmitter.addListener(
       'didRangeBeacons',
@@ -88,6 +122,13 @@ export default class IBeaconExample extends Component {
         this.setState({ rangedBeacons });
       }
     );
+    this.regionRangeFailSubscription = kontaktEmitter.addListener(
+      'rangingDidFailForRegion',
+      ({ region, error }) => (
+        console.log('rangingDidFailForRegion', region , error)
+      )
+    );
+
     // Authorization event
     this.authorizationSubscription = kontaktEmitter.addListener(
       'authorizationStatusDidChange',
@@ -96,6 +137,7 @@ export default class IBeaconExample extends Component {
         this.setState({ authorizationStatus: status });
       }
     );
+
     // Discovery event
     this.discoverSubscription = kontaktEmitter.addListener(
       'didDiscoverDevices',
@@ -104,15 +146,24 @@ export default class IBeaconExample extends Component {
         this.setState({ discoveredBeacons });
       }
     );
+    this.discoverFailSubscription = kontaktEmitter.addListener(
+      'discoveryDidFail',
+      ({ error }) => (
+        console.log('discoveryDidFail', error)
+      )
+    );
   }
 
   componentWillUnmount() {
     this.startMonitoringSubscription.remove();
+    this.monitoringFailSubscription.remove();
     this.regionEnterSubscription.remove();
     this.regionExitSubscription.remove();
     this.regionRangeSubscription.remove();
+    this.regionRangeFailSubscription.remove();
     this.authorizationSubscription.remove();
     this.discoverSubscription.remove();
+    this.discoverFailSubscription.remove();
   }
 
   /* --- Discovering beacons --- */
@@ -179,9 +230,53 @@ export default class IBeaconExample extends Component {
   };
 
   /* --- Authorization --- */
-  // TODO: Add authorization methods
+
+  _getAuthorizationStatus = () => {
+    KontaktModule.getAuthorizationStatus()
+      .then(authorizationStatus => {
+        alert(`Authorization status: ${authorizationStatus}`);
+        console.log(`Authorization status: ${authorizationStatus}`);
+      })
+      .catch(error => console.log('[getAuthorizationStatus]', error));
+  };
+
+  _requestAlwaysAuthorization = () => {
+    KontaktModule.requestAlwaysAuthorization()
+      .then(() => console.log('requested always authorization'))
+      .catch(error => console.log('[requestAlwaysAuthorization]', error));
+  };
+
+  _requestWhenInUseAuthorization = () => {
+    KontaktModule.requestWhenInUseAuthorization()
+      .then(() => console.log('requested when in use authorization'))
+      .catch(error => console.log('[requestWhenInUseAuthorization]', error));
+  };
+
+
   /* --- Regions --- */
-  // TODO: Add getters for ranged/monitored regions
+
+  _getRangedRegions = () => {
+    KontaktModule.getRangedRegions()
+      .then(regions => this.setState({ rangedRegions: regions }))
+      .then(() => console.log('got ranged regions'))
+      .catch(error => console.log('[getRangedRegions]', error));
+  };
+
+  _getMonitoredRegions = () => {
+    KontaktModule.getMonitoredRegions()
+      .then(regions => this.setState({ monitoredRegions: regions }))
+      .then(() => console.log('got monitored regions'))
+      .catch(error => console.log('[getMonitoredRegions]', error));
+  };
+
+  /**
+   * Helper function used to identify equal regions
+   */
+  _isIdenticalRegion = (r1, r2) => (
+    r1.identifier === r2.identifier
+  );
+
+  /* --- Render methods --- */
 
   _renderDiscoveredBeacons = () => {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
@@ -189,10 +284,10 @@ export default class IBeaconExample extends Component {
     return this.state.discoveredBeacons.sort((a, b) => a.accuracy - b.accuracy).map((beacon, ind) => (
       <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
         <Text style={{fontWeight: 'bold'}}>{beacon.uniqueId}</Text>
-        <Text>Locked: {beacon.locked ? 'Yes' : 'No'}, Shuffled: {beacon.shuffled ? 'Yes' : 'No'}</Text>
         <Text>Battery Power: {beacon.batteryLevel}, TxPower: {beacon.transmissionPower}</Text>
         <Text>Model: {beacon.model}, RSSI: {beacon.rssi}</Text>
         <Text>FirmwareVersion: {beacon.firmwareVersion}, Name: {beacon.name}</Text>
+        <Text>Locked: {beacon.locked ? 'Yes' : 'No'}, Shuffled: {beacon.shuffled ? 'Yes' : 'No'}</Text>
         <Text>updatedAt: {beacon.updatedAt}</Text>
       </View>
     ), this);
@@ -211,12 +306,39 @@ export default class IBeaconExample extends Component {
     ), this);
   };
 
+  _renderMonitoredRegions = () => {
+    const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
+
+    return this.state.monitoredRegionsCloseBy.map((region, ind) => (
+      <View key={ind} style={[styles.beacon, {backgroundColor: colors[region.major - 1]}]}>
+        <Text style={{fontWeight: 'bold'}}>{region.identifier}</Text>
+        <Text>UUID: {region.uuid}</Text>
+        <Text>Major: {region.major}, Minor: {region.minor}</Text>
+      </View>
+    ), this);
+  };
+
+  _renderRegions = () => {
+    const { rangedRegions, monitoredRegions } = this.state;
+    return (
+      <View>
+        <Text style={{ color: '#ABE88D' }}>
+          {rangedRegions !== [] ? rangedRegions.reduce((result, region) => result + region.identifier + ', ', '') : 'No ranged regions'}
+        </Text>
+        <Text style={{ color: '#F48661' }}>
+          {monitoredRegions !== [] ? monitoredRegions.reduce((result, region) => result + region.identifier + ', ', '') : 'No monitored regions'}
+        </Text>
+      </View>
+    );
+  };
+
   _renderEmpty = () => {
-    const { scanning, ranging, monitoring, discoveredBeacons, rangedBeacons } = this.state;
+    const { scanning, ranging, monitoring, discoveredBeacons, rangedBeacons, monitoredRegionsCloseBy } = this.state;
     let text = '';
     if (!scanning && !ranging && !monitoring) text = "Start scanning to listen for beacon signals!";
     if (scanning && !discoveredBeacons.length) text = "No beacons discovered yet...";
     if (ranging && !rangedBeacons.length) text = "No beacons ranged yet...";
+    if (monitoring && !monitoredRegionsCloseBy.length) text = "No monitored regions in your proximity...";
     return text ? (
       <View style={styles.textContainer}>
         <Text style={styles.text}>{text}</Text>
@@ -239,7 +361,7 @@ export default class IBeaconExample extends Component {
   );
 
   render() {
-    const { scanning, ranging, discoveredBeacons, rangedBeacons } = this.state;
+    const { scanning, ranging, monitoring, discoveredBeacons, rangedBeacons, monitoredRegionsCloseBy } = this.state;
 
     return (
       <View style={styles.container}>
@@ -258,11 +380,20 @@ export default class IBeaconExample extends Component {
           {this._renderButton('Stop', this._stopMonitoring, '#F48661')}
           {this._renderButton('Stop all', this._stopAllMonitoring, '#F48661')}
         </View>
-        {this._renderAuthorizationStatusText()}
+        <View style={styles.buttonContainer}>
+          {this._renderButton('Get Status', this._getAuthorizationStatus, '#F4ED5A')}
+          {this._renderAuthorizationStatusText()}
+        </View>
+        <View style={styles.buttonContainer}>
+          {this._renderButton('Ranged regions', this._getRangedRegions, '#ABE88D')}
+          {this._renderButton('Monitored regions', this._getMonitoredRegions, '#F48661')}
+        </View>
+        {this._renderRegions()}
         <ScrollView>
           {this._renderEmpty()}
-          {(scanning && discoveredBeacons.length) && this._renderDiscoveredBeacons()}
-          {(ranging && rangedBeacons.length) && this._renderRangedBeacons()}
+          {(scanning && !!discoveredBeacons.length) && this._renderDiscoveredBeacons()}
+          {(ranging && !!rangedBeacons.length) && this._renderRangedBeacons()}
+          {(monitoring && !!monitoredRegionsCloseBy.length) && this._renderMonitoredRegions()}
         </ScrollView>
       </View>
     );

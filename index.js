@@ -52,7 +52,6 @@ if (Platform.OS === "android") {
 
   Kontakt = {
     init,
-    KontaktModule,
     configure,
     disconnect,
     isConnected,
@@ -92,18 +91,42 @@ if (Platform.OS === "ios") {
     KontaktModule.startScanning(interval)
   );
 
+  const getAuthorizationStatus = KontaktModule.getAuthorizationStatus;
+  const requestWhenInUseAuthorization = KontaktModule.requestWhenInUseAuthorization;
+  const requestAlwaysAuthorization = KontaktModule.requestAlwaysAuthorization;
+
+  const startRangingBeaconsInRegion = KontaktModule.startRangingBeaconsInRegion;
+  const stopRangingBeaconsInRegion = KontaktModule.stopRangingBeaconsInRegion;
+  const stopRangingBeaconsInAllRegions = KontaktModule.stopRangingBeaconsInAllRegions;
+  const getRangedRegions = KontaktModule.getRangedRegions;
+
+  const startMonitoringForRegion = KontaktModule.startMonitoringForRegion;
+  const stopMonitoringForRegion = KontaktModule.stopMonitoringForRegion;
+  const stopMonitoringForAllRegions = KontaktModule.stopMonitoringForAllRegions;
+  const getMonitoredRegions = KontaktModule.getMonitoredRegions;
+
   Kontakt = {
     init,
     configure,
+    // authorization
+    getAuthorizationStatus,
+    requestWhenInUseAuthorization,
+    requestAlwaysAuthorization,
     // discovery
     startScanning,
     stopScanning,
     restartScanning,
     isScanning,
     // ranging
-
+    startRangingBeaconsInRegion,
+    stopRangingBeaconsInRegion,
+    stopRangingBeaconsInAllRegions,
+    getRangedRegions,
     // monitoring
-
+    startMonitoringForRegion,
+    stopMonitoringForRegion,
+    stopMonitoringForAllRegions,
+    getMonitoredRegions,
   };
 }
 

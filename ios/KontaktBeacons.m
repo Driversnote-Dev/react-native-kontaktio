@@ -67,14 +67,14 @@ RCT_EXPORT_MODULE()
 {
     return @[
         @"authorizationStatusDidChange",
-        @"monitoringDidFailForRegion",
         @"didStartMonitoringForRegion",
-        @"EventReminder",
+        @"monitoringDidFailForRegion",
         @"didEnterRegion",
         @"didExitRegion",
         @"didRangeBeacons",
         @"rangingDidFailForRegion",
         @"didDiscoverDevices",
+        @"discoveryDidFail",
     ];
 }
 
@@ -361,7 +361,7 @@ RCT_REMAP_METHOD(restartScanning,
     }
 }
 
-// is discovering
+// is discovering (TODO: test)
 RCT_REMAP_METHOD(isScanning,
                  isScanning_resolver:(RCTPromiseResolveBlock)resolve
                  isScanning_rejecter:(RCTPromiseRejectBlock)reject)
@@ -467,7 +467,6 @@ RCT_REMAP_METHOD(stopMonitoringForAllRegions,
     }
 }
 
-// TODO: Test
 RCT_REMAP_METHOD(getAuthorizationStatus,
                  getAuthorizationStatus_resolver:(RCTPromiseResolveBlock)resolve
                  getAuthorizationStatus_rejecter:(RCTPromiseRejectBlock)reject)
@@ -482,7 +481,6 @@ RCT_REMAP_METHOD(getAuthorizationStatus,
     }
 }
 
-// TODO: Test
 RCT_REMAP_METHOD(requestAlwaysAuthorization,
                  requestAlwaysAuthorization_resolver:(RCTPromiseResolveBlock)resolve
                  requestAlwaysAuthorization_rejecter:(RCTPromiseRejectBlock)reject)
@@ -500,7 +498,6 @@ RCT_REMAP_METHOD(requestAlwaysAuthorization,
     }
 }
 
-// TODO: Test
 RCT_REMAP_METHOD(requestWhenInUseAuthorization,
                  requestWhenInUseAuthorization_resolver:(RCTPromiseResolveBlock)resolve
                  requestWhenInUseAuthorization_rejecter:(RCTPromiseRejectBlock)reject)
@@ -518,7 +515,6 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
     }
 }
 
-// TODO: Test
 RCT_REMAP_METHOD(getRangedRegions,
                  getRangedRegions_resolver:(RCTPromiseResolveBlock)resolve
                  getRangedRegions_rejecter:(RCTPromiseRejectBlock)reject)
@@ -529,10 +525,13 @@ RCT_REMAP_METHOD(getRangedRegions,
         NSMutableArray *regionArray = [[NSMutableArray alloc] init];
 
         for (KTKBeaconRegion *region in regions) {
-            [regionArray addObject:@{
-                                     @"identifier": region.identifier,
-                                     @"uuid": [region.proximityUUID UUIDString],
-                                     }];
+            NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+            beaconRegion[@"identifier"] = region.identifier;
+            beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+            if (region.major != nil) beaconRegion[@"major"] = region.major;
+            if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
+            [regionArray addObject:beaconRegion];
         }
         resolve(regionArray);
     } @catch (NSException *exception) {
@@ -541,7 +540,6 @@ RCT_REMAP_METHOD(getRangedRegions,
     }
 }
 
-// TODO: Test
 RCT_REMAP_METHOD(getMonitoredRegions,
                  getMonitoredRegions_resolver:(RCTPromiseResolveBlock)resolve
                  getMonitoredRegions_rejecter:(RCTPromiseRejectBlock)reject)
@@ -552,10 +550,13 @@ RCT_REMAP_METHOD(getMonitoredRegions,
         NSMutableArray *regionArray = [[NSMutableArray alloc] init];
 
         for (KTKBeaconRegion *region in regions) {
-            [regionArray addObject:@{
-                                     @"identifier": region.identifier,
-                                     @"uuid": [region.proximityUUID UUIDString],
-                                     }];
+            NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+            beaconRegion[@"identifier"] = region.identifier;
+            beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+            if (region.major != nil) beaconRegion[@"major"] = region.major;
+            if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
+            [regionArray addObject:beaconRegion];
         }
         resolve(regionArray);
     } @catch (NSException *exception) {
@@ -580,16 +581,9 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 }
 
 - (void)beaconManager:(KTKBeaconManager *)manager didChangeLocationAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (status == kCLAuthorizationStatusAuthorizedAlways) {
-        // When status changes to kCLAuthorizationStatusAuthorizedAlways
-        // e.g. after calling [self.beaconManager requestLocationAlwaysAuthorization]
-        // we can start region monitoring from here
-        NSLog(@"you have always authorization!");
-
-        NSString *statusName = [self nameForAuthorizationStatus:status];
-        if (hasListeners) {
-            [self sendEventWithName:@"authorizationStatusDidChange" body:@{@"status": statusName}];
-        }
+    NSString *statusName = [self nameForAuthorizationStatus:status];
+    if (hasListeners) {
+        [self sendEventWithName:@"authorizationStatusDidChange" body:@{@"status": statusName}];
     }
 }
 
@@ -598,10 +592,12 @@ RCT_REMAP_METHOD(getMonitoredRegions,
     // region is successfully initiated
     NSLog(@"Beacons: didStartMonitoringForRegion");
 
-    NSDictionary *beaconRegion = @{
-                             @"identifier": region.identifier,
-                             @"uuid": [region.proximityUUID UUIDString],
-                             };
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.identifier;
+    beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+    if (region.major != nil) beaconRegion[@"major"] = region.major;
+    if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
     if (hasListeners) {
         [self sendEventWithName:@"didStartMonitoringForRegion" body:@{@"region": beaconRegion}];
     }
@@ -609,12 +605,13 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 
 - (void)beaconManager:(KTKBeaconManager *)manager monitoringDidFailForRegion:(__kindof KTKBeaconRegion *)region withError:(NSError *)error {
     // Handle monitoring failing to start for your region
-    NSLog(@"Beacons: monitoringDidFailForRegion");
 
-    NSDictionary *beaconRegion = @{
-                             @"identifier": region.identifier,
-                             @"uuid": [region.proximityUUID UUIDString],
-                             };
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.identifier;
+    beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+    if (region.major != nil) beaconRegion[@"major"] = region.major;
+    if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
     if (hasListeners) {
         [self sendEventWithName:@"monitoringDidFailForRegion" body:@{@"region": beaconRegion, @"error": error.localizedDescription}];
     }
@@ -623,31 +620,31 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 - (void)beaconManager:(KTKBeaconManager *)manager didEnterRegion:(__kindof KTKBeaconRegion *)region {
     // Decide what to do when a user enters a range of your region; usually used
     // for triggering a local notification and/or starting a beacon ranging
-    NSLog(@"Beacons: didEnterRegion");
 
-    NSDictionary *beaconRegion = @{
-                             @"identifier": region.identifier,
-                             @"uuid": [region.proximityUUID UUIDString],
-                             };
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.identifier;
+    beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+    if (region.major != nil) beaconRegion[@"major"] = region.major;
+    if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
     if (hasListeners) {
         [self sendEventWithName:@"didEnterRegion" body:@{@"region": beaconRegion}];
     }
-    [manager startRangingBeaconsInRegion:region];
 }
 
 - (void)beaconManager:(KTKBeaconManager *)manager didExitRegion:(__kindof KTKBeaconRegion *)region {
     // Decide what to do when a user exits a range of your region; usually used
     // for triggering a local notification and stoping a beacon ranging
-    NSLog(@"Beacons: didExitRegion");
 
-    NSDictionary *beaconRegion = @{
-                             @"identifier": region.identifier,
-                             @"uuid": [region.proximityUUID UUIDString],
-                             };
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.identifier;
+    beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+    if (region.major != nil) beaconRegion[@"major"] = region.major;
+    if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
     if (hasListeners) {
         [self sendEventWithName:@"didExitRegion" body:@{@"region": beaconRegion}];
     }
-    [manager stopRangingBeaconsInRegion:region];
 }
 
 - (void)beaconManager:(KTKBeaconManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(__kindof KTKBeaconRegion *)region {
@@ -656,8 +653,6 @@ RCT_REMAP_METHOD(getMonitoredRegions,
         NSLog(@"Beacons: no beacons ranged");
         return;
     }
-
-    NSLog(@"Beacons: didRangeBeacons");
 
     NSMutableArray *beaconArray = [[NSMutableArray alloc] init];
 
@@ -673,11 +668,14 @@ RCT_REMAP_METHOD(getMonitoredRegions,
                                  }];
     }
 
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.identifier;
+    beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+    if (region.major != nil) beaconRegion[@"major"] = region.major;
+    if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
     NSDictionary *event = @{
-                            @"region": @{
-                                    @"identifier": region.identifier,
-                                    @"uuid": [region.proximityUUID UUIDString],
-                                    },
+                            @"region": beaconRegion,
                             @"beacons": beaconArray
                             };
 
@@ -689,12 +687,13 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 
 - (void)beaconManager:(KTKBeaconManager *)manager rangingBeaconsDidFailForRegion:(__kindof KTKBeaconRegion *)region withError:(NSError *)error {
     // Handle ranging failing to start for your region
-    NSLog(@"Beacons: rangingDidFailForRegion");
 
-    NSDictionary *beaconRegion = @{
-                                   @"identifier": region.identifier,
-                                   @"uuid": [region.proximityUUID UUIDString],
-                                   };
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.identifier;
+    beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+    if (region.major != nil) beaconRegion[@"major"] = region.major;
+    if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
     if (hasListeners) {
         [self sendEventWithName:@"rangingDidFailForRegion" body:@{@"region": beaconRegion, @"error": error.localizedDescription}];
     }
@@ -770,7 +769,7 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 - (void)devicesManagerDidFailToStartDiscovery:(KTKDevicesManager *)manager withError:(NSError *)error {
     NSLog(@"Beacons: devicesManagerDidFailToStartDiscovery");
     if (hasListeners) {
-        [self sendEventWithName:@"devicesManagerDidFailToStartDiscovery" body:@{ @"error": @"Could not start discovery of beacons" }];
+        [self sendEventWithName:@"discoveryDidFail" body:@{ @"error": @"Could not start discovery of beacons" }];
     }
 }
 
