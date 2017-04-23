@@ -6,12 +6,6 @@
   #import <React/RCTConvert.h>
 #endif
 
-//#if __has_include("RCTLog.h")
-//  #import "RCTLog.h"
-//#else
-//  #import <React/RCTLog.h>
-//#endif
-
 #import <KontaktSDK/KontaktSDK.h>
 
 @interface KontaktBeacons() <KTKBeaconManagerDelegate, KTKDevicesManagerDelegate>
@@ -179,8 +173,7 @@ RCT_REMAP_METHOD(findEvents,
 }
 
 
--(KTKBeaconRegion *) convertDictToBeaconRegion: (NSDictionary *) dict
-{
+-(KTKBeaconRegion *)convertDictToBeaconRegion:(NSDictionary *)dict {
     if (dict[@"minor"] == nil) {
         if (dict[@"major"] == nil) {
             return [self createBeaconRegion:[RCTConvert NSString:dict[@"identifier"]]
@@ -208,7 +201,7 @@ RCT_REMAP_METHOD(findEvents,
     }
 }
 
-// TODO: Test it
+// TODO: Test it properly
 -(NSNumber *)numberForTxPowerLevel:(KTKDeviceTransmissionPower)transmissionPower {
     switch (transmissionPower) {
         case KTKDeviceTransmissionPowerInvalid:    return @-1;
@@ -237,6 +230,18 @@ RCT_REMAP_METHOD(findEvents,
     }
 }
 
+-(NSMutableDictionary *)errorInfoTextForException:(NSException *)exception {
+
+    NSMutableDictionary *info = [NSMutableDictionary dictionary];
+    [info setValue:exception.name forKey:@"ExceptionName"];
+    [info setValue:exception.reason forKey:@"ExceptionReason"];
+    [info setValue:exception.callStackReturnAddresses forKey:@"ExceptionCallStackReturnAddresses"];
+    [info setValue:exception.callStackSymbols forKey:@"ExceptionCallStackSymbols"];
+    [info setValue:exception.userInfo forKey:@"ExceptionUserInfo"];
+
+    return info;
+}
+
 // ---------
 // EXPOSED METHODS
 // ---------
@@ -252,36 +257,9 @@ RCT_EXPORT_METHOD(init:(NSString *)apiKey
         }
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Could not init beacon manager" }];
-        reject(@"not_init", @"Could not init beacon manager", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"init", @"Could not init beacon manager", error);
     }
-
-//    @try {
-//        switch ([KTKBeaconManager locationAuthorizationStatus]) {
-//            case kCLAuthorizationStatusNotDetermined:
-//                [self.beaconManager requestLocationAlwaysAuthorization];
-//                break;
-//
-//            case kCLAuthorizationStatusDenied:
-//            case kCLAuthorizationStatusRestricted:
-//                // No access to Location Services
-//                break;
-//
-//            case kCLAuthorizationStatusAuthorizedWhenInUse:
-//                // For most iBeacon-based app this type of
-//                // permission is not adequate
-//                break;
-//
-//            case kCLAuthorizationStatusAuthorizedAlways:
-//                break;
-//        }
-//        NSLog(@"current status: %d", [KTKBeaconManager locationAuthorizationStatus]);
-//        resolve(@"Beacon module initialized");
-//    } @catch (NSException *exception) {
-//        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Could not init beacon manager" }];
-//        reject(@"not_init", @"Could not init beacon manager", error);
-//    }
-
 }
 
 RCT_EXPORT_METHOD(configure:(NSDictionary *)dict
@@ -303,8 +281,8 @@ RCT_EXPORT_METHOD(configure:(NSDictionary *)dict
 
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in configure" }];
-        reject(@"Error: configure", @"Could not configure beacon manager", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"configure", @"Could not configure beacon manager", error);
     }
 }
 
@@ -324,8 +302,8 @@ RCT_EXPORT_METHOD(startScanning:(NSDictionary *)dict
         }
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in startScanning" }];
-        reject(@"Error: startScanning", @"Could not startScanning", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"startScanning", @"Could not start beacon discovery", error);
     }
 }
 
@@ -338,8 +316,8 @@ RCT_REMAP_METHOD(stopScanning,
         [self.devicesManager stopDevicesDiscovery];
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in stopScanning" }];
-        reject(@"Error: stopScanning", @"Could not stopScanning", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopScanning", @"Could not stop beacon discovery", error);
     }
 }
 
@@ -356,8 +334,8 @@ RCT_REMAP_METHOD(restartScanning,
         }];
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in restartScanning" }];
-        reject(@"Error: restartScanning", @"Could not restartScanning", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"restartScanning", @"Could not restart beacon discovery", error);
     }
 }
 
@@ -370,8 +348,8 @@ RCT_REMAP_METHOD(isScanning,
         BOOL isDiscovering = [self.devicesManager isDiscovering];
         resolve(@(isDiscovering));
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in isScanning" }];
-        reject(@"Error: isScanning", @"Could not isScanning", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"isScanning", @"Could not check scan/discovery status", error);
     }
 }
 
@@ -388,8 +366,8 @@ RCT_EXPORT_METHOD(startRangingBeaconsInRegion:(NSDictionary *)dict
         }
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in startRangingBeaconsInRegion" }];
-        reject(@"Error: startRangingBeaconsInRegion", @"Could not startRangingBeaconsInRegion", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"startRangingBeaconsInRegion", @"Could not startRangingBeaconsInRegion", error);
     }
 }
 
@@ -401,8 +379,8 @@ RCT_EXPORT_METHOD(stopRangingBeaconsInRegion:(NSDictionary *)dict
         [self.beaconManager stopRangingBeaconsInRegion:[self convertDictToBeaconRegion:dict]];
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in stopRangingBeaconsInRegion" }];
-        reject(@"Error: stopRangingBeaconsInRegion", @"Could not stopRangingBeaconsInRegion", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopRangingBeaconsInRegion", @"Could not stopRangingBeaconsInRegion", error);
     }
 }
 
@@ -414,8 +392,8 @@ RCT_REMAP_METHOD(stopRangingBeaconsInAllRegions,
         [self.beaconManager stopRangingBeaconsInAllRegions];
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in stopRangingBeaconsInAllRegions" }];
-        reject(@"Error: stopRangingBeaconsInAllRegions", @"Could not stopRangingBeaconsInAllRegions", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopRangingBeaconsInAllRegions", @"Could not stopRangingBeaconsInAllRegions", error);
     }
 }
 
@@ -429,15 +407,8 @@ RCT_EXPORT_METHOD(startMonitoringForRegion:(NSDictionary *)dict
         }
         resolve(nil);
     } @catch (NSException *exception) {
-
-        // Create error
-//        NSString *domain = @"com.artirigo.kontakt.errors";
-//        NSString *desc = NSLocalizedString(@"Error: startMonitoringForRegion", @"");
-//        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : desc };
-//        NSError *error = [NSError errorWithDomain:domain code:-101 userInfo:userInfo];
-
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in startMonitoringForRegion" }];
-        reject(@"Error: startMonitoringForRegion", @"Could not startMonitoringForRegion", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"startMonitoringForRegion", @"Could not startMonitoringForRegion", error);
     }
 }
 
@@ -449,8 +420,8 @@ RCT_EXPORT_METHOD(stopMonitoringForRegion:(NSDictionary *)dict
         [self.beaconManager stopMonitoringForRegion:[self convertDictToBeaconRegion:dict]];
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in stopMonitoringForRegion" }];
-        reject(@"Error: stopMonitoringForRegion", @"Could not stopMonitoringForRegion", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopMonitoringForRegion", @"Could not stopMonitoringForRegion", error);
     }
 }
 
@@ -462,8 +433,8 @@ RCT_REMAP_METHOD(stopMonitoringForAllRegions,
         [self.beaconManager stopMonitoringForAllRegions];
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in stopMonitoringForAllRegions" }];
-        reject(@"Error: stopMonitoringForAllRegions", @"Could not stopMonitoringForAllRegions", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopMonitoringForAllRegions", @"Could not stopMonitoringForAllRegions", error);
     }
 }
 
@@ -473,11 +444,10 @@ RCT_REMAP_METHOD(getAuthorizationStatus,
 {
     @try {
         CLAuthorizationStatus status = [KTKBeaconManager locationAuthorizationStatus];
-//        CLAuthorizationStatus status = self.beaconManager.locationAuthorizationStatus;
         resolve([self nameForAuthorizationStatus:status]);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in getAuthorizationStatus" }];
-        reject(@"Error: getAuthorizationStatus", @"Could not getAuthorizationStatus", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"getAuthorizationStatus", @"Could not get the current authorization status", error);
     }
 }
 
@@ -493,8 +463,8 @@ RCT_REMAP_METHOD(requestAlwaysAuthorization,
         }
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in requestAlwaysAuthorization" }];
-        reject(@"Error: requestAlwaysAuthorization", @"Could not requestAlwaysAuthorization", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"requestAlwaysAuthorization", @"Could not requestAlwaysAuthorization", error);
     }
 }
 
@@ -510,8 +480,8 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
         }
         resolve(nil);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in requestAlwaysAuthorization" }];
-        reject(@"Error: requestAlwaysAuthorization", @"Could not requestAlwaysAuthorization", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"requestWhenInUseAuthorization", @"Could not requestWhenInUseAuthorization", error);
     }
 }
 
@@ -535,8 +505,8 @@ RCT_REMAP_METHOD(getRangedRegions,
         }
         resolve(regionArray);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in getRangedRegions" }];
-        reject(@"Error: getRangedRegions", @"Could not getRangedRegions", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"getRangedRegions", @"Could not getRangedRegions", error);
     }
 }
 
@@ -560,8 +530,8 @@ RCT_REMAP_METHOD(getMonitoredRegions,
         }
         resolve(regionArray);
     } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:@{ @"message": @"Error in getMonitoredRegions" }];
-        reject(@"Error: getMonitoredRegions", @"Could not getMonitoredRegions", error);
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"getMonitoredRegions", @"Could not getMonitoredRegions", error);
     }
 }
 
@@ -769,7 +739,7 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 - (void)devicesManagerDidFailToStartDiscovery:(KTKDevicesManager *)manager withError:(NSError *)error {
     NSLog(@"Beacons: devicesManagerDidFailToStartDiscovery");
     if (hasListeners) {
-        [self sendEventWithName:@"discoveryDidFail" body:@{ @"error": @"Could not start discovery of beacons" }];
+        [self sendEventWithName:@"discoveryDidFail" body:@{ @"error": error.localizedDescription }];
     }
 }
 
