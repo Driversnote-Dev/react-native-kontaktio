@@ -684,15 +684,16 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
                                  @"firmwareVersion": device.firmwareVersion,
                                  @"batteryLevel": [NSNumber numberWithLong:device.batteryLevel],
                                  @"batteryPowered": @(device.batteryPowered),
-                                 @"hasConfigurationProfile": @(device.hasConfigurationProfile),
                                  @"transmissionPower": [self numberForTxPowerLevel:device.transmissionPower],
+                                 @"hasConfigurationProfile": @(device.hasConfigurationProfile),
                                  @"shuffled": @(device.shuffled),
                                  @"locked": @(device.locked),
+                                 // advertisingProfile not exposed since it will be replaced soon.
                                  @"model": [self stringForModel:device.model],
+                                 @"peripheral": device.peripheral.name,
                                  @"rssi": device.RSSI,
-//                                 @"distance": KTKCalculateDistanceFrom(device.transmissionPower, device.RSSI)
                                  @"updatedAt": @(device.updatedAt),
-                                 // TODO: Add other fields from KTKNearbyDevice
+//                                 @"distance": KTKCalculateDistanceFrom(device.transmissionPower, device.RSSI)
                                  }];
     }
 
