@@ -335,7 +335,7 @@ RCT_REMAP_METHOD(isDiscovering,
 }
 
 
-// RANGING & MONITORING
+// RANGING
 
 RCT_EXPORT_METHOD(startRangingBeaconsInRegion:(NSDictionary *)dict
                   startRangingBeaconsInRegion_resolver:(RCTPromiseResolveBlock)resolve
@@ -378,6 +378,33 @@ RCT_REMAP_METHOD(stopRangingBeaconsInAllRegions,
     }
 }
 
+RCT_REMAP_METHOD(getRangedRegions,
+                 getRangedRegions_resolver:(RCTPromiseResolveBlock)resolve
+                 getRangedRegions_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        NSSet<__kindof KTKBeaconRegion*>* regions = [self.beaconManager rangedRegions];
+
+        NSMutableArray *regionArray = [[NSMutableArray alloc] init];
+
+        for (KTKBeaconRegion *region in regions) {
+            NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+            beaconRegion[@"identifier"] = region.identifier;
+            beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+            if (region.major != nil) beaconRegion[@"major"] = region.major;
+            if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
+            [regionArray addObject:beaconRegion];
+        }
+        resolve(regionArray);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"getRangedRegions", @"Could not getRangedRegions", error);
+    }
+}
+
+// MONITORING
+
 RCT_EXPORT_METHOD(startMonitoringForRegion:(NSDictionary *)dict
                  startMonitoringForRegion_resolver:(RCTPromiseResolveBlock)resolve
                  startMonitoringForRegion_rejecter:(RCTPromiseRejectBlock)reject)
@@ -416,6 +443,31 @@ RCT_REMAP_METHOD(stopMonitoringForAllRegions,
     } @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
         reject(@"stopMonitoringForAllRegions", @"Could not stopMonitoringForAllRegions", error);
+    }
+}
+
+RCT_REMAP_METHOD(getMonitoredRegions,
+                 getMonitoredRegions_resolver:(RCTPromiseResolveBlock)resolve
+                 getMonitoredRegions_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        NSSet<__kindof KTKBeaconRegion*>* regions = [self.beaconManager monitoredRegions];
+
+        NSMutableArray *regionArray = [[NSMutableArray alloc] init];
+
+        for (KTKBeaconRegion *region in regions) {
+            NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+            beaconRegion[@"identifier"] = region.identifier;
+            beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+            if (region.major != nil) beaconRegion[@"major"] = region.major;
+            if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+
+            [regionArray addObject:beaconRegion];
+        }
+        resolve(regionArray);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"getMonitoredRegions", @"Could not getMonitoredRegions", error);
     }
 }
 
@@ -466,55 +518,6 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
     }
 }
 
-RCT_REMAP_METHOD(getRangedRegions,
-                 getRangedRegions_resolver:(RCTPromiseResolveBlock)resolve
-                 getRangedRegions_rejecter:(RCTPromiseRejectBlock)reject)
-{
-    @try {
-        NSSet<__kindof KTKBeaconRegion*>* regions = [self.beaconManager rangedRegions];
-
-        NSMutableArray *regionArray = [[NSMutableArray alloc] init];
-
-        for (KTKBeaconRegion *region in regions) {
-            NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
-            beaconRegion[@"identifier"] = region.identifier;
-            beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
-            if (region.major != nil) beaconRegion[@"major"] = region.major;
-            if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
-
-            [regionArray addObject:beaconRegion];
-        }
-        resolve(regionArray);
-    } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
-        reject(@"getRangedRegions", @"Could not getRangedRegions", error);
-    }
-}
-
-RCT_REMAP_METHOD(getMonitoredRegions,
-                 getMonitoredRegions_resolver:(RCTPromiseResolveBlock)resolve
-                 getMonitoredRegions_rejecter:(RCTPromiseRejectBlock)reject)
-{
-    @try {
-        NSSet<__kindof KTKBeaconRegion*>* regions = [self.beaconManager monitoredRegions];
-
-        NSMutableArray *regionArray = [[NSMutableArray alloc] init];
-
-        for (KTKBeaconRegion *region in regions) {
-            NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
-            beaconRegion[@"identifier"] = region.identifier;
-            beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
-            if (region.major != nil) beaconRegion[@"major"] = region.major;
-            if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
-
-            [regionArray addObject:beaconRegion];
-        }
-        resolve(regionArray);
-    } @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
-        reject(@"getMonitoredRegions", @"Could not getMonitoredRegions", error);
-    }
-}
 
 // ---------
 // LISTENERS
