@@ -90,34 +90,6 @@ RCT_EXPORT_MODULE()
     // Remove upstream listeners, stop unnecessary background tasks
 }
 
-- (void)calendarEventReminderReceived:(NSNotification *)notification
-{
-    NSString *eventName = notification.userInfo[@"name"];
-    if (hasListeners) { // Only send events if anyone is listening
-        [self sendEventWithName:@"EventReminder" body:@{@"name": eventName}];
-    }
-}
-
-
-RCT_EXPORT_METHOD(test)
-{
-    NSLog(@"This is the first test method of the Kontakt.io package!");
-}
-
-// Promise
-RCT_REMAP_METHOD(findEvents,
-                 findEvents_resolver:(RCTPromiseResolveBlock)resolve
-                 findEvents_rejecter:(RCTPromiseRejectBlock)reject)
-{
-    NSArray *events = @[@"one", @"two", @"three"];
-    if (events) {
-        resolve(events);
-    } else {
-        NSError *error;
-        reject(@"no_events", @"There were no events", error);
-    }
-}
-
 
 // ---------
 // HELPER METHODS
@@ -168,7 +140,6 @@ RCT_REMAP_METHOD(findEvents,
                                                                         identifier:identifier];
     beaconRegion.notifyEntryStateOnDisplay = YES;
 
-    NSLog(@"beacon region created!");
     return beaconRegion;
 }
 
@@ -242,6 +213,17 @@ RCT_REMAP_METHOD(findEvents,
     return info;
 }
 
+-(NSString *)nameForAuthorizationStatus:(CLAuthorizationStatus)authorizationStatus
+{
+    switch (authorizationStatus) {
+        case kCLAuthorizationStatusAuthorizedAlways:    return @"authorizedAlways";
+        case kCLAuthorizationStatusAuthorizedWhenInUse: return @"authorizedWhenInUse";
+        case kCLAuthorizationStatusDenied:              return @"denied";
+        case kCLAuthorizationStatusNotDetermined:       return @"notDetermined";
+        case kCLAuthorizationStatusRestricted:          return @"restricted";
+    }
+}
+
 // ---------
 // EXPOSED METHODS
 // ---------
@@ -288,68 +270,67 @@ RCT_EXPORT_METHOD(configure:(NSDictionary *)dict
 
 // DISCOVERY
 
-RCT_EXPORT_METHOD(startScanning:(NSDictionary *)dict
-                  startScanning_resolver:(RCTPromiseResolveBlock)resolve
-                  startScanning_rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(startDiscovery:(NSDictionary *)dict
+                  startDiscovery_resolver:(RCTPromiseResolveBlock)resolve
+                  startDiscovery_rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
         if (dict == nil || dict[@"interval"] == nil) {
             [self.devicesManager startDevicesDiscovery];
         } else {
             self.discoveryInterval = [RCTConvert NSTimeInterval:dict[@"interval"]];
-            NSLog(@"else case: interval from dict: %@, interval from variable: %@", dict[@"interval"], @(self.discoveryInterval));
             [self.devicesManager startDevicesDiscoveryWithInterval:self.discoveryInterval];
         }
         resolve(nil);
     } @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
-        reject(@"startScanning", @"Could not start beacon discovery", error);
+        reject(@"startDiscovery", @"Could not start beacon discovery", error);
     }
 }
 
 
-RCT_REMAP_METHOD(stopScanning,
-                  stopScanning_resolver:(RCTPromiseResolveBlock)resolve
-                  stopScanning_rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(stopDiscovery,
+                  stopDiscovery_resolver:(RCTPromiseResolveBlock)resolve
+                  stopDiscovery_rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
         [self.devicesManager stopDevicesDiscovery];
         resolve(nil);
     } @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
-        reject(@"stopScanning", @"Could not stop beacon discovery", error);
+        reject(@"stopDiscovery", @"Could not stop beacon discovery", error);
     }
 }
 
-RCT_REMAP_METHOD(restartScanning,
-                 restartScanning_resolver:(RCTPromiseResolveBlock)resolve
-                 restartScanning_rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(restartDiscovery,
+                 restartDiscovery_resolver:(RCTPromiseResolveBlock)resolve
+                 restartDiscovery_rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
         [self.devicesManager restartDeviceDiscoveryWithCompletion:^(NSError *error) {
             NSLog(@"ERROR in restartScanning: %@", error.localizedDescription);
             if (error != nil) {
-                [NSException raise:@"Cannot restart scanning" format:@"error in restartDeviceDiscoveryWithCompletion"];
+                [NSException raise:@"Cannot restart beacon discovery" format:@"error in restartDeviceDiscoveryWithCompletion"];
             }
         }];
         resolve(nil);
     } @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
-        reject(@"restartScanning", @"Could not restart beacon discovery", error);
+        reject(@"restartDiscovery", @"Could not restart beacon discovery", error);
     }
 }
 
 // is discovering (TODO: test)
-RCT_REMAP_METHOD(isScanning,
-                 isScanning_resolver:(RCTPromiseResolveBlock)resolve
-                 isScanning_rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(isDiscovering,
+                 isDiscovering_resolver:(RCTPromiseResolveBlock)resolve
+                 isDiscovering_rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
         BOOL isDiscovering = [self.devicesManager isDiscovering];
         resolve(@(isDiscovering));
     } @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
-        reject(@"isScanning", @"Could not check scan/discovery status", error);
+        reject(@"isDiscovering", @"Could not check discovery status", error);
     }
 }
 
@@ -539,16 +520,6 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 // LISTENERS
 // ---------
 
--(NSString *)nameForAuthorizationStatus:(CLAuthorizationStatus)authorizationStatus
-{
-    switch (authorizationStatus) {
-        case kCLAuthorizationStatusAuthorizedAlways:    return @"authorizedAlways";
-        case kCLAuthorizationStatusAuthorizedWhenInUse: return @"authorizedWhenInUse";
-        case kCLAuthorizationStatusDenied:              return @"denied";
-        case kCLAuthorizationStatusNotDetermined:       return @"notDetermined";
-        case kCLAuthorizationStatusRestricted:          return @"restricted";
-    }
-}
 
 - (void)beaconManager:(KTKBeaconManager *)manager didChangeLocationAuthorizationStatus:(CLAuthorizationStatus)status {
     NSString *statusName = [self nameForAuthorizationStatus:status];
@@ -619,7 +590,7 @@ RCT_REMAP_METHOD(getMonitoredRegions,
 - (void)beaconManager:(KTKBeaconManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(__kindof KTKBeaconRegion *)region {
 
     if (self.dropEmptyRanges && beacons.count == 0) {
-        NSLog(@"Beacons: no beacons ranged");
+        // No beacons ranged
         return;
     }
 
@@ -680,9 +651,9 @@ RCT_REMAP_METHOD(getMonitoredRegions,
     for (KTKNearbyDevice *device in devices) {
 
         // Investigate for future version
-        if (1 == 2) {
-            if (self.connectNearbyBeacons) {
-                NSLog(@"entered else case");
+        if (self.connectNearbyBeacons) {
+
+            @try {
                 // Connect to nearby devices is necessary in iOS to get major, minor and UUID
                 KTKDeviceConnection *connection = [[KTKDeviceConnection alloc] initWithNearbyDevice:device];
 
@@ -695,11 +666,11 @@ RCT_REMAP_METHOD(getMonitoredRegions,
                         NSLog(@"in read CONFIGuration uniqueId: %@, uniqueId from config: %@, uuid: %@, minor: %@", device.uniqueID, configuration.uniqueID, [configuration.proximityUUID UUIDString], configuration.minor);
                     } else {
                         NSLog(@"in read configuration: beacon with uniqueId %@, error: %@", device.uniqueID, error.localizedDescription);
-                        //                    [NSException raise:@"Error in readConfigurationWithCompletion" format:@"%@", error.localizedDescription];
+                        [NSException raise:@"Error in readConfigurationWithCompletion" format:@"%@", error.localizedDescription];
                     }
                 }];
-            } else {
-                //
+            } @catch (NSException *exception) {
+                errorMessage = @"Error while trying to establish beacon connection";
             }
         }
 

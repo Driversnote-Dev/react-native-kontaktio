@@ -482,17 +482,17 @@ The following two objects are the main players of this module and will be referr
 
 | Method                         | Type |Description                     |
 |:-------------------------------|:-----|:--------------------------------|
-| **init('KontaktAPIKey')** | General |(*optional*) Add your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but for **connecting** to your beacons. |
-| **configure({ ... })**          | General | (*optional*) Configure scanning with the configuration options described below |
-| **startScanning({ interval })**        | Scanning | starts general scanning for the discovery of beacons not constrained to any region. Optionally an object with the field `interval` with a time in milliseconds may be passed with the method call. Scanning will be paused for the time of the interval. If beacons are discovered in the proximity of your device the **didDiscoverDevices** event will be triggered |
-| **stopScanning**         | Scanning | stops scanning for all provided regions |
-| **restartScanning**      | Scanning | stops and starts scanning again (NOT FULLY TESTED YET). |
-| **isScanning**      | Scanning | fulfills the Promise with *true* if scanning is currently in progress. |
+| **init('KontaktAPIKey')** | General |(*optional*) Add your `Kontakt.io` API-Key as a string. It's not needed for regular beacon ranging/monitoring/discovery, but for **connecting** to your beacons (i.e. when setting the configuration `connectNearbyBeacons` to true). |
+| **configure({ ... })**          | General | (*optional*) Configuration options for beacon ranging/monitoring/discovery. Possible configurations can be found in the section below. |
+| **startDiscovery({ interval })**        | Discovery | starts general discovery of beacons not constrained to any region. Optionally an object with the field `interval` with a time in *milliseconds* may be passed with the method call. Discovery will be paused for the time of the interval. If beacons are discovered in the proximity of your device the **didDiscoverDevices** event will be triggered |
+| **stopDiscovery**         | Discovery | stops discovery for all provided regions |
+| **restartDiscovery**      | Discovery | stops and starts discovery again |
+| **isDiscovering**      | Discovery | fulfills the Promise with *true* if beacon discovery is currently in progress. |
 | **startRangingBeaconsInRegion**        | Ranging | starts ranging in provided `region`. If beacons are ranged in the proximity of your device the **didRangeBeacons** event will be triggered |
 | **stopRangingBeaconsInRegion**         | Ranging | stops ranging for the provided `region` |
 | **stopRangingBeaconsInAllRegions**         | Ranging | stops ranging for all regions |
 | **getRangedRegions**         | Ranging | returns all currently ranged `regions` |
-| **startMonitoringForRegion**        | Monitoring | starts monitoring in provided `region`. If beacons of a monitored region appear in the proximity of your device the **didEnterRegion** event will be triggered. |
+| **startMonitoringForRegion**        | Monitoring | starts monitoring in provided `region`. If beacons of a monitored region appear in the proximity of your device the **didEnterRegion** event will be triggered ,if these beacons are out of proximity for more than  **didExitRegion** event . |
 | **stopMonitoringForRegion**         | Monitoring | stops monitoring for the  provided region |
 | **stopMonitoringForAllRegions**         | Monitoring | stops monitoring for all currently monitored regions |
 | **getMonitoredRegions**         | Monitoring | Returns all currently monitored `regions` |
@@ -509,8 +509,8 @@ A config object can be passed to the call of the `configure` method with the fol
 | Configuration              | Description                       |
 |:---------------------------|:----------------------------------|
 | **dropEmptyRanges**        | If `true`, `didDiscoverDevices` and `didRangeBeacons` events don't fire if the array of beacons is empty. Default is true |
-| **connectNearbyBeacons**     | Connect to all discovered beacons in vicinity to get iBeacon values like major, minor and uuid while scanning. Default is false. CURRENTLY THIS VALUE HAS NO EFFECT. IN THE CURRENT VERSION beacon connection iS NOT IMPLEMENTED YET. |
-| **invalidationAge**       | In milliseconds. It sets the time the device should wait until it "forgets" a formerly scanned beacon when it can't detect it anymore. The default is 10 seconds. |
+| **invalidationAge**       | In milliseconds. It sets the time the device should wait until it "forgets" a formerly scanned beacon when it can't detect it anymore. The default is `10000` (i.e. 10 seconds). |
+| **connectNearbyBeacons**     | Connect to all discovered beacons in vicinity to get iBeacon values like major, minor and uuid during beacon discovery. Default is false. THIS FEATURE IS NOT FUNCTIONAL. SO FAR ONLY NATIVE LOGS AND ERRORS ARE TRIGGERED. YOU CAN TEST IT FOR EXPERIMENTAL PURPOSES AND ADJUST THE IOS CODE IF YOU KNOW OBJECTIVE C. Pull requests are welcome! |
 
 
 ## Further notes

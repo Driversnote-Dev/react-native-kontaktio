@@ -25,9 +25,6 @@ export const KontaktModule = NativeModules.KontaktBeacons;
 export const configure = (params = null) => (
   KontaktModule.configure(params)
 );
-export const stopScanning = KontaktModule.stopScanning;
-export const restartScanning = KontaktModule.restartScanning;
-export const isScanning = KontaktModule.isScanning;
 
 
 let Kontakt = {};
@@ -42,6 +39,9 @@ if (Platform.OS === "android") {
   const disconnect = KontaktModule.disconnect;
   const isConnected = KontaktModule.isConnected;
   const startScanning = KontaktModule.startScanning;
+  const stopScanning = KontaktModule.stopScanning;
+  const restartScanning = KontaktModule.restartScanning;
+  const isScanning = KontaktModule.isScanning;
   const setBeaconRegion = (region = null) => KontaktModule.setBeaconRegion(region);
   const setBeaconRegions = (regionsArray = null) => KontaktModule.setBeaconRegions(regionsArray);
 
@@ -87,9 +87,12 @@ if (Platform.OS === "ios") {
   const init = (apiKey = null) => (
     KontaktModule.init(apiKey)
   );
-  const startScanning = (interval = null) => (
-    KontaktModule.startScanning(interval)
+  const startDiscovery = (interval = null) => (
+    KontaktModule.startDiscovery(interval)
   );
+  const stopDiscovery = KontaktModule.stopDiscovery;
+  const restartDiscovery = KontaktModule.restartDiscovery;
+  const isDiscovering = KontaktModule.isDiscovering;
 
   const getAuthorizationStatus = KontaktModule.getAuthorizationStatus;
   const requestWhenInUseAuthorization = KontaktModule.requestWhenInUseAuthorization;
@@ -113,10 +116,10 @@ if (Platform.OS === "ios") {
     requestWhenInUseAuthorization,
     requestAlwaysAuthorization,
     // discovery
-    startScanning,
-    stopScanning,
-    restartScanning,
-    isScanning,
+    startDiscovery,
+    stopDiscovery,
+    restartDiscovery,
+    isDiscovering,
     // ranging
     startRangingBeaconsInRegion,
     stopRangingBeaconsInRegion,
