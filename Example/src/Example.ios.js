@@ -18,9 +18,9 @@ const {
   requestWhenInUseAuthorization,
   requestAlwaysAuthorization,
   // discovery
-  startScanning,
-  stopScanning,
-  restartScanning,
+  startDiscovery,
+  stopDiscovery,
+  restartDiscovery,
   // ranging
   startRangingBeaconsInRegion,
   stopRangingBeaconsInRegion,
@@ -80,7 +80,7 @@ export default class IBeaconExample extends Component {
         invalidationAge: 5000,   // time to forget lost beacon
         // connectNearbyBeacons: false,   // true not working yet
       }))
-      .then(() => requestAlwaysAuthorization())
+      .then(() => this._requestAlwaysAuthorization())
       // .then(() => requestWhenInUseAuthorization())
       .then(() => console.log('Successfully initialized beacon ranging, monitoring and scanning'))
       .catch(error => console.log('error', error));
@@ -185,23 +185,23 @@ export default class IBeaconExample extends Component {
 
   /* --- Discovering beacons --- */
 
-  _startScanning = () => {
-    startScanning({ interval: 1000 })
+  _startDiscovery = () => {
+    startDiscovery({ interval: 1000 })
       .then(() => this.setState({ scanning: true, discoveredBeacons: [] }))
-      .then(() => console.log('started scanning'))
-      .catch(error => console.log('[startScanning]', error));
+      .then(() => console.log('started discovery'))
+      .catch(error => console.log('[startDiscovery]', error));
   };
-  _stopScanning = () => {
-    stopScanning()
+  _stopDiscovery = () => {
+    stopDiscovery()
       .then(() => this.setState({ scanning: false, discoveredBeacons: [] }))
-      .then(() => console.log('stopped scanning'))
-      .catch(error => console.log('[stopScanning]', error));
+      .then(() => console.log('stopped discovery'))
+      .catch(error => console.log('[stopDiscovery]', error));
   };
-  _restartScanning = () => {
-    restartScanning()
+  _restartDiscovery = () => {
+    restartDiscovery()
       .then(() => this.setState({ scanning: true, discoveredBeacons: [] }))
-      .then(() => console.log('restarted scanning'))
-      .catch(error => console.log('[restartScanning]', error));
+      .then(() => console.log('restarted discovery'))
+      .catch(error => console.log('[restartDiscovery]', error));
   };
 
   /* --- Ranging beacons --- */
@@ -383,9 +383,9 @@ export default class IBeaconExample extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          {this._renderButton('Start scan', this._startScanning, '#84e2f9')}
-          {this._renderButton('Stop scan', this._stopScanning, '#84e2f9')}
-          {this._renderButton('Restart scan', this._restartScanning, '#84e2f9')}
+          {this._renderButton('Start discovery', this._startDiscovery, '#84e2f9')}
+          {this._renderButton('Stop', this._stopDiscovery, '#84e2f9')}
+          {this._renderButton('Restart', this._restartDiscovery, '#84e2f9')}
         </View>
         <View style={styles.buttonContainer}>
           {this._renderButton('Start ranging', this._startRanging, '#ABE88D')}
