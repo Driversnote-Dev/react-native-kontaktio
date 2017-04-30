@@ -11,7 +11,7 @@ import {
 import Kontakt from 'react-native-kontaktio';
 
 const {
-  init,
+  connect,
   configure,
   disconnect,
   isConnected,
@@ -73,7 +73,7 @@ export default class IBeaconExample extends Component {
 
   componentDidMount() {
     // Initialization, configuration and adding of beacon regions
-    init(
+    connect(
       'MY_KONTAKTIO_API_KEY',
       [IBEACON],
     )
@@ -172,6 +172,7 @@ export default class IBeaconExample extends Component {
   componentWillUnmount() {
     // Disconnect beaconManager and set to it to null
     disconnect();
+    DeviceEventEmitter.removeAllListeners();
   }
 
   _startScanning = () => {

@@ -33,15 +33,25 @@ let Kontakt = {};
  * Android
  */
 if (Platform.OS === "android") {
-  const init = (apiKey = null, beaconTypes = null) => (
-    KontaktModule.init(apiKey, beaconTypes)
+  const connect = (apiKey = null, beaconTypes = null) => (
+    KontaktModule.connect(apiKey, beaconTypes)
   );
+  /**
+   * @deprecated
+   * 'init' was renamed to 'connect' - please use 'connect'
+   */
+  const init = (apiKey = null, beaconTypes = null) => (
+    KontaktModule.connect(apiKey, beaconTypes)
+  );
+
   const disconnect = KontaktModule.disconnect;
   const isConnected = KontaktModule.isConnected;
+
   const startScanning = KontaktModule.startScanning;
   const stopScanning = KontaktModule.stopScanning;
   const restartScanning = KontaktModule.restartScanning;
   const isScanning = KontaktModule.isScanning;
+
   const setBeaconRegion = (region = null) => KontaktModule.setBeaconRegion(region);
   const setBeaconRegions = (regionsArray = null) => KontaktModule.setBeaconRegions(regionsArray);
 
@@ -51,7 +61,7 @@ if (Platform.OS === "android") {
   const ANY_MAJOR = KontaktModule.ANY_MAJOR;
 
   Kontakt = {
-    init,
+    connect,
     configure,
     disconnect,
     isConnected,
@@ -68,7 +78,6 @@ if (Platform.OS === "android") {
     DEFAULT_KONTAKT_NAMESPACE_ID,
     ANY_MAJOR,
     ANY_MINOR,
-    ANDRE_CONSTANT,
     // Configurations
     scanMode,
     scanPeriod,
@@ -76,6 +85,7 @@ if (Platform.OS === "android") {
     forceScanConfiguration,
     monitoringEnabled,
     monitoringSyncInterval,
+    init,   // @deprecated
   };
 }
 

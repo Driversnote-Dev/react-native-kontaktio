@@ -7,9 +7,10 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 
+import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
 import com.kontakt.sdk.android.ble.device.BeaconRegion;
-import com.kontakt.sdk.android.common.KontaktSDK;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
+import com.kontakt.sdk.android.common.KontaktSDK;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     // ------------
 
     @ReactMethod
-    public void init(String apiKey, ReadableArray beaconTypes, Promise promise) {
+    public void connect(String apiKey, ReadableArray beaconTypes, Promise promise) {
         try {
             beaconProximityManager = new BeaconProximityManager(reactAppContext, apiKey);
             beaconProximityManager.init(beaconTypes, promise);
@@ -88,8 +89,16 @@ public class KontaktModule extends ReactContextBaseJavaModule {
             scanManager = beaconProximityManager.getScanManager();
             regionManager = beaconProximityManager.getRegionManager();
 
+            // connect to beaconManager
+            proximityManager.connect(new OnServiceReadyListener() {
+                @Override
+                public void onServiceReady() {
+                    // FIXME: error: local variable promise is accessed from within inner class; needs to be declared final
+//                     promise.resolve(null);
+                }
+            });
+            // TODO: Remove this resolve and use the one inside onServiceReady
             promise.resolve(null);
-
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
         }

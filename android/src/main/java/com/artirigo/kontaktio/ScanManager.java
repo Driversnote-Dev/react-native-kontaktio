@@ -3,7 +3,6 @@ package com.artirigo.kontaktio;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
 
-import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
 
 public class ScanManager {
@@ -18,13 +17,7 @@ public class ScanManager {
             if (proximityManager.isConnected()) {
                 proximityManager.startScanning();
             } else {
-                // connect if not connected yet
-                proximityManager.connect(new OnServiceReadyListener() {
-                    @Override
-                    public void onServiceReady() {
-                        proximityManager.startScanning();
-                    }
-                });
+                throw new Exception("Did you forget to call connect() or did the connect() call fail? The beacon manager is not connected.");
             }
             promise.resolve(null);
         } catch (Exception e) {
@@ -50,16 +43,10 @@ public class ScanManager {
             if (proximityManager.isScanning()) {
                 proximityManager.restartScanning();
             } else {
-                // start scanning if device is not scanning already
                 if (proximityManager.isConnected()) {
                     proximityManager.startScanning();
                 } else {
-                    proximityManager.connect(new OnServiceReadyListener() {
-                        @Override
-                        public void onServiceReady() {
-                            proximityManager.startScanning();
-                        }
-                    });
+                    throw new Exception("Did you forget to call connect() or did the connect() call fail? The beacon manager is not connected.");
                 }
             }
             promise.resolve(null);
