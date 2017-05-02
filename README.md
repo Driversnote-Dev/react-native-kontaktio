@@ -409,7 +409,7 @@ The following two objects are the main players of this module and will be referr
 
 ##### `beacon`
 
-* In contrast to the *Android* version the `beacon` object has a different shape depending on whether 1) scanning or 2) ranging/monitoring is used.
+* In contrast to the *Android* version the `beacon` object has a different shape depending on whether 1) discovering or 2) ranging/monitoring is used.
 
 1. While ranging or monitoring
 
@@ -425,7 +425,7 @@ The following two objects are the main players of this module and will be referr
 	}
 	```
 
-2. While scanning
+2. While discovering
 
 	```js
 	{
@@ -434,12 +434,14 @@ The following two objects are the main players of this module and will be referr
 		firmwareVersion: string
 		batteryLevel: number (percentage as int) // batteryPower for Android
 		batteryPowered: boolean
-		hasConfigurationProfile: boolean
 		transmissionPower: number  // txPower for Android
-		rssi: number
-		model: string
-		locked: boolean
+		hasConfigurationProfile: boolean
 		shuffled: boolean
+		locked: boolean
+		model: string
+		peripheral: string
+		rssi: number
+		updatedAt: number
 	}
 	```
 
@@ -449,20 +451,22 @@ The following two objects are the main players of this module and will be referr
 {
 	identifier
 	uuid
+	major
+	minor
 }
 ```
 
 #### Events
 
-* Ranging, monitoring and scanning are three different processes. In contrast to the *Android* version they are separated into different events and methods. Pay attention to the type column.
-* Scanning (i.e. `didDiscoverDevices`) can only detect Kontakt.io beacons. Ranging and monitoring also works with beacons of other manufacturers.
+* Ranging, monitoring and discovering are three different processes. In contrast to the *Android* version they are separated into different events and methods. Pay attention to the type column.
+* Discovery (i.e. `didDiscoverDevices`) can only detect Kontakt.io beacons. Ranging and monitoring also works with beacons of other manufacturers.
 
 ##### Event overview
 
 | Event                      | Type | Description                       |
 |:---------------------------|:-----|:----------------------------------|
-| **didDiscoverDevices**     | Scanning | Sends `{ beacons }` if Kontakt.io beacons are in range. `beacons` and `region` have the form as defined above. |
-| **devicesManagerDidFailToStartDiscovery**     | Scanning | Sends `{ error }` if scanning can't be started. |
+| **didDiscoverDevices**     | Discovery | Sends `{ beacons }` if Kontakt.io beacons are in range. `beacons` and `region` have the form as defined above. |
+| **devicesManagerDidFailToStartDiscovery**     | Discovery | Sends `{ error }` if scanning can't be started. |
 | **didRangeBeacons**       | Ranging | Sends `{ beacons, region }` with currently ranged beacons in the region. If the configuration `dropEmptyRanges` is set to `true`, the event is not send if the array of beacons is empty. |
 | **didStartMonitoringForRegion**         | Monitoring | Sends `{ region }`, the beacon region for which monitoring started. |
 | **monitoringDidFailForRegion**         | Monitoring | Sends `{ region, error }`, the beacon region for which the error `error` occurred. |
@@ -503,8 +507,6 @@ The following two objects are the main players of this module and will be referr
 #### Configuration
 
 A config object can be passed to the call of the `configure` method with the following fields:
-
-**ATTENTION**: Configurations are not fully tested and don't work properly yet!
 
 | Configuration              | Description                       |
 |:---------------------------|:----------------------------------|
