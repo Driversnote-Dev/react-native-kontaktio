@@ -21,6 +21,7 @@ const {
   isScanning,
   // setBeaconRegion,
   setBeaconRegions,
+  getBeaconRegions,
   setEddystoneNamespace,
   IBEACON,
   EDDYSTONE,
@@ -241,6 +242,11 @@ export default class IBeaconExample extends Component {
       })
       .catch(error => console.log('[isConnected]', error));
   };
+  _getBeaconRegions = () => {
+    getBeaconRegions()
+      .then(regions => console.log('regions', regions))
+      .catch(error => console.log('[getBeaconRegions]', error));
+  };
 
   /**
    * Helper function used to identify equal beacons
@@ -306,6 +312,9 @@ export default class IBeaconExample extends Component {
         <View style={styles.buttonContainer}>
           {this._renderButton('Is scanning?', this._isScanning, '#f2a2a2')}
           {this._renderButton('Is connected?', this._isConnected, '#f2a2a2')}
+        </View>
+        <View style={styles.buttonContainer}>
+          {this._renderButton('Beacon regions (log)', this._getBeaconRegions, '#F4ED5A')}
         </View>
         {this._renderStatusText()}
         <ScrollView>

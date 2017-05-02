@@ -4,6 +4,10 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
 
 import com.kontakt.sdk.android.ble.device.BeaconRegion;
 import com.kontakt.sdk.android.ble.device.EddystoneNamespace;
@@ -144,10 +148,26 @@ class RegionManager {
     /**
      * Retrive currently scanned regions
      */
-    void getBeaconRegions() {
-        // The function getIBeaconRegions() in the ScanContext class has to be used
-        // but currently the scanContext is not exposed by ProximityManagerImpl class,
-        // only the ScanContext.builder exists there as a private field.
+    void getBeaconRegions(Promise promise) {
+        try {
+            Collection<IBeaconRegion> iBeaconRegions = proximityManager.spaces().getIBeaconRegions();
+
+            WritableArray regionsArray = new WritableNativeArray();
+            for (IBeaconRegion region : iBeaconRegions) {
+                WritableMap regionMap = new WritableNativeMap();
+                regionMap.putString("identifier", region.getIdentifier());
+                regionMap.putString("uuid", String.valueOf(region.getProximity()));
+                regionMap.putString("secureUuid", String.valueOf(region.getSecureProximity()));
+                regionMap.putInt("major", region.getMajor());
+                regionMap.putInt("minor", region.getMinor());
+
+                regionsArray.pushMap(regionMap);
+            }
+
+            promise.resolve(regionsArray);
+        } catch (Exception e) {
+            promise.reject(Constants.EXCEPTION, e);
+        }
     }
 
     void setEddystoneNamespace(ReadableMap namespaceParams, Promise promise) {

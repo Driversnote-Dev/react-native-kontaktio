@@ -54,6 +54,7 @@ if (Platform.OS === "android") {
 
   const setBeaconRegion = (region = null) => KontaktModule.setBeaconRegion(region);
   const setBeaconRegions = (regionsArray = null) => KontaktModule.setBeaconRegions(regionsArray);
+  const getBeaconRegions = KontaktModule.getBeaconRegions;
 
   const setEddystoneNamespace = (namespace = null) => KontaktModule.setEddystoneNamespace(namespace);
 
@@ -73,6 +74,7 @@ if (Platform.OS === "android") {
     isScanning,
     setBeaconRegion,
     setBeaconRegions,
+    getBeaconRegions,
     setEddystoneNamespace,
     // Constants
     IBEACON,
