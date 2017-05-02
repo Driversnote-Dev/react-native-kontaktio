@@ -55,6 +55,8 @@ if (Platform.OS === "android") {
   const setBeaconRegion = (region = null) => KontaktModule.setBeaconRegion(region);
   const setBeaconRegions = (regionsArray = null) => KontaktModule.setBeaconRegions(regionsArray);
 
+  const setEddystoneNamespace = (namespace = null) => KontaktModule.setEddystoneNamespace(namespace);
+
   const DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID = KontaktModule.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID;
   const DEFAULT_KONTAKT_NAMESPACE_ID = KontaktModule.DEFAULT_KONTAKT_NAMESPACE_ID;
   const ANY_MINOR = KontaktModule.ANY_MINOR;
@@ -71,6 +73,7 @@ if (Platform.OS === "android") {
     isScanning,
     setBeaconRegion,
     setBeaconRegions,
+    setEddystoneNamespace,
     // Constants
     IBEACON,
     EDDYSTONE,

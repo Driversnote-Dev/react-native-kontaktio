@@ -21,6 +21,7 @@ const {
   isScanning,
   // setBeaconRegion,
   setBeaconRegions,
+  setEddystoneNamespace,
   IBEACON,
   EDDYSTONE,
   // Configurations
@@ -68,6 +69,7 @@ export default class IBeaconExample extends Component {
   state = {
     scanning: false,
     beacons: [],
+    eddystones: [],
     statusText: null,
   };
 
@@ -75,7 +77,7 @@ export default class IBeaconExample extends Component {
     // Initialization, configuration and adding of beacon regions
     connect(
       'MY_KONTAKTIO_API_KEY',
-      [IBEACON],
+      [IBEACON, EDDYSTONE],
     )
       .then(() => configure({
         scanMode: scanMode.BALANCED,
@@ -89,6 +91,7 @@ export default class IBeaconExample extends Component {
         monitoringSyncInterval: monitoringSyncInterval.DEFAULT,
       }))
       .then(() => setBeaconRegions([region1, region2]))
+      .then(() => setEddystoneNamespace())
       .catch(error => console.log('error', error));
 
     // Beacon listeners
@@ -164,6 +167,35 @@ export default class IBeaconExample extends Component {
       'monitoringCycle',
       ({ status }) => {
         console.log('monitoringCycle', status);
+      }
+    );
+
+    /*
+     * Eddystone
+     */
+
+    DeviceEventEmitter.addListener(
+      'eddystoneDidAppear',
+      ({ eddystone, namespace }) => {
+        console.log('eddystoneDidAppear', eddystone, namespace);
+
+        this.setState({
+          eddystones: this.state.eddystones.concat(eddystone)
+        });
+      }
+    );
+
+    DeviceEventEmitter.addListener(
+      'namespaceDidEnter',
+      ({ status }) => {
+        console.log('namespaceDidEnter', status);
+      }
+    );
+
+    DeviceEventEmitter.addListener(
+      'namespaceDidExit',
+      ({ status }) => {
+        console.log('namespaceDidExit', status);
       }
     );
 

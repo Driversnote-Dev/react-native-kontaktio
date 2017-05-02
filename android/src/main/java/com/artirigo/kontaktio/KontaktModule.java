@@ -158,4 +158,9 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     public void setBeaconRegions(ReadableArray regionsParams, Promise promise) {
         regionManager.setBeaconRegions(regionsParams, promise);
     }
+
+    @ReactMethod
+    public void setEddystoneNamespace(ReadableMap namespaceParams, Promise promise) {
+        regionManager.setEddystoneNamespace(namespaceParams, promise);
+    }
 }
