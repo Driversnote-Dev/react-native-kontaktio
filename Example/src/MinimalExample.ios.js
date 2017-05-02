@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, NativeEventEmitter } from 'react-native';
 
 import Kontakt, { KontaktModule } from 'react-native-kontaktio';
-
 const { init, startScanning } = Kontakt;
 
 const kontaktEmitter = new NativeEventEmitter(KontaktModule);

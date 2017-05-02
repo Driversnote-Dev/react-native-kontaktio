@@ -7,7 +7,7 @@ SDK Versions:
 
 | OS             | SDK Version           |
 |:---------------|:----------------------|
-| **Android**    | [3.2.3](http://kontaktio.github.io/kontakt-android-sdk/3.2.3/Javadoc/) |
+| **Android**    | [3.3.0](http://kontaktio.github.io/kontakt-android-sdk/3.3.0/Javadoc/) |
 | **iOS**        | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/) |
 
 #### Why should I use this module over other beacon modules?
@@ -182,11 +182,12 @@ Please take a look at [Example/src/Example.android.js](/Example/src/Example.andr
 import React, { Component } from 'react';
 import { View, DeviceEventEmitter } from 'react-native';
 
-import { init, startScanning } from 'react-native-kontaktio';
+import Kontakt from 'react-native-kontaktio';
+const { connect, startScanning } = Kontakt;
 
 export default class MinimalExample extends Component {
   componentDidMount() {
-    init()
+    connect()
       .then(() => startScanning())
       .catch(error => console.log('error', error));
 
@@ -213,7 +214,6 @@ import React, { Component } from 'react';
 import { View, NativeEventEmitter } from 'react-native';
 
 import Kontakt, { KontaktModule } from 'react-native-kontaktio';
-
 const { init, startScanning } = Kontakt;
 
 const kontaktEmitter = new NativeEventEmitter(KontaktModule);
@@ -359,7 +359,7 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 
 | Method                                          | Description                     |
 |:------------------------------------------------|:--------------------------------|
-| **init('KontaktAPIKey', [IBEACON, EDDYSTONE])** | (*mandatory*) Initialize scanning for beacons. The first argument is your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but if you e.g. want the battery level of a beacon to be sent to your Konakt.io web panel in regular intervals (every 10 seconds). The second argument is an array of the beacon types you want to scan for. Two options are possible, the provided constants `IBEACON` or `EDDYSTONE`. The default call `init()`  |
+| **connect('KontaktAPIKey', [IBEACON, EDDYSTONE])** | (*mandatory*) Initialize scanning for beacons. The first argument is your `Kontakt.io` API-Key as a string. It's not needed for regular beacon scanning, but if you e.g. want the battery level of a beacon to be sent to your Konakt.io web panel in regular intervals (every 10 seconds). The second argument is an array of the beacon types you want to scan for. Two options are possible, the provided constants `IBEACON` or `EDDYSTONE`. The default call `init()`  |
 | **configure({ ... })**          | (*optional*) Configure scanning with the configuration options described below |
 | **setBeaconRegion(region)**      | (*optional*) Only beacons which fall into the provided `region` will be scanned and returned with the events described above. |
 | **setBeaconRegions([region1, region2, ... ])**     | (*optional*) Only beacons which fall into one of the provided regions in the array `regions` will be scanned and returned with the events described above. *Note*: In case you want to dynamically add or remove regions after scanning started you have call `restartScanning` right after `setBeaconRegions` for the change of regions to take effect. That is, first call `setBeaconRegions` with the changed array of regions (i.e. with the additional region you want to add or without the region you want to remove) and then call `restartScanning` right thereafter. |
@@ -369,8 +369,8 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 | **stopScanning**         | stops scanning for all provided regions |
 | **restartScanning**      | stops and starts scanning again. In case device was not scanning before, scanning is just started. |
 | **isScanning**      | fulfills the Promise with *true* if scanning is currently in progress. |
-| **disconnect**           | disconnect the Kontakt.io beacon scanner and set it to `null` |
-| **isConnected**           | fulfills the Promise with *true* if device is ready to scan (i.e. if `startScanning` or `restartScanning` was called at least once. |
+| **disconnect**           | disconnects the Kontakt.io beacon scanner (can be thought of the oppostive of `connect`) and sets it to `null` |
+| **isConnected**           | fulfills the Promise with *true* if device is ready to scan (i.e. after `connect` is called). |
 
 
 #### Configuration
