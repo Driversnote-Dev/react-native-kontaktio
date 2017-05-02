@@ -167,6 +167,10 @@ class RegionManager {
         }
     }
 
+//     void setEddystoneNamespaces(ReadableArray regionsParams, Promise promise) {
+//         // TODO: implement
+//     }
+
     /*
      * Eddystone namespace creator
      */

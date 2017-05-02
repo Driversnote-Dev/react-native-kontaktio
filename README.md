@@ -251,7 +251,7 @@ export default class MinimalExample extends Component {
 
 The following two objects are the main players of this module and will be referred to multiple times throughout this documentation:
 
-##### `beacon`
+##### `beacon` / `eddystone`
 
 ```js
 {
@@ -287,7 +287,7 @@ The following two objects are the main players of this module and will be referr
 }
 ```
 
-##### `region`
+##### `region` (iBeacons)
 
 ```js
 {
@@ -299,6 +299,17 @@ The following two objects are the main players of this module and will be referr
 }
 ```
 
+##### `namespace` (Eddystone)
+
+```js
+{
+	identifier
+	instanceId
+	namespace
+	secureNamespace
+}
+```
+
 #### Events
 
 ##### Event flow
@@ -306,30 +317,35 @@ The following two objects are the main players of this module and will be referr
 In case regions are defined, events will commonly occur in this order if 1) a beacon signal is detected, 2) the signal changes and 3) the signal is lost:
 
 1. detected
-	* regionDidEnter
-	* beaconDidAppear
+	* regionDidEnter / namespaceDidEnter
+	* beaconDidAppear / eddystoneDidAppear
 
 2. changed
-	* beaconsDidRange
+	* beaconsDidRange / eddystonesDidUpdate
 		* Sent whenever a change in proximity is detected.
 		* This event is sent separately for each currently scanned region if at least one of its beacons has changed.
 
 3. lost
-	* beaconDidDisappear
-	* regionDidExit
+	* beaconDidDisappear / eddystoneDidDisappear
+	* regionDidExit / namespaceDidExit
 
 
 ##### Event overview
 
-| Event                      | Description                       |
-|:---------------------------|:----------------------------------|
-| **beaconDidAppear**        | Sends `{ beacon, region }` if a beacon appears for the first time. `region` is one of the regions defined with `setBeaconRegion` or `setBeaconRegions` or the region *everywhere* if no region was defined. `beacon` and `region` have the form as defined above. |
-| **beaconDidDisappear**     | Sends `{ beacon, region }` if a beacon which was previously scanned is out of the range of the device. `region` is one of the regions defined with `setBeaconRegion` or `setBeaconRegions` or the region *everywhere* if no region was defined. `beacon` and `region` have the form as defined above. |
-| **beaconsDidUpdate**       | Sends `{ beacons, region }` if some property of beacons in that `region` changed. `beacons` is an array of beacons (with its `length` >= `1`) which changed in that `region`. Each `beacon` in that array has the form as described above. |
-| **regionDidEnter**         | Sends `{ region }`, the beacon region which was just entered (i.e. at least one beacon of that region was detected). `region` has the form as described above |
-| **regionDidExit**          | Sends `{ region }`, the beacon region which was just lost (i.e. the last remaining beacon of that region was not anymore in range and the time for keeping the beacon in the internal cache ran out as set with `activeCheckConfiguration`, i.e. never removed from cache with `DISABLED`, `3` seconds with `MINIMAL` and `10` seconds with `DEFAULT`). `region` has the form as described above |
-| **scanStatus**             | Sends `{ status }` where `status` is either `START`, `STOP` or `ERROR` depending on whether the scan for beacons started, stopped or a sudden error occurred while scanning |
-| **monitoringCycle**        | Sends `{ status }` where `status` is either `START` `STOP` depending on whether a scan cycle just started or stopped. The active period of a monitoring scan cycle is 8 seconds, the inactive (passive) period is 30 seconds long. Attention: Only sends events if `scanMode` is set to `MONITORING` |
+| Event                      | Beacon Type | Description                       |
+|:---------------------------|:------------|:----------------------------------|
+| **beaconDidAppear**        | iBeacon     | Sends `{ beacon, region }` if a beacon appears for the first time. `region` is one of the regions defined with `setBeaconRegion` or `setBeaconRegions` or the region *everywhere* if no region was defined. `beacon` and `region` have the form as defined above. |
+| **beaconDidDisappear**     | iBeacon     | Sends `{ beacon, region }` if a beacon which was previously scanned is out of the range of the device. `region` is one of the regions defined with `setBeaconRegion` or `setBeaconRegions` or the region *everywhere* if no region was defined. `beacon` and `region` have the form as defined above. |
+| **beaconsDidUpdate**       | iBeacon     | Sends `{ beacons, region }` if some property of beacons in that `region` changed. `beacons` is an array of beacons (with its `length` >= `1`) which changed in that `region`. Each `beacon` in that array has the form as described above. Sends multiple events if changes occur for beacons of different regions, one event for each region. |
+| **regionDidEnter**         | iBeacon     | Sends `{ region }`, the beacon region which was just entered (i.e. at least one beacon of that region was detected). `region` has the form as described above |
+| **regionDidExit**          | iBeacon     | Sends `{ region }`, the beacon region which was just lost (i.e. the last remaining beacon of that region was not anymore in range and the time for keeping the beacon in the internal cache ran out as set with `activeCheckConfiguration`, i.e. never removed from cache with `DISABLED`, `3` seconds with `MINIMAL` and `10` seconds with `DEFAULT`). `region` has the form as described above |
+| **eddystoneDidAppear**     | Eddystone   | Sends `{ eddystone, namespace }`   |
+| **eddystoneDidDisappear**  | Eddystone   | Sends `{ eddystone, namespace }`   |
+| **eddystonesDidUpdate**    | Eddystone   | Sends `{ eddystones, namespace }`  |
+| **namespaceDidEnter**      | Eddystone   | Sends `{ namespace }`              |
+| **namespaceDidExit**       | Eddystone   | Sends `{ namespace }`              |
+| **scanStatus**             | General     | Sends `{ status }` where `status` is either `START`, `STOP` or `ERROR` depending on whether the scan for beacons started, stopped or a sudden error occurred while scanning |
+| **monitoringCycle**        | General     | Sends `{ status }` where `status` is either `START` `STOP` depending on whether a scan cycle just started or stopped. The active period of a monitoring scan cycle is 8 seconds, the inactive (passive) period is 30 seconds long. Attention: Only sends events if `scanMode` is set to `MONITORING` |
 
 #### Methods
 
@@ -347,6 +363,7 @@ In case regions are defined, events will commonly occur in this order if 1) a be
 | **configure({ ... })**          | (*optional*) Configure scanning with the configuration options described below |
 | **setBeaconRegion(region)**      | (*optional*) Only beacons which fall into the provided `region` will be scanned and returned with the events described above. |
 | **setBeaconRegions([region1, region2, ... ])**     | (*optional*) Only beacons which fall into one of the provided regions in the array `regions` will be scanned and returned with the events described above. *Note*: In case you want to dynamically add or remove regions after scanning started you have call `restartScanning` right after `setBeaconRegions` for the change of regions to take effect. That is, first call `setBeaconRegions` with the changed array of regions (i.e. with the additional region you want to add or without the region you want to remove) and then call `restartScanning` right thereafter. |
+| **setEddystoneNamespace(namespace)**  | (*optional*) Only eddystone beacons which match the provided `namespace` will be scanned and returned with the events described above. |
 | **startScanning**        | starts scanning of beacons with given configuration and provided regions. At the first call it connects the set regions and configurations which is a prerequisite for scanning |
 | **stopScanning**         | stops scanning for all provided regions |
 | **restartScanning**      | stops and starts scanning again. In case device was not scanning before, scanning is just started. |
@@ -521,6 +538,10 @@ A config object can be passed to the call of the `configure` method with the fol
 	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
 * A physical device must be used for testing, at best you have some Kontakt.io beacons at your disposal, configure them via their management console and have your API-key handy.
 
-## Coming soon:
+## ToDo:
 
-* Android: Eddystone support (Currently `EDDYSTONE` beacons can be scanned, but the corresponding functions are not yet exposed to the JS side because it wasn't fully tested yet)
+* Update Android Eddystone feature:
+	* Add *multiple* Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
+	* Add Eddystone Frames Selection configuration option
+
+* iOS: Eddystone support

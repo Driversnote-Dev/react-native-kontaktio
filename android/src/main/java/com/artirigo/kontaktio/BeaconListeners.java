@@ -91,7 +91,7 @@ final class BeaconListeners {
                 outputMap = Arguments.createMap();
                 outputMap.putArray("eddystones", createArrayWithEddystones(eddystones));
                 outputMap.putMap("namespace", createMapWithNamespace(namespace));
-                sendEvent(reactAppContext, "eddystoneDidRange", outputMap);
+                sendEvent(reactAppContext, "eddystonesDidUpdate", outputMap);
             }
 
             @Override
