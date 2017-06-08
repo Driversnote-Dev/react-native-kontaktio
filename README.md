@@ -18,13 +18,13 @@ Kontakt.io SDK Versions:
 
 ## Setup
 
-* [Android Setup](/docs/setup.android.js)
-* [iOS Setup](/docs/setup.ios.js)
+* [Android Setup](/docs/setup.android.md)
+* [iOS Setup](/docs/setup.ios.md)
 
 ## API Documentation
 
-* [Android Documentation](/docs/api.android.js)
-* [iOS Documentation](/docs/api.ios.js)
+* [Android Documentation](/docs/api.android.md)
+* [iOS Documentation](/docs/api.ios.md)
 
 ## Examples
 
