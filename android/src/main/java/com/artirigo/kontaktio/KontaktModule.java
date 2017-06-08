@@ -46,6 +46,9 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     private ScanManager scanManager;
     private RegionManager regionManager;
 
+    // Promise used to connect to beacons
+    private Promise connectPromise;
+
     public KontaktModule(ReactApplicationContext reactAppContext) {
         super(reactAppContext);
         this.reactAppContext = reactAppContext;
@@ -80,6 +83,8 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void connect(String apiKey, ReadableArray beaconTypes, Promise promise) {
         try {
+            connectPromise = promise;
+
             beaconProximityManager = new BeaconProximityManager(reactAppContext, apiKey);
             beaconProximityManager.init(beaconTypes, promise);
 
@@ -90,19 +95,18 @@ public class KontaktModule extends ReactContextBaseJavaModule {
             regionManager = beaconProximityManager.getRegionManager();
 
             // connect to beaconManager
-            proximityManager.connect(new OnServiceReadyListener() {
-                @Override
-                public void onServiceReady() {
-                    // FIXME: error: local variable promise is accessed from within inner class; needs to be declared final
-//                     promise.resolve(null);
-                }
-            });
-            // TODO: Remove this resolve and use the one inside onServiceReady
-            promise.resolve(null);
+            proximityManager.connect(serviceReadyListener);
         } catch (Exception e) {
-            promise.reject(Constants.EXCEPTION, e);
+            connectPromise.reject(Constants.EXCEPTION, e);
         }
     }
+
+    OnServiceReadyListener serviceReadyListener = new OnServiceReadyListener() {
+        @Override
+        public void onServiceReady() {
+            connectPromise.resolve(null);
+        }
+    };
 
     // From BeaconProximityManager
     @ReactMethod
