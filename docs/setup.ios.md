@@ -4,11 +4,19 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
 
 ### Mostly automatic setup
 
-1. Link module (use `rnpm` for React Native versions older than `0.27`)
+When installing both, Android and iOS, steps *1* and *2* only have to be run once for both platforms.
+
+1. npm install
+
+	```bash
+	$ npm install --save react-native-kontaktio
+	```
+
+2. Link module (use `rnpm` for React Native versions older than `0.27`)
 
 		react-native link react-native-kontaktio
 
-2. Manually link kontakt.io SDK
+3. Manually link kontakt.io SDK
 
 	Select your build target in the **`Project navigator`**. Click **`General`** and then in the **`Embedded Binaries`** section, click the **`+`** button.
 	
@@ -18,7 +26,7 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
 
 	It should now appear in the **`Linked Frameworks and Libraries`** section right below.
 
-3. Add Framework Search paths so that Xcode can find the added framework
+4. Add Framework Search paths so that Xcode can find the added framework
 
     - Go to the **Build Settings** tab and search for **"framework search paths"**.
     - Add the following path (select **recursive [v]**):
@@ -27,7 +35,7 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
     	$(PROJECT_DIR)/../node_modules/react-native-kontaktio/ios
     	```
 
-4. Add run script
+5. Add run script
 
 	- In the **`Build Phases`** tab, click the **`+`** button at the top and select **`New Run Script Phase`**. Enter the following code into the script text field:
 
@@ -35,7 +43,7 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
 	bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/KontaktSDK.framework/strip-frameworks.sh"
 	```
 
-5. Add permissions
+6. Add permissions
 
 	Go to the **Info** tab and add in the section **`Custom iOS Target Properties`** add the following the following item:
 	

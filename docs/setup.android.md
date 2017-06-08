@@ -2,11 +2,26 @@
 
 Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk/quickstart/#setup) have to be met.
 
-### Automatic setup
+### Mostly automatic setup
 
-// UNDER CONSTRUCTION
+When installing both, Android and iOS, steps *1* and *2* only have to be run once for both platforms.
 
-After the update the manual setup should should be easier when using `react-native link react-native-kontaktio`. However this was not tested yet. Will be tested soon and this section updated. For now, please refer to the manual setup.
+1. npm install
+
+	```bash
+	$ npm install --save react-native-kontaktio
+	```
+
+2. Link module (use `rnpm` for React Native versions older than `0.27`)
+
+		react-native link react-native-kontaktio
+		
+3. In `android/app/src/main/AndroidManifest.xml` inside `<application />` add the connection to the Kontakt.io SDK:
+
+	```xml
+	<service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
+	```
+
 
 ### Manual setup
 
@@ -35,13 +50,7 @@ After the update the manual setup should should be easier when using `react-nati
 	project(':react-native-kontaktio').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-kontaktio/android')
 	```
 
-4. In `android/app/src/main/AndroidManifest.xml` inside `<application />` add 
-
-	```xml
-	<service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
-	```
-
-5. In `android/app/build.gradle` 
+4. In `android/app/build.gradle` 
 
 	* Add dependency
 
@@ -63,18 +72,8 @@ After the update the manual setup should should be easier when using `react-nati
 	}
 	```
 
-4. The following step is inside the [Kontakt.io docs](http://developer.kontakt.io/android-sdk/2.1.0/quickstart/) but was not necessary on the devices I tested: In `android/build.gradle` add maven link:
-	
-	```java
-	allprojects {
-	    repositories {
-	    	...
-	    	maven {
-	    		// All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-	    		url "$rootDir/../node_modules/react-native/android"
-        	}
-	       maven { url "http://repo.kontakt.io/repository/internal/" }   // <-- Add this line
-	    }
-	}
-	
+5. In `android/app/src/main/AndroidManifest.xml` inside `<application />` add 
+
+	```xml
+	<service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
 	```
