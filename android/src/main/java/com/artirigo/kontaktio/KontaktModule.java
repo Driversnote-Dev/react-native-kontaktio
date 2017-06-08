@@ -7,9 +7,10 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 
+import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
 import com.kontakt.sdk.android.ble.device.BeaconRegion;
-import com.kontakt.sdk.android.common.KontaktSDK;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
+import com.kontakt.sdk.android.common.KontaktSDK;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,9 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     private ScanManager scanManager;
     private RegionManager regionManager;
 
+    // Promise used to connect to beacons
+    private Promise connectPromise;
+
     public KontaktModule(ReactApplicationContext reactAppContext) {
         super(reactAppContext);
         this.reactAppContext = reactAppContext;
@@ -77,8 +81,10 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     // ------------
 
     @ReactMethod
-    public void init(String apiKey, ReadableArray beaconTypes, Promise promise) {
+    public void connect(String apiKey, ReadableArray beaconTypes, Promise promise) {
         try {
+            connectPromise = promise;
+
             beaconProximityManager = new BeaconProximityManager(reactAppContext, apiKey);
             beaconProximityManager.init(beaconTypes, promise);
 
@@ -88,12 +94,19 @@ public class KontaktModule extends ReactContextBaseJavaModule {
             scanManager = beaconProximityManager.getScanManager();
             regionManager = beaconProximityManager.getRegionManager();
 
-            promise.resolve(null);
-
+            // connect to beaconManager
+            proximityManager.connect(serviceReadyListener);
         } catch (Exception e) {
-            promise.reject(Constants.EXCEPTION, e);
+            connectPromise.reject(Constants.EXCEPTION, e);
         }
     }
+
+    OnServiceReadyListener serviceReadyListener = new OnServiceReadyListener() {
+        @Override
+        public void onServiceReady() {
+            connectPromise.resolve(null);
+        }
+    };
 
     // From BeaconProximityManager
     @ReactMethod
@@ -148,5 +161,15 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setBeaconRegions(ReadableArray regionsParams, Promise promise) {
         regionManager.setBeaconRegions(regionsParams, promise);
+    }
+
+    @ReactMethod
+    public void getBeaconRegions(Promise promise) {
+        regionManager.getBeaconRegions(promise);
+    }
+
+    @ReactMethod
+    public void setEddystoneNamespace(ReadableMap namespaceParams, Promise promise) {
+        regionManager.setEddystoneNamespace(namespaceParams, promise);
     }
 }

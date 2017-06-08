@@ -91,7 +91,7 @@ final class BeaconListeners {
                 outputMap = Arguments.createMap();
                 outputMap.putArray("eddystones", createArrayWithEddystones(eddystones));
                 outputMap.putMap("namespace", createMapWithNamespace(namespace));
-                sendEvent(reactAppContext, "eddystoneDidRange", outputMap);
+                sendEvent(reactAppContext, "eddystonesDidUpdate", outputMap);
             }
 
             @Override
@@ -240,37 +240,41 @@ final class BeaconListeners {
      * @return
      */
     private WritableMap createMapWithEddystone(IEddystoneDevice eddystone) {
-        WritableMap b = new WritableNativeMap();
-        b.putString("name", eddystone.getName());
-        b.putString("address", eddystone.getAddress());
-        b.putDouble("rssi", eddystone.getRssi());
-        b.putString("proximity", String.valueOf(eddystone.getProximity()));
+        WritableMap e = new WritableNativeMap();
+        e.putString("name", eddystone.getName());
+        e.putString("address", eddystone.getAddress());
+        e.putDouble("rssi", eddystone.getRssi());
+        e.putString("proximity", String.valueOf(eddystone.getProximity()));
 
         // Eddystone
-        b.putString("namespace", eddystone.getNamespace());
-        b.putString("instanceId", eddystone.getInstanceId());
-        b.putString("url", eddystone.getUrl());
-        b.putString("eid", eddystone.getEid());
-        b.putString("encryptedTelemetry", eddystone.getEncryptedTelemetry());
+        e.putString("namespace", eddystone.getNamespace());
+        e.putString("instanceId", eddystone.getInstanceId());
+        e.putString("url", eddystone.getUrl());
+        e.putString("eid", eddystone.getEid());
+        e.putString("encryptedTelemetry", eddystone.getEncryptedTelemetry());
         // Telemetry
         Telemetry telemetry = eddystone.getTelemetry();
-        WritableMap t = new WritableNativeMap();
-        t.putDouble("batteryVoltage", telemetry.getBatteryVoltage());
-        t.putDouble("temperature", telemetry.getTemperature());
-        t.putInt("pduCount", telemetry.getPduCount());
-        t.putInt("timeSincePowerUp", telemetry.getTimeSincePowerUp());
-        t.putInt("version", telemetry.getVersion());
-        b.putMap("telemetry", t);
+        if (telemetry != null) {
+            WritableMap t = new WritableNativeMap();
+            t.putDouble("batteryVoltage", telemetry.getBatteryVoltage());
+            t.putDouble("temperature", telemetry.getTemperature());
+            t.putInt("pduCount", telemetry.getPduCount());
+            t.putInt("timeSincePowerUp", telemetry.getTimeSincePowerUp());
+            t.putInt("version", telemetry.getVersion());
+            e.putMap("telemetry", t);
+        } else {
+            e.putString("telemetry", null);
+        }
 
         // Kontakt.io specific
-        b.putDouble("accuracy", eddystone.getDistance());
-        b.putInt("batteryPower", eddystone.getBatteryPower());
-        b.putInt("txPower", eddystone.getTxPower());
-        b.putString("firmwareVersion", eddystone.getFirmwareVersion());
-        b.putString("uniqueId", eddystone.getUniqueId());  // unique 4-digit code on backside of beacon
-        b.putBoolean("isShuffled", eddystone.isShuffled());
+        e.putDouble("accuracy", eddystone.getDistance());
+        e.putInt("batteryPower", eddystone.getBatteryPower());
+        e.putInt("txPower", eddystone.getTxPower());
+        e.putString("firmwareVersion", eddystone.getFirmwareVersion());
+        e.putString("uniqueId", eddystone.getUniqueId());  // unique 4-digit code on backside of beacon
+        e.putBoolean("isShuffled", eddystone.isShuffled());
 
-        return b;
+        return e;
     }
 
     /**
@@ -324,67 +328,11 @@ final class BeaconListeners {
      * @return
      */
     private WritableArray createArrayWithEddystones(List<IEddystoneDevice> iEddystoneDeviceList) {
-        WritableArray beaconArray = new WritableNativeArray();
+        WritableArray eddystoneArray = new WritableNativeArray();
         for (IEddystoneDevice eddystone : iEddystoneDeviceList) {
-            beaconArray.pushMap(createMapWithEddystone(eddystone));
+            eddystoneArray.pushMap(createMapWithEddystone(eddystone));
         }
 
-        return beaconArray;
+        return eddystoneArray;
     }
-
-
-// Former general beacon methods (revise and adapt to current SDK version as above)
-
-//    private WritableMap createMapWithBeacon(RemoteBluetoothDevice beacon, DeviceProfile deviceProfile) {
-//
-//        WritableMap b = new WritableNativeMap();
-//
-//        // general
-//        b.putString("name", beacon.getName());
-//        b.putString("address", beacon.getAddress());
-//        b.putDouble("rssi", beacon.getRssi());
-//        b.putString("proximity", String.valueOf(beacon.getProximity()));
-//
-//        // Kontakt.io beacon stuff
-//        b.putDouble("accuracy", beacon.getDistance());
-//        b.putInt("batteryPower", beacon.getBatteryPower());
-//        b.putInt("txPower", beacon.getTxPower());
-//        b.putString("firmwareVersion", beacon.getFirmwareVersion());
-//        b.putString("uniqueID", beacon.getUniqueId());  // unique 4-digit code on backside of beacon
-////        b.putInt("password", beacon.getPassword());
-//
-//        // only iBeacon
-//        if (DeviceProfile.IBEACON == deviceProfile) {
-//            IBeaconDevice iBeacon = (IBeaconDevice) beacon;
-//
-//            b.putString("uuid", String.valueOf(iBeacon.getProximityUUID()));
-//            b.putInt("major", iBeacon.getMajor());
-//            b.putInt("minor", iBeacon.getMinor());
-//        }
-//        // only Eddystone
-//        else if (DeviceProfile.EDDYSTONE == deviceProfile) {
-//            EddystoneDevice eddystoneBeacon = (EddystoneDevice) beacon;
-//
-//            b.putString("instanceId", eddystoneBeacon.getInstanceId());
-//            b.putString("namespaceId", eddystoneBeacon.getNamespaceId());
-//            b.putString("url", eddystoneBeacon.getUrl());
-//
-//            b.putDouble("temperature", eddystoneBeacon.getTemperature());
-//            b.putInt("telemetryVersion", eddystoneBeacon.getTelemetryVersion());
-//            b.putInt("batteryVoltage", eddystoneBeacon.getBatteryVoltage());
-//            b.putInt("timeSincePowerUp", eddystoneBeacon.getTimeSincePowerUp());
-//        }
-//
-//        return b;
-//    }
-
-//    private WritableArray createArrayWithBeacons(List<? extends RemoteBluetoothDevice> beaconDeviceList, DeviceProfile deviceProfile) {
-//        WritableArray beaconArray = new WritableNativeArray();
-//        for (RemoteBluetoothDevice beacon : beaconDeviceList) {
-//            beaconArray.pushMap(createMapWithBeacon(beacon, deviceProfile));
-//        }
-//
-//        return beaconArray;
-//    }
-
 }

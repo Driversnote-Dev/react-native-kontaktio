@@ -34,9 +34,12 @@ class Configuration {
         this.scanPeriod = ScanPeriod.RANGING;
         this.activityCheckConfiguration = ActivityCheckConfiguration.DEFAULT;
         this.forceScanConfiguration = ForceScanConfiguration.MINIMAL;
-        this.deviceUpdateCallbackInterval = ScanContext.DEFAULT_DEVICES_UPDATE_CALLBACK_INTERVAL; // 3000 ms
-        this.monitoringEnabled = ScanContext.DEFAULT_MONITORING_ENABLED; // true
-        this.monitoringSyncInterval = ScanContext.DEFAULT_MONITORING_SYNC_INTERVAL; // 10 sec
+//         this.deviceUpdateCallbackInterval = ScanContext.DEFAULT_DEVICES_UPDATE_CALLBACK_INTERVAL; // 3000 ms
+        this.deviceUpdateCallbackInterval = 3000;
+//         this.monitoringEnabled = ScanContext.DEFAULT_MONITORING_ENABLED; // true
+        this.monitoringEnabled = true;
+//         this.monitoringSyncInterval = ScanContext.DEFAULT_MONITORING_SYNC_INTERVAL; // 10 sec
+        this.monitoringSyncInterval = 10;
     }
 
     void configureProximityManager(ReadableMap params, Promise promise) {
