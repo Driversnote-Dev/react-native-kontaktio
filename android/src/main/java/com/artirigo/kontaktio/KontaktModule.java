@@ -115,7 +115,16 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     }
     @ReactMethod
     public void isConnected(Promise promise) {
-        beaconProximityManager.isConnected(promise);
+        try {
+            if (proximityManager != null) {
+                boolean isConnected = proximityManager.isConnected();
+                promise.resolve(isConnected);
+            } else {
+                promise.resolve(false);
+            }
+        } catch (Exception e) {
+            promise.reject(Constants.EXCEPTION, e);
+        }
     }
 
     // From ScanManager
