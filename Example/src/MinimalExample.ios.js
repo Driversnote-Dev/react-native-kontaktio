@@ -12,7 +12,7 @@ const kontaktEmitter = new NativeEventEmitter(KontaktModule);
 export default class MinimalExample extends Component {
   componentDidMount() {
     init()
-      .then(() => startScanning())
+      .then(() => startDiscovery())
       .catch(error => alert('error', error));
 
     // Add beacon listener
