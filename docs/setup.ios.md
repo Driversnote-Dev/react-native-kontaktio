@@ -23,8 +23,9 @@ When installing both, Android and iOS, steps *1* and *2* only have to be run onc
 	- Click **`[Add Other...]`**.
 	- Navigate to **`node_modules/react-native-kontaktio/ios`**.
 	- Add **`KontaktSDK.framework`**.
+	- Leave the selection as is (don't copy to destination)
 
-	It should now appear in the **`Linked Frameworks and Libraries`** section right below.
+	It should now also appear in the **`Linked Frameworks and Libraries`** section right below.
 
 4. Add Framework Search paths so that Xcode can find the added framework
 
@@ -45,8 +46,9 @@ When installing both, Android and iOS, steps *1* and *2* only have to be run onc
 
 6. Add permissions
 
-	Go to the **Info** tab and add in the section **`Custom iOS Target Properties`** add the following the following item:
+	Go to the **Info** tab and add in the section **`Custom iOS Target Properties`** add either on of the following permissions:
 	
 	| Key | Value | Description |
 	|---|---|---|
-	| NSLocationAlwaysUsageDescription | This app requires background tracking | The value here will be presented to the user when the plugin requests **Background Location** permission |
+	| NSLocationAlwaysUsageDescription | Your text of the permission for the user | User allows the app to use the device location even when the app is in the background |
+	| NSLocationWhenInUseUsageDescription | Your text of the permission for the user | User allows the app |
