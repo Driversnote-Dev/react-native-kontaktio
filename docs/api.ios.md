@@ -133,7 +133,7 @@ The following two objects are the main players of this module and will be referr
 
 | Method                         | Type |Description                     |
 |:-------------------------------|:-----|:--------------------------------|
-| **init('KontaktAPIKey')** | General |(*optional*) Add your `Kontakt.io` API-Key as a string. It's not needed for regular beacon ranging/monitoring/discovery, but for **connecting** to your beacons (i.e. when setting the configuration `connectNearbyBeacons` to true). |
+| **init('KontaktAPIKey')** | General |(*mandatory*) Add your `Kontakt.io` API-Key as a string. It's not needed for regular beacon ranging/monitoring/discovery, but for **connecting** to your beacons (i.e. when setting the configuration `connectNearbyBeacons` to true). In case you don't need beacon connections, just call it without an argument as `init()` |
 | **configure({ ... })**          | General | (*optional*) Configuration options for beacon ranging/monitoring/discovery. Possible configurations can be found in the section below. |
 | **startDiscovery({ interval })**        | Discovery | starts general discovery of beacons not constrained to any region. Optionally an object with the field `interval` with a time in *milliseconds* may be passed with the method call. Discovery will be paused for the time of the interval. If beacons are discovered in the proximity of your device the **didDiscoverDevices** event will be triggered |
 | **stopDiscovery**         | Discovery | stops discovery for all provided regions |
