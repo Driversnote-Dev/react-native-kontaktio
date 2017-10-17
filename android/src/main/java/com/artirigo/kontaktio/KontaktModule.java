@@ -102,9 +102,18 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     }
 
     OnServiceReadyListener serviceReadyListener = new OnServiceReadyListener() {
+        boolean callbackWasCalled = false;
+
         @Override
         public void onServiceReady() {
-            connectPromise.resolve(null);
+            if (callbackWasCalled) return;
+            callbackWasCalled = true;
+
+            try {
+                connectPromise.resolve(null);
+            } catch (Exception e) {
+              //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+            }  
         }
     };
 
