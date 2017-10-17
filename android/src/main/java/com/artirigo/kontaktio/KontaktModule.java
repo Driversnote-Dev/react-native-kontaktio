@@ -120,7 +120,8 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     // From BeaconProximityManager
     @ReactMethod
     public void disconnect(Promise promise) {
-        beaconProximityManager.disconnect(promise);
+        if(beaconProximityManager != null)
+            beaconProximityManager.disconnect(promise);
     }
     @ReactMethod
     public void isConnected(Promise promise) {
