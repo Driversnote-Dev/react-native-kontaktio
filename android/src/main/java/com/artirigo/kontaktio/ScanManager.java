@@ -17,7 +17,7 @@ public class ScanManager {
             if (proximityManager.isConnected()) {
                 proximityManager.startScanning();
             } else {
-                throw new Exception("Did you forget to call connect() or did the connect() call fail? The beacon manager is not connected.");
+                promise.reject("Did you forget to call connect() or did the connect() call fail? The beacon manager is not connected.");
             }
             promise.resolve(null);
         } catch (Exception e) {
@@ -31,7 +31,7 @@ public class ScanManager {
                 proximityManager.stopScanning();
                 promise.resolve(null);
             } else {
-                throw new Exception("Cannot stop scanning because device is currently not scanning.");
+                promise.reject("Cannot stop scanning because device is currently not scanning.");
             }
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
@@ -46,7 +46,7 @@ public class ScanManager {
                 if (proximityManager.isConnected()) {
                     proximityManager.startScanning();
                 } else {
-                    throw new Exception("Did you forget to call connect() or did the connect() call fail? The beacon manager is not connected.");
+                    promise.reject("Did you forget to call connect() or did the connect() call fail? The beacon manager is not connected.");
                 }
             }
             promise.resolve(null);
