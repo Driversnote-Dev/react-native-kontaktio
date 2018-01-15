@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="98786c1770b531b9194fb6448b2a2692c64074b6">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-c0c7187d89ff6953805da66a81c8a01db776226a.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.0.0/49eb3ad545e7701234e4dd83db8dc1344b577f23/converter-gson-2.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="49eb3ad545e7701234e4dd83db8dc1344b577f23">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/converter-gson-2.0.0-e6ecf26bab8f8825abdf52ff94d03d24ac7c9264.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.9.0/f824591a0016efbaeddb8300bee54832a1398cfa/okio-1.9.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f824591a0016efbaeddb8300bee54832a1398cfa">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/okio-1.9.0-03a2a42fef0343aa1048ae5294d78c4fcc1c9063.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d31aadf33187c37a7cd63dc1b769f8c6e33f78c3">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-fe76b30f2e843614c55d71afc884e6519bfc022f.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.4.1/c7c4f9e35c2fd5900da24f9872e3971801f08ce0/okhttp-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c7c4f9e35c2fd5900da24f9872e3971801f08ce0">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/okhttp-3.4.1-2c81bbb20bd07ce0c23c652721bcfea5f08ea547.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-ws/3.4.1/8ace66ef7002d98f633377c9e67daeeb196d8c3b/okhttp-ws-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8ace66ef7002d98f633377c9e67daeeb196d8c3b">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/okhttp-ws-3.4.1-d37a09172912dd8b366e853de2a1f97ad2466e94.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.1/b9d63507329a7178e026fc334f87587ee5070ac5/gson-2.6.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="b9d63507329a7178e026fc334f87587ee5070ac5">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/gson-2.6.1-a7289dda4e0fea249f0264f4b206beef1dd695fa.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/bolts-tasks-1.4.0-1d6aec25202dd88183da756a30d0b5019be14a22.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/libs/internal_impl-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/internal_impl-23.2.1-cd0b2d0d364d11200abb96d05e03cd5d9af18cdf.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-urlconnection/3.4.1/63994437f62bc861bc20c605d12962f7246116d1/okhttp-urlconnection-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="63994437f62bc861bc20c605d12962f7246116d1">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/okhttp-urlconnection-3.4.1-794c8150c271ab6f8b999dc8c5869a8e7714a598.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2b8a01ad9da5d26d0067894c22e87597bca2c500">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-88c5aa42ef510573213a6904a0f38dc29948625c.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3341b66c54367e777a0647e2db96c045329bfeab">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-5f314f2a38153ef763123eae4ce850c62839ec81.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/jars/libs/infer-annotations-1.5.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6682334d34f00764e6753efcd15f060a4b95cda6">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/infer-annotations-1.5-16ae3843130cc6135842bbcef6c91c65e92ccd91.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-baaae981df522eb1c25c7b570fbe769e94499a50.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.2.1/support-annotations-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/support-annotations-23.2.1-38b66818ab83808e3b9a0c81066c4e496bcb4012.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.0.0/5c06d197fb7fa875ad452f562e3310dd9949d066/retrofit-2.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5c06d197fb7fa875ad452f562e3310dd9949d066">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/retrofit-2.0.0-97bb6a7bbf1ef51eb2a7819a1b3c0012097fb716.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.3/1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14/jackson-core-2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/jackson-core-2.2.3-7c20834a6b603ca15e3103cd8406f653cbd13cd8.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1137942adeb03984c1311b662363dd38fc238fd3">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-fc81300147ec9e69de73dc342ee7e83a2ae473f4.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0-8322b67b566df296468d6d76de36fa5c3e80a8d2.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/javax.inject-1-868daad4fb9939b2e6eec8849a2ad05692207fab.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ca63c521b5745ae9a09629d7ca67ff6bc2a967fe">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-aea6a2078ab004194fa492be1e64a54681575cb7.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8303073e33e39025a485df904994bdb7fd51a3dd">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-383370bac1b73847426a61ef7fc04208e6749939.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="731e2c3a475cd3a3cb3536d6c32e72e1ad2ed09e">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-da8af4bd63a537eeadd8d63cbf5e5bdfef1fad2f.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.kontaktio/sdk/3.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="014d8a1f3e291d60ebe98473e4dc1601dbb0425c">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-1c1dbec60d07dcb64d85331306638c6c8d91adaf.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-a14665bf2485727268fe2be7e2aa9e07d12042a0.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-c1b75250bf6a296ed90ffd01f7035971541c8b35.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/library-2.4.0-b1d7b0f065fe05384011e29a8d684bb342e7c832.jar" />
+    </item>
+    <item
+        jar="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8f615bca00639150c9eb6175d4b5471193f70794">
+        <dex dex="/Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/pre-dexed/debug/classes-9fab9a32177b06cce8fed778b6f27fed9bb61e97.jar" />
+    </item>
+
+</items>
