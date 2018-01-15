@@ -34,8 +34,10 @@ const {
   monitoringSyncInterval,
 } = Kontakt;
 
+let TfLNamespace = '953e1199a959b67221bd'
 let TfLBeacon1 = 'fc8e38ee0e8a'
 let TfLBeacon2 = 'fbe12d00add2'
+var numberOfTfLBeacons = 0
 
 //const region1 = {
 //  identifier: 'Test beacons 1',
@@ -87,11 +89,11 @@ export default class IBeaconExample extends Component {
         scanMode: scanMode.BALANCED,
 
             // Set Scan Period
-        scanPeriod: scanPeriod.create({
-          activePeriod: 6000,
-          passivePeriod: 20000,
-        }),
-//        scanPeriod: scanPeriod.RANGING,
+//        scanPeriod: scanPeriod.create({
+//          activePeriod: 6000,
+//          passivePeriod: 20000,
+//        }),
+        scanPeriod: scanPeriod.RANGING,
         activityCheckConfiguration: activityCheckConfiguration.DEFAULT,
         forceScanConfiguration: forceScanConfiguration.MINIMAL,
         monitoringEnabled: monitoringEnabled.TRUE,
@@ -184,18 +186,24 @@ export default class IBeaconExample extends Component {
     DeviceEventEmitter.addListener(
       'eddystoneDidAppear',
       ({ eddystone, namespace }) => {
-        console.log('eddystoneDidAppear', eddystone.instanceId, eddystone, namespace);
+        console.log('eddystoneDidAppear', eddystone.namespace, eddystone.instanceId, eddystone, namespace);
 
 
         if ( eddystone.instanceId == TfLBeacon1 ){
-        this.setState({ statusText: "Found TfLBeacon1" });
+        this.setState({ statusText: "TfLBeacon1 " + eddystone.proximity + " instanceId: " + eddystone.instanceId });
         console.log('TfLBeacon1')
         }
 
         if ( eddystone.instanceId == TfLBeacon2 ){
-        this.setState({ statusText2: "Found TfLBeacon2" });
+        this.setState({ statusText2: "Found TfLBeacon2 " + "instanceId: " + eddystone.instanceId });
         console.log('TfLBeacon2')
         }
+
+        if ( eddystone.namespace == TfLNamespace ){
+        this.setState({ numberOfTfLBeacons: "Found " + numberOfTfLBeacons + " TfL Beacons" });
+            numberOfTfLBeacons++
+            console.log(numberOfTfLBeacons)
+        };
 
 
         this.setState({
@@ -218,6 +226,13 @@ export default class IBeaconExample extends Component {
       }
     );
 
+  DeviceEventEmitter.addListener(
+        'eddystonesDidUpdate',
+        ({ status }) => {
+          console.log('eddystonesDidUpdate', status);
+        }
+      );
+
   }
 
   componentWillUnmount() {
@@ -230,20 +245,25 @@ export default class IBeaconExample extends Component {
     startScanning()
       .then(() => this.setState({ scanning: true, statusText: null, statusText2: null }))
       .then(() => console.log('started scanning'))
+      // Reset beacon count to 0
+      .then(() => numberOfTfLBeacons = 0)
       .catch(error => console.log('[startScanning]', error));
   };
+
   _stopScanning = () => {
     stopScanning()
-      .then(() => this.setState({ scanning: false, beacons: [], statusText: null, statusText2: null }))
+      .then(() => this.setState({ scanning: false, beacons: [], statusText: null, statusText2: null}))
       .then(() => console.log('stopped scanning'))
       .catch(error => console.log('[stopScanning]', error));
   };
+
   _restartScanning = () => {
     restartScanning()
       .then(() => this.setState({ scanning: true, beacons: [], statusText: null, statusText2: null }))
       .then(() => console.log('restarted scanning'))
       .catch(error => console.log('[restartScanning]', error));
   };
+
   _isScanning = () => {
     isScanning()
       .then(result => {
@@ -323,12 +343,26 @@ export default class IBeaconExample extends Component {
       ) : null;
     };
 
+    _renderBeaconCountText = () => {
+      const { numberOfTfLBeacons } = this.state;
+      return numberOfTfLBeacons ? (
+        <View style={styles.textContainer}>
+          <Text style={[styles.text, { color: 'red' }]}>{ numberOfTfLBeacons }</Text>
+        </View>
+      ) : null;
+    };
+
   _renderButton = (text, onPress, backgroundColor) => (
     <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress}>
       <Text>{text}</Text>
     </TouchableOpacity>
   );
 
+  _renderClosestBeacon = () => {
+
+
+
+  };
 
   render() {
     const { scanning, beacons } = this.state;
@@ -349,6 +383,7 @@ export default class IBeaconExample extends Component {
         </View>
         {this._renderStatusText()}
         {this._renderStatusText2()}
+        {this._renderBeaconCountText()}
         <ScrollView>
           {scanning && beacons.length ? this._renderBeacons() : this._renderEmpty()}
         </ScrollView>
