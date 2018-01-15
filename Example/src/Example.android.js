@@ -34,19 +34,24 @@ const {
   monitoringSyncInterval,
 } = Kontakt;
 
-const region1 = {
-  identifier: 'Test beacons 1',
-  uuid: 'B0702880-A295-A8AB-F734-031A98A512D3',
-  major: 1,
-  // no minor provided: will detect all minors
-};
+let TfLNamespace = '953e1199a959b67221bd'
+let TfLBeacon1 = 'fc8e38ee0e8a'
+let TfLBeacon2 = 'fbe12d00add2'
+var numberOfTfLBeacons = 0
 
-const region2 = {
-  identifier: 'Test beacons 2',
-  uuid: 'B0702880-A295-A8AB-F734-031A98A512D3',
-  major: 2,
-  // no minor provided: will detect all minors
-};
+//const region1 = {
+//  identifier: 'Test beacons 1',
+//  uuid: 'B0702880-A295-A8AB-F734-031A98A512D3',
+//  major: 1,
+//  // no minor provided: will detect all minors
+//};
+//
+//const region2 = {
+//  identifier: 'Test beacons 2',
+//  uuid: 'B0702880-A295-A8AB-F734-031A98A512D3',
+//  major: 2,
+//  // no minor provided: will detect all minors
+//};
 
 /**
  * Monitors beacons in two regions and sorts them by proximity,
@@ -82,10 +87,13 @@ export default class IBeaconExample extends Component {
     )
       .then(() => configure({
         scanMode: scanMode.BALANCED,
-        scanPeriod: scanPeriod.create({
-          activePeriod: 6000,
-          passivePeriod: 20000,
-        }),
+
+            // Set Scan Period
+//        scanPeriod: scanPeriod.create({
+//          activePeriod: 6000,
+//          passivePeriod: 20000,
+//        }),
+        scanPeriod: scanPeriod.RANGING,
         activityCheckConfiguration: activityCheckConfiguration.DEFAULT,
         forceScanConfiguration: forceScanConfiguration.MINIMAL,
         monitoringEnabled: monitoringEnabled.TRUE,
@@ -95,73 +103,73 @@ export default class IBeaconExample extends Component {
       .then(() => setEddystoneNamespace())
       .catch(error => console.log('error', error));
 
-    // Beacon listeners
-    DeviceEventEmitter.addListener(
-      'beaconDidAppear',
-      ({ beacon: newBeacon, region }) => {
-        console.log('beaconDidAppear', newBeacon, region);
-
-        this.setState({
-          beacons: this.state.beacons.concat(newBeacon)
-        });
-      }
-    );
-    DeviceEventEmitter.addListener(
-      'beaconDidDisappear',
-      ({ beacon: lostBeacon, region }) => {
-        console.log('beaconDidDisappear', lostBeacon, region);
-
-        const { beacons } = this.state;
-        const index = beacons.findIndex(beacon =>
-          this._isIdenticalBeacon(lostBeacon, beacon)
-        );
-        this.setState({
-          beacons: beacons.reduce((result, val, ind) => {
-            // don't add disappeared beacon to array
-            if (ind === index) return result;
-            // add all other beacons to array
-            else {
-              result.push(val);
-              return result;
-            }
-          }, [])
-        });
-      }
-    );
-    DeviceEventEmitter.addListener(
-      'beaconsDidUpdate',
-      ({ beacons: updatedBeacons, region }) => {
-        console.log('beaconsDidUpdate', updatedBeacons, region);
-
-        const { beacons } = this.state;
-        updatedBeacons.forEach(updatedBeacon => {
-          const index = beacons.findIndex(beacon =>
-            this._isIdenticalBeacon(updatedBeacon, beacon)
-          );
-          this.setState({
-            beacons: beacons.reduce((result, val, ind) => {
-              // replace current beacon values for updatedBeacon, keep current value for others
-              ind === index ? result.push(updatedBeacon) : result.push(val);
-              return result;
-            }, [])
-          })
-        });
-      }
-    );
-
-    // Region listeners
-    DeviceEventEmitter.addListener(
-      'regionDidEnter',
-      ({ region }) => {
-        console.log('regionDidEnter', region);
-      }
-    );
-    DeviceEventEmitter.addListener(
-      'regionDidExit',
-      ({ region }) => {
-        console.log('regionDidExit', region);
-      }
-    );
+//    // Beacon listeners
+//    DeviceEventEmitter.addListener(
+//      'beaconDidAppear',
+//      ({ beacon: newBeacon, region }) => {
+//        console.log('beaconDidAppear', newBeacon, region);
+//
+//        this.setState({
+//          beacons: this.state.beacons.concat(newBeacon)
+//        });
+//      }
+//    );
+//    DeviceEventEmitter.addListener(
+//      'beaconDidDisappear',
+//      ({ beacon: lostBeacon, region }) => {
+//        console.log('beaconDidDisappear', lostBeacon, region);
+//
+//        const { beacons } = this.state;
+//        const index = beacons.findIndex(beacon =>
+//          this._isIdenticalBeacon(lostBeacon, beacon)
+//        );
+//        this.setState({
+//          beacons: beacons.reduce((result, val, ind) => {
+//            // don't add disappeared beacon to array
+//            if (ind === index) return result;
+//            // add all other beacons to array
+//            else {
+//              result.push(val);
+//              return result;
+//            }
+//          }, [])
+//        });
+//      }
+//    );
+//    DeviceEventEmitter.addListener(
+//      'beaconsDidUpdate',
+//      ({ beacons: updatedBeacons, region }) => {
+//        console.log('beaconsDidUpdate', updatedBeacons, region);
+//
+//        const { beacons } = this.state;
+//        updatedBeacons.forEach(updatedBeacon => {
+//          const index = beacons.findIndex(beacon =>
+//            this._isIdenticalBeacon(updatedBeacon, beacon)
+//          );
+//          this.setState({
+//            beacons: beacons.reduce((result, val, ind) => {
+//              // replace current beacon values for updatedBeacon, keep current value for others
+//              ind === index ? result.push(updatedBeacon) : result.push(val);
+//              return result;
+//            }, [])
+//          })
+//        });
+//      }
+//    );
+//
+//    // Region listeners
+//    DeviceEventEmitter.addListener(
+//      'regionDidEnter',
+//      ({ region }) => {
+//        console.log('regionDidEnter', region);
+//      }
+//    );
+//    DeviceEventEmitter.addListener(
+//      'regionDidExit',
+//      ({ region }) => {
+//        console.log('regionDidExit', region);
+//      }
+//    );
 
     // Beacon monitoring listener
     DeviceEventEmitter.addListener(
@@ -178,7 +186,25 @@ export default class IBeaconExample extends Component {
     DeviceEventEmitter.addListener(
       'eddystoneDidAppear',
       ({ eddystone, namespace }) => {
-        console.log('eddystoneDidAppear', eddystone, namespace);
+        console.log('eddystoneDidAppear', eddystone.namespace, eddystone.instanceId, eddystone, namespace);
+
+
+        if ( eddystone.instanceId == TfLBeacon1 ){
+        this.setState({ statusText: "TfLBeacon1 " + eddystone.proximity + " instanceId: " + eddystone.instanceId });
+        console.log('TfLBeacon1')
+        }
+
+        if ( eddystone.instanceId == TfLBeacon2 ){
+        this.setState({ statusText2: "Found TfLBeacon2 " + "instanceId: " + eddystone.instanceId });
+        console.log('TfLBeacon2')
+        }
+
+        if ( eddystone.namespace == TfLNamespace ){
+        this.setState({ numberOfTfLBeacons: "Found " + numberOfTfLBeacons + " TfL Beacons" });
+            numberOfTfLBeacons++
+            console.log(numberOfTfLBeacons)
+        };
+
 
         this.setState({
           eddystones: this.state.eddystones.concat(eddystone)
@@ -200,6 +226,13 @@ export default class IBeaconExample extends Component {
       }
     );
 
+  DeviceEventEmitter.addListener(
+        'eddystonesDidUpdate',
+        ({ status }) => {
+          console.log('eddystonesDidUpdate', status);
+        }
+      );
+
   }
 
   componentWillUnmount() {
@@ -210,22 +243,27 @@ export default class IBeaconExample extends Component {
 
   _startScanning = () => {
     startScanning()
-      .then(() => this.setState({ scanning: true, statusText: null }))
+      .then(() => this.setState({ scanning: true, statusText: null, statusText2: null }))
       .then(() => console.log('started scanning'))
+      // Reset beacon count to 0
+      .then(() => numberOfTfLBeacons = 0)
       .catch(error => console.log('[startScanning]', error));
   };
+
   _stopScanning = () => {
     stopScanning()
-      .then(() => this.setState({ scanning: false, beacons: [], statusText: null }))
+      .then(() => this.setState({ scanning: false, beacons: [], statusText: null, statusText2: null}))
       .then(() => console.log('stopped scanning'))
       .catch(error => console.log('[stopScanning]', error));
   };
+
   _restartScanning = () => {
     restartScanning()
-      .then(() => this.setState({ scanning: true, beacons: [], statusText: null }))
+      .then(() => this.setState({ scanning: true, beacons: [], statusText: null, statusText2: null }))
       .then(() => console.log('restarted scanning'))
       .catch(error => console.log('[restartScanning]', error));
   };
+
   _isScanning = () => {
     isScanning()
       .then(result => {
@@ -262,15 +300,29 @@ export default class IBeaconExample extends Component {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
 
     return this.state.beacons.sort((a, b) => a.accuracy - b.accuracy).map((beacon, ind) => (
+
       <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
+
         <Text style={{fontWeight: 'bold'}}>{beacon.uniqueId}</Text>
         <Text>Major: {beacon.major}, Minor: {beacon.minor}</Text>
         <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
         <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
         <Text>FirmwareVersion: {beacon.firmwareVersion}, Address: {beacon.uniqueId}</Text>
+
       </View>
     ), this);
   };
+
+  _renderEddystones = () => {
+      const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
+
+      return this.state.eddystones.sort((a, b) => a.accuracy - b.accuracy).map((eddystone, ind) => (
+
+        <View key={ind} style={[styles.beacon, {backgroundColor: '#AAF7AF'}]}>
+          <Text style={{fontWeight: 'bold'}}>{eddystone.instanceId}</Text>
+        </View>
+      ), this);
+    };
 
   _renderEmpty = () => {
     const { scanning, beacons } = this.state;
@@ -293,11 +345,35 @@ export default class IBeaconExample extends Component {
     ) : null;
   };
 
+    _renderStatusText2 = () => {
+      const { statusText2 } = this.state;
+      return statusText2 ? (
+        <View style={styles.textContainer}>
+          <Text style={[styles.text, { color: 'red' }]}>{statusText2}</Text>
+        </View>
+      ) : null;
+    };
+
+    _renderBeaconCountText = () => {
+      const { numberOfTfLBeacons } = this.state;
+      return numberOfTfLBeacons ? (
+        <View style={styles.textContainer}>
+          <Text style={[styles.text, { color: 'red' }]}>{ numberOfTfLBeacons }</Text>
+        </View>
+      ) : null;
+    };
+
   _renderButton = (text, onPress, backgroundColor) => (
     <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress}>
       <Text>{text}</Text>
     </TouchableOpacity>
   );
+
+  _renderClosestBeacon = () => {
+
+
+
+  };
 
   render() {
     const { scanning, beacons } = this.state;
@@ -309,16 +385,12 @@ export default class IBeaconExample extends Component {
           {this._renderButton('Stop scan', this._stopScanning, '#84e2f9')}
           {this._renderButton('Restart scan', this._restartScanning, '#84e2f9')}
         </View>
-        <View style={styles.buttonContainer}>
-          {this._renderButton('Is scanning?', this._isScanning, '#f2a2a2')}
-          {this._renderButton('Is connected?', this._isConnected, '#f2a2a2')}
-        </View>
-        <View style={styles.buttonContainer}>
-          {this._renderButton('Beacon regions (log)', this._getBeaconRegions, '#F4ED5A')}
-        </View>
         {this._renderStatusText()}
+        {this._renderStatusText2()}
         <ScrollView>
+          {this._renderBeaconCountText()}
           {scanning && beacons.length ? this._renderBeacons() : this._renderEmpty()}
+          {this._renderEddystones()}
         </ScrollView>
       </View>
     );
@@ -342,7 +414,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonContainer: {
-    marginVertical: 10,
+    marginVertical: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',

@@ -1,0 +1,182 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:1:1-32:12
+	package
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:2:5-38
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:4:5-30
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:3:5-28
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:6:5-67
+MERGED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:16:5-67
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:6:22-64
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:7:5-77
+MERGED from [com.facebook.react:react-native:0.37.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.37.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/AndroidManifest.xml:11:5-78
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:7:22-75
+uses-sdk
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:9:5-11:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.react:react-native:0.37.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fresco:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:2:3-70
+MERGED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:12:5-14:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.react:react-native:0.37.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fresco:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:2:3-70
+MERGED from [com.kontaktio:sdk:3.3.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.kontaktio/sdk/3.3.0/AndroidManifest.xml:7:5-9:41
+	android:targetSdkVersion
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:11:9-38
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:10:9-35
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml
+application
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:13:5-30:19
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.react:react-native:0.37.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/org.webkit/android-jsc/r174650/AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.react:react-native:0.37.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/org.webkit/android-jsc/r174650/AndroidManifest.xml:2:3-17
+	android:label
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:16:7-39
+	android:allowBackup
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:15:7-33
+	android:icon
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:17:7-41
+	android:theme
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:18:7-38
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:14:7-38
+service#com.kontakt.sdk.android.ble.service.ProximityService
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:19:7-110
+	android:exported
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:19:84-108
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:19:16-83
+activity#com.kontaktiosimpletest.MainActivity
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:20:7-28:18
+	android:label
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:22:9-41
+	android:configChanges
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:23:9-79
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:21:9-37
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:24:9-27:25
+action#android.intent.action.MAIN
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:25:13-65
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:25:21-62
+category#android.intent.category.LAUNCHER
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:26:13-73
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:26:23-70
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:29:7-84
+	android:name
+		ADDED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:29:17-81
+android:uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+IMPLIED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:1:1-32:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+android:uses-permission#android.permission.READ_PHONE_STATE
+IMPLIED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:1:1-32:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/src/main/AndroidManifest.xml:1:1-32:12 reason: org.webkit.android_jsc requested WRITE_EXTERNAL_STORAGE
+uses-permission#android.permission.BLUETOOTH
+ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:18:5-68
+	android:name
+		ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:18:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:20:5-74
+	android:name
+		ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:20:22-71
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:23:5-79
+	android:name
+		ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:23:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:25:5-81
+	android:name
+		ADDED from [KontaktIoSimpleTest:react-native-kontaktio:unspecified] /Users/tflonlineuser/GitHub/react-native-kontaktio/Example/android/app/build/intermediates/exploded-aar/KontaktIoSimpleTest/react-native-kontaktio/unspecified/AndroidManifest.xml:25:22-78
