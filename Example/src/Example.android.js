@@ -296,22 +296,33 @@ export default class IBeaconExample extends Component {
     (b1.minor === b2.minor)
   );
 
-//  _renderBeacons = () => {
-//    const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
-//
-//    return this.state.beacons.sort((a, b) => a.accuracy - b.accuracy).map((beacon, ind) => (
-//
-//      <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
-//
-//        <Text style={{fontWeight: 'bold'}}>{eddystone.uniqueId}</Text>
-//        <Text>Major: {beacon.major}, Minor: {beacon.minor}</Text>
-//        <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
-//        <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
-//        <Text>FirmwareVersion: {beacon.firmwareVersion}, Address: {beacon.uniqueId}</Text>
-//
-//      </View>
-//    ), this);
-//  };
+  _renderBeacons = () => {
+    const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
+
+    return this.state.beacons.sort((a, b) => a.accuracy - b.accuracy).map((beacon, ind) => (
+
+      <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
+
+        <Text style={{fontWeight: 'bold'}}>{beacon.uniqueId}</Text>
+        <Text>Major: {beacon.major}, Minor: {beacon.minor}</Text>
+        <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
+        <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
+        <Text>FirmwareVersion: {beacon.firmwareVersion}, Address: {beacon.uniqueId}</Text>
+
+      </View>
+    ), this);
+  };
+
+  _renderEddystones = () => {
+      const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
+
+      return this.state.eddystones.sort((a, b) => a.accuracy - b.accuracy).map((eddystone, ind) => (
+
+        <View key={ind} style={[styles.beacon, {backgroundColor: '#AAF7AF'}]}>
+          <Text style={{fontWeight: 'bold'}}>{eddystone.instanceId}</Text>
+        </View>
+      ), this);
+    };
 
   _renderEmpty = () => {
     const { scanning, beacons } = this.state;
@@ -374,18 +385,12 @@ export default class IBeaconExample extends Component {
           {this._renderButton('Stop scan', this._stopScanning, '#84e2f9')}
           {this._renderButton('Restart scan', this._restartScanning, '#84e2f9')}
         </View>
-        <View style={styles.buttonContainer}>
-          {this._renderButton('Is scanning?', this._isScanning, '#f2a2a2')}
-          {this._renderButton('Is connected?', this._isConnected, '#f2a2a2')}
-        </View>
-        <View style={styles.buttonContainer}>
-          {this._renderButton('Beacon regions (log)', this._getBeaconRegions, '#F4ED5A')}
-        </View>
         {this._renderStatusText()}
         {this._renderStatusText2()}
-        {this._renderBeaconCountText()}
         <ScrollView>
+          {this._renderBeaconCountText()}
           {scanning && beacons.length ? this._renderBeacons() : this._renderEmpty()}
+          {this._renderEddystones()}
         </ScrollView>
       </View>
     );
@@ -409,7 +414,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonContainer: {
-    marginVertical: 10,
+    marginVertical: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
