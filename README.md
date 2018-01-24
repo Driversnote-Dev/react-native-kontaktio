@@ -6,7 +6,7 @@ Kontakt.io SDK Versions:
 
 | OS             | SDK Version           |
 |:---------------|:----------------------|
-| **Android**    | [3.3.0](http://kontaktio.github.io/kontakt-android-sdk/3.3.0/Javadoc/) |
+| **Android**    | [3.3.3](http://kontaktio.github.io/kontakt-android-sdk/3.3.3/Javadoc/) |
 | **iOS**        | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/) |
 
 ## Advantages
