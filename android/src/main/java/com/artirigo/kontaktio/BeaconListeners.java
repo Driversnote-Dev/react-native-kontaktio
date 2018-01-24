@@ -14,12 +14,14 @@ import com.kontakt.sdk.android.ble.manager.listeners.EddystoneListener;
 import com.kontakt.sdk.android.ble.manager.listeners.IBeaconListener;
 import com.kontakt.sdk.android.ble.manager.listeners.ScanStatusListener;
 import com.kontakt.sdk.android.ble.manager.listeners.SpaceListener;
+import com.kontakt.sdk.android.ble.manager.listeners.SecureProfileListener;
 import com.kontakt.sdk.android.ble.spec.Telemetry;
 import com.kontakt.sdk.android.common.profile.IBeaconDevice;
 import com.kontakt.sdk.android.common.profile.IBeaconRegion;
 import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
 import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 import com.kontakt.sdk.android.common.profile.RemoteBluetoothDevice;
+import com.kontakt.sdk.android.common.profile.ISecureProfile;
 
 import java.util.List;
 
@@ -201,6 +203,38 @@ final class BeaconListeners {
         };
     }
 
+    SecureProfileListener createSecureProfileListener(){
+        return new SecureProfileListener() {
+            @Override
+            public void onProfileDiscovered(ISecureProfile profile) {
+                //Profiles updated
+                Log.i("SecureProfileListener", "profile discovered: " + profile.toString());
+                outputMap = Arguments.createMap();
+                outputMap.putMap("profile", createMapWithProfile(profile));
+                sendEvent(reactAppContext, "profileDidAppear", outputMap);
+            }
+
+            @Override
+            public void onProfilesUpdated(List<ISecureProfile> profiles) {
+
+                //Profile discovered
+                Log.i("SecureProfileListener", "profile updated: " + profiles.toString());
+                outputMap = Arguments.createMap();
+                outputMap.putArray("profile", createArrayWithProfiles(profiles));
+                sendEvent(reactAppContext, "profileDidUpdate", outputMap);
+            }
+
+            @Override
+            public void onProfileLost(ISecureProfile profile) {
+                //Profile lost
+                Log.i("SecureProfileListener", "profile lost: " + profile.toString());
+                outputMap = Arguments.createMap();
+                outputMap.putMap("profile", createMapWithProfile(profile));
+                sendEvent(reactAppContext, "profileDidDisappear", outputMap);
+            }
+        };
+    }
+
 
     /*
      * Helpers
@@ -276,6 +310,26 @@ final class BeaconListeners {
 
         return e;
     }
+    /**
+     * Creates a map with parameters to send to JS
+     * @param profile ISecureProfile
+     * @return
+     */
+    private WritableMap createMapWithProfile(ISecureProfile profile) {
+        WritableMap e = new WritableNativeMap();
+        e.putString("name", profile.getName());
+        e.putString("address", profile.getMacAddress());
+        e.putDouble("rssi", profile.getRssi());
+
+        // Kontakt.io specific
+        e.putInt("batteryLevel", profile.getBatteryLevel());
+        e.putInt("txPower", profile.getTxPower());
+        e.putString("firmwareRevision", profile.getFirmwareRevision());
+        e.putString("uniqueId", profile.getUniqueId());  // unique 4-digit code on backside of beacon
+        e.putBoolean("isShuffled", profile.isShuffled());
+
+        return e;
+    }
 
     /**
      * Creates a map with parameters to send to JS
@@ -334,5 +388,19 @@ final class BeaconListeners {
         }
 
         return eddystoneArray;
+    }
+
+    /**
+     * Creates an array with all eddystones in iEddystoneDeviceList
+     * @param iSecureProfileList List of eddystones
+     * @return
+     */
+    private WritableArray createArrayWithProfiles(List<ISecureProfile> iSecureProfileList) {
+        WritableArray profileArray = new WritableNativeArray();
+        for (ISecureProfile profile : iSecureProfileList) {
+            profileArray.pushMap(createMapWithProfile(profile));
+        }
+
+        return profileArray;
     }
 }

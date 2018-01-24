@@ -46,9 +46,11 @@ class BeaconProximityManager {
         // Add beacon listener(s)
         if (beaconTypes == null || beaconTypes.size() == 0) {
             proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
+            proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
         } else if (beaconTypes.size() == 1) {
             if (beaconTypes.getString(0).equals(IBEACON)) {
                 proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
+                proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
             } else if (beaconTypes.getString(0).equals(EDDYSTONE)) {
                 proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
             } else {
@@ -58,6 +60,7 @@ class BeaconProximityManager {
             if ((beaconTypes.getString(0).equals(IBEACON) && beaconTypes.getString(1).equals(EDDYSTONE))
                     || (beaconTypes.getString(0).equals(EDDYSTONE) && beaconTypes.getString(1).equals(IBEACON))) {
                 proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
+                proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
                 proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
             } else {
                 throw new Exception("The beaconTypes values have to be IBEACON and EDDYSTONE");
