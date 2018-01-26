@@ -669,7 +669,7 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
                         NSLog(@"in read CONFIGuration uniqueId: %@, uniqueId from config: %@, uuid: %@, minor: %@", device.uniqueID, configuration.uniqueID, [configuration.proximityUUID UUIDString], configuration.minor);
                     } else {
                         NSLog(@"in read configuration: beacon with uniqueId %@, error: %@", device.uniqueID, error.localizedDescription);
-                        [NSException raise:@"Error in readConfigurationWithCompletion" format:@"%@", error.localizedDescription];
+                        // [NSException raise:@"Error in readConfigurationWithCompletion" format:@"%@", error.localizedDescription];
                     }
                 }];
             } @catch (NSException *exception) {
@@ -677,24 +677,22 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
             }
         }
 
-
-        [deviceArray addObject:@{
-                                 @"name": device.name,
-                                 @"uniqueId": device.uniqueID,
-                                 @"firmwareVersion": device.firmwareVersion,
-                                 @"batteryLevel": [NSNumber numberWithLong:device.batteryLevel],
-                                 @"batteryPowered": @(device.batteryPowered),
-                                 @"transmissionPower": [self numberForTxPowerLevel:device.transmissionPower],
-                                 @"hasConfigurationProfile": @(device.hasConfigurationProfile),
-                                 @"shuffled": @(device.shuffled),
-                                 @"locked": @(device.locked),
-                                 // advertisingProfile not exposed since it will be replaced soon.
-                                 @"model": [self stringForModel:device.model],
-                                 @"peripheral": device.peripheral.name,
-                                 @"rssi": device.RSSI,
-                                 @"updatedAt": @(device.updatedAt),
-//                                 @"distance": KTKCalculateDistanceFrom(device.transmissionPower, device.RSSI)
-                                 }];
+        NSMutableDictionary *beaconDict = [[NSMutableDictionary alloc] init];
+        if (device.name != nil) beaconDict[@"name"] = device.name;
+        if (device.uniqueID != nil) beaconDict[@"uniqueId"] = device.uniqueID;
+        if (device.firmwareVersion != nil) beaconDict[@"firmwareVersion"] = device.firmwareVersion;
+        if (device.batteryLevel != nil) beaconDict[@"batteryLevel"] = [NSNumber numberWithLong:device.batteryLevel];
+        if (device.batteryPowered != nil) beaconDict[@"batteryPowered"] =@(device.batteryPowered);
+        if (device.transmissionPower != nil) beaconDict[@"transmissionPower"] = [self numberForTxPowerLevel:device.transmissionPower];
+        if (@(device.hasConfigurationProfile) != nil) beaconDict[@"hasConfigurationProfile"] = @(device.hasConfigurationProfile);
+        if (@(device.shuffled) != nil) beaconDict[@"shuffled"] = @(device.shuffled);
+        if (@(device.locked) != nil) beaconDict[@"locked"] = @(device.locked);
+        if (device.model != nil) beaconDict[@"model"] = [self stringForModel:device.model];
+        if (device.peripheral.name != nil) beaconDict[@"peripheral"] = device.peripheral.name;
+        if (device.RSSI != nil) beaconDict[@"rssi"] = device.RSSI;
+        if (@(device.updatedAt) != nil) beaconDict[@"updatedAt"] = @(device.updatedAt);
+        
+        [deviceArray addObject:beaconDict];
     }
 
     NSDictionary *event = @{
