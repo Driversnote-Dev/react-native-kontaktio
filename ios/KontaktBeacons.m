@@ -198,6 +198,8 @@ RCT_EXPORT_MODULE()
         case KTKDeviceModelCloudBeacon: return @"CloudBeacon";
         case KTKDeviceModelCardBeacon: return @"CardBeacon";
         case KTKDeviceModelProBeacon: return @"ProBeacon";
+        default:
+            return @"Invalid";
     }
 }
 

@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -64,6 +64,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  The firmware version.
  */
 @property (nonatomic, strong, readwrite) NSString *firmwareVersion;
+
+/**
+ *  Kontakt order ID. (read-only)
+ */
+@property (nonatomic, strong, readonly) NSString *orderID;
 
 /**
  *  Device type. (read-only)

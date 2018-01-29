@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -159,7 +159,7 @@ typedef NS_ENUM(NSUInteger, KTKDevicesManagerDiscoveryMode) {
  *  @param devices An list of discovered nearby devices.
  */
 @required
-- (void)devicesManager:(KTKDevicesManager*)manager didDiscoverDevices:(NSArray <KTKNearbyDevice*>* _Nullable)devices;
+- (void)devicesManager:(KTKDevicesManager*)manager didDiscoverDevices:(NSArray <KTKNearbyDevice*>*)devices;
 
 #pragma mark - Optional Methods
 ///--------------------------------------------------------------------
@@ -173,7 +173,7 @@ typedef NS_ENUM(NSUInteger, KTKDevicesManagerDiscoveryMode) {
  *  @param error   An error object containing the error code that indicates why discovery failed.
  */
 @optional
-- (void)devicesManagerDidFailToStartDiscovery:(KTKDevicesManager*)manager withError:(NSError* _Nullable)error;
+- (void)devicesManagerDidFailToStartDiscovery:(KTKDevicesManager*)manager withError:(NSError*)error;
 
 @end
 

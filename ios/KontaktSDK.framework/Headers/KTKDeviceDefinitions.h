@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -37,7 +37,11 @@ typedef NS_ENUM(NSInteger, KTKDeviceConnectionOperationType) {
     /**
      *  DFU Operation.
      */
-    KTKDeviceConnectionOperationTypeDFU     = 3
+    KTKDeviceConnectionOperationTypeDFU     = 3,
+    /**
+     *  Notification Operation.
+     */
+    KTKDeviceConnectionOperationTypeNotify     = 4
 };
 
 /**
@@ -127,6 +131,10 @@ typedef NS_OPTIONS(NSInteger, KTKDeviceAdvertisingPackets) {
      *  Kontakt identification packet.
      */
     KTKDeviceAdvertisingPacketsKontakt         = 1 << 7,
+    /**
+     *  Kontakt identification packet.
+     */
+    KTKDeviceAdvertisingPacketsKontaktTLM      = 1 << 8,
     /**
      *  All supprted Eddystone packets.
      */
@@ -221,7 +229,11 @@ typedef NS_ENUM(NSInteger, KTKDeviceModel) {
     /**
      *  Pro Beacon
      */
-    KTKDeviceModelProBeacon = 6
+    KTKDeviceModelProBeacon = 6,
+    /**
+     *  Gateway
+     */
+    KTKDeviceModelGateway = 7
 };
 
 /**

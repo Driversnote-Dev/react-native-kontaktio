@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -9,6 +9,7 @@
 @import CoreBluetooth;
 
 #import "KTKDeviceDefinitions.h"
+#import "KTKNearbyDeviceTelemetry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -71,6 +72,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  A Boolean indicating whether the device is locked/non-connectable mode. (read-only)
  */
 @property (nonatomic, readonly, assign, getter=isLocked) BOOL locked;
+
+/**
+ *  Nearby device telemetry informations object. (read-only)
+ *
+ *  @see KTKNearbyDeviceTelemetry
+ */
+@property (nonatomic, readonly, strong) KTKNearbyDeviceTelemetry * _Nullable telemetry;
 
 /**
  *  Current advertising profile. (read-only)
