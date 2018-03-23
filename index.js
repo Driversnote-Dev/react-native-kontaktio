@@ -123,6 +123,10 @@ if (Platform.OS === "ios") {
   const stopMonitoringForAllRegions = KontaktModule.stopMonitoringForAllRegions;
   const getMonitoredRegions = KontaktModule.getMonitoredRegions;
 
+  const startEddystoneDiscovery = (region = null) => (KontaktModule.startEddystoneDiscovery(region));
+  const stopEddystoneDiscoveryInRegion = KontaktModule.stopEddystoneDiscoveryInRegion;
+  const stopEddystoneDiscoveryInAllRegions = KontaktModule.stopEddystoneDiscoveryInAllRegions;
+
   Kontakt = {
     init,
     configure,
@@ -145,6 +149,10 @@ if (Platform.OS === "ios") {
     stopMonitoringForRegion,
     stopMonitoringForAllRegions,
     getMonitoredRegions,
+      //Eddystone
+      startEddystoneDiscovery,
+      stopEddystoneDiscoveryInRegion,
+      stopEddystoneDiscoveryInAllRegions
   };
 }
 
