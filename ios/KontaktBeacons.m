@@ -8,10 +8,12 @@
 
 #import <KontaktSDK/KontaktSDK.h>
 
-@interface KontaktBeacons() <KTKBeaconManagerDelegate, KTKDevicesManagerDelegate>
+@interface KontaktBeacons() <KTKBeaconManagerDelegate,
+    KTKDevicesManagerDelegate,KTKEddystoneManagerDelegate>
 
 @property (strong, nonatomic) KTKBeaconManager *beaconManager;
 @property (strong, nonatomic) KTKDevicesManager *devicesManager;
+@property (strong, nonatomic) KTKEddystoneManager *eddystoneManager;
 
 @property (assign, nonatomic) BOOL dropEmptyRanges;
 @property (assign, nonatomic) NSTimeInterval discoveryInterval;
@@ -47,6 +49,7 @@ RCT_EXPORT_MODULE()
         // DevicesManager for kontaktio specific fields like uniqueId
         self.devicesManager = [[KTKDevicesManager alloc] initWithDelegate:self];
 
+        self.eddystoneManager = [[KTKEddystoneManager alloc] initWithDelegate:self];
         // Default values
         self.dropEmptyRanges = YES;
         self.connectNearbyBeacons = NO;
@@ -69,6 +72,9 @@ RCT_EXPORT_MODULE()
         @"rangingDidFailForRegion",
         @"didDiscoverDevices",
         @"discoveryDidFail",
+        @"didDiscoverEddystones",
+        @"didFailToStartDiscoverEddystones",
+        @"didUpdateEddystone"
     ];
 }
 
@@ -267,6 +273,52 @@ RCT_EXPORT_METHOD(configure:(NSDictionary *)dict
     } @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
         reject(@"configure", @"Could not configure beacon manager", error);
+    }
+}
+
+// EDDYSTONE
+
+RCT_EXPORT_METHOD(startEddystoneDiscovery:(NSDictionary *)dict
+                  startEddystoneDiscovery_resolver:(RCTPromiseResolveBlock)resolve
+                  startEddystoneDiscovery_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        if (dict == nil) {
+            [self.eddystoneManager startEddystoneDiscoveryInRegion:nil];
+        } else {
+             [self.eddystoneManager startEddystoneDiscoveryInRegion:[self convertDictToBeaconRegion:dict]];
+        }
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"startEddystoneDiscovery", @"Could not start beacon discovery", error);
+    }
+}
+
+
+RCT_EXPORT_METHOD(stopEddystoneDiscoveryInRegion:(NSDictionary *)dict
+                  stopEddystoneDiscoveryInRegion_resolver:(RCTPromiseResolveBlock)resolve
+                  stopEddystoneDiscoveryInRegion_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [self.eddystoneManager stopEddystoneDiscoveryInRegion:[self convertDictToBeaconRegion:dict]];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopEddystoneDiscoveryInRegion", @"Could not stopRangingBeaconsInRegion", error);
+    }
+}
+
+RCT_REMAP_METHOD(stopEddystoneDiscoveryInAllRegions,
+                 stopEddystoneDiscoveryInAllRegions_resolver:(RCTPromiseResolveBlock)resolve
+                 stopEddystoneDiscoveryInAllRegions_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [self.eddystoneManager stopEddystoneDiscoveryInAllRegions];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopRangingBeaconsInAllRegions", @"Could not stopRangingBeaconsInAllRegions", error);
     }
 }
 
@@ -710,6 +762,39 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
 - (void)devicesManagerDidFailToStartDiscovery:(KTKDevicesManager *)manager withError:(NSError *)error {
     if (hasListeners) {
         [self sendEventWithName:@"discoveryDidFail" body:@{ @"error": error.localizedDescription }];
+    }
+}
+
+- (void)eddystoneManager:(KTKEddystoneManager *)manager
+   didDiscoverEddystones:(NSSet *)eddystones
+                inRegion:(__kindof KTKEddystoneRegion *_Nullable)region {
+    NSDictionary *event = @{
+                            @"region": @1,
+                            @"beacons": @1
+                            };
+    
+    if (hasListeners) {
+        [self sendEventWithName:@"didDiscoverEddystones" body:event];
+    }
+}
+
+- (void)eddystoneManagerDidFailToStartDiscovery:(KTKEddystoneManager *)manager
+                                      withError:(NSError *_Nullable)error {
+    if (hasListeners) {
+        [self sendEventWithName:@"didFailToStartDiscoverEddystones" body:@{ @"error": error.localizedDescription }];
+    }
+}
+
+- (void)eddystoneManager:(KTKEddystoneManager *)manager
+      didUpdateEddystone:(KTKEddystone *)eddystone
+               withFrame:(KTKEddystoneFrameType)frameType {
+    NSDictionary *event = @{
+                            @"region": @1,
+                            @"beacons": @1
+                            };
+    
+    if (hasListeners) {
+        [self sendEventWithName:@"didUpdateEddystone" body:event];
     }
 }
 
