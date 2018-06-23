@@ -102,16 +102,33 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     }
 
     OnServiceReadyListener serviceReadyListener = new OnServiceReadyListener() {
+        /**
+         * Assuring that the callback is only called once (i.e. connectPromise only resolved once)
+         * 
+         * From http://facebook.github.io/react-native/docs/native-modules-android.html#callbacks :
+         * > A native module is supposed to invoke its callback only once. It can, however, store the callback and invoke it later.
+         */
+        boolean callbackWasCalled = false;
+
         @Override
         public void onServiceReady() {
-            connectPromise.resolve(null);
+            if (callbackWasCalled) return;
+            callbackWasCalled = true;
+
+            try {
+                connectPromise.resolve(null);
+            } catch (Exception e) {
+                // Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                connectPromise.reject(Constants.EXCEPTION, e);
+            }
         }
     };
 
     // From BeaconProximityManager
     @ReactMethod
     public void disconnect(Promise promise) {
-        beaconProximityManager.disconnect(promise);
+        if(beaconProximityManager != null)
+            beaconProximityManager.disconnect(promise);
     }
     @ReactMethod
     public void isConnected(Promise promise) {
