@@ -2,15 +2,23 @@
 
 Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk/quickstart/#setup) have to be met.
 
-### Mostly automatic setup
+### Mostly automatic setup (recommended)
 
 When installing both, Android and iOS, steps *1* and *2* only have to be run once for both platforms.
 
-1. npm install
+1. Install the package
 
-	```bash
-	$ npm install --save react-native-kontaktio
-	```
+	* `yarn`
+
+		```bash
+		$ yarn add react-native-kontaktio
+		```
+	
+	* `npm`
+
+		```bash
+		$ npm install --save react-native-kontaktio
+		```
 
 2. Link module (use `rnpm` for React Native versions older than `0.27`)
 
