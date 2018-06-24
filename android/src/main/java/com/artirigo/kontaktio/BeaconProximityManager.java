@@ -14,6 +14,7 @@ import com.kontakt.sdk.android.common.KontaktSDK;
 class BeaconProximityManager {
     private final static String IBEACON = "IBEACON";
     private final static String EDDYSTONE = "EDDYSTONE";
+    private final static String SECURE_PROFILE = "SECURE_PROFILE";
 
     private final ReactApplicationContext reactAppContext;
     private String kontaktApiKey;
@@ -46,27 +47,41 @@ class BeaconProximityManager {
         // Add beacon listener(s)
         if (beaconTypes == null || beaconTypes.size() == 0) {
             proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
-            proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
         } else if (beaconTypes.size() == 1) {
             if (beaconTypes.getString(0).equals(IBEACON)) {
                 proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
-                proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
             } else if (beaconTypes.getString(0).equals(EDDYSTONE)) {
                 proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
+            } else if (beaconTypes.getString(0).equals(SECURE_PROFILE)) {
+                proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
             } else {
-                throw new Exception("The value of the beaconType(s) has to be either IBEACON or EDDYSTONE");
+                throw new Exception("The value of the beaconType(s) has to be either IBEACON, EDDYSTONE or SECURE_PROFILE");
             }
         } else if (beaconTypes.size() == 2) {
             if ((beaconTypes.getString(0).equals(IBEACON) && beaconTypes.getString(1).equals(EDDYSTONE))
                     || (beaconTypes.getString(0).equals(EDDYSTONE) && beaconTypes.getString(1).equals(IBEACON))) {
                 proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
+                proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
+            } else if (beaconTypes.getString(0).equals(IBEACON) && beaconTypes.getString(1).equals(SECURE_PROFILE)) {
+                proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
+                proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
+            } else if (beaconTypes.getString(0).equals(EDDYSTONE) && beaconTypes.getString(1).equals(SECURE_PROFILE)) {
+                proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
+                proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
+            } else {
+                throw new Exception("The beaconTypes values have to be IBEACON, EDDYSTONE or SECURE_PROFILE. If added, SECURE_PROFILE has to go last.");
+            }
+        } else if (beaconTypes.size() == 3) {
+            if ((beaconTypes.getString(0).equals(IBEACON) && beaconTypes.getString(1).equals(EDDYSTONE) && beaconTypes.getString(2).equals(SECURE_PROFILE))
+                    || (beaconTypes.getString(0).equals(EDDYSTONE) && beaconTypes.getString(1).equals(IBEACON) && beaconTypes.getString(2).equals(SECURE_PROFILE))) {
+                proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
                 proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
                 proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
             } else {
-                throw new Exception("The beaconTypes values have to be IBEACON and EDDYSTONE");
+                throw new Exception("The beaconTypes values have to be IBEACON, EDDYSTONE or SECURE_PROFILE. If added, SECURE_PROFILE has to go last.");
             }
         } else {
-            throw new Exception("beaconTypes array has to have less than 2 arguments or be empty");
+            throw new Exception("beaconTypes array has to have less than 3 arguments or be empty");
         }
 
         // Add further listeners
