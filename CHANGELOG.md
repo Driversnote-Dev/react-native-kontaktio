@@ -8,14 +8,18 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## [v2.1.0] - 2018-06-24
+
 ### Added
 
+- _Android_: Add Secure Profile. It is used when scanning for Beacon Pros, by @jampueroc (see #36) 
+- _Android_: Add KontaktTelemetry (with Acceleration) to Secure Profile - only works with BeaconPros, by @Andruschenko (see #36)
 - Add CHANGELOG
-- _Android_: Add KontaktTelemetry (with Acceleration) - only works with BeaconPros
 
 ### Changed
 
 - _Android_: Update to SDK version 4.0.1 (Important: Version 4.0.0. removes support for Kontakt.io nRF51-based devices (Beacon, Tough Beacon, USB Beacon) with firmware < 4.0)
+- Fixed and updated parts of the documentation. Added images to the iOS setup guide.
 
 ### Fixed
 
