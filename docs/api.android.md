@@ -1,6 +1,6 @@
 # Android
 
-Current SDK version: [3.3.0](http://kontaktio.github.io/kontakt-android-sdk/3.3.0/Javadoc/)
+Current SDK version: [3.3.3](http://kontaktio.github.io/kontakt-android-sdk/3.3.3/Javadoc/)
 
 ## Setup
 

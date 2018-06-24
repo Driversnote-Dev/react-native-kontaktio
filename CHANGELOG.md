@@ -10,6 +10,10 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ### Added
 * Add CHANGELOG
+* _Android_: Add KontaktTelemetry (with Acceleration) - only works with BeaconPros
+
+### Changed
+* _Android_: Update to SDK version 3.3.3
 
 ### Fixed
 * Handle illegal callback invocation exception, by @JonasWho (see #21)
