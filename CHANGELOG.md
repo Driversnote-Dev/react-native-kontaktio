@@ -15,7 +15,7 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ### Changed
 
-- _Android_: Update to SDK version 4.0.2 (Important: Removed support for nRF51-based devices (Beacon, Tough Beacon, USB Beacon) with firmware < 4.0)
+- _Android_: Update to SDK version 4.0.1 (Important: Version 4.0.0. removes support for Kontakt.io nRF51-based devices (Beacon, Tough Beacon, USB Beacon) with firmware < 4.0)
 
 ### Fixed
 

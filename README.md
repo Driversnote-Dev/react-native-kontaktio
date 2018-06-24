@@ -2,16 +2,18 @@
 
 Cross-platform React Native module for detecting beacons with **Android** and **iOS** devices.
 
-Kontakt.io SDK Versions:
+Kontakt.io SDK Versions of newest release:
 
-| OS          | SDK Version                                                             |
-| :---------- | :---------------------------------------------------------------------- |
-| **Android** | [4.0.2](http://kontaktio.github.io/kontakt-android-sdk/4.0.2/Javadoc/)  |
-| **iOS**     | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/) |
+| OS          | SDK Version                                                                                              |
+| :---------- | :------------------------------------------------------------------------------------------------------- |
+| **Android** | [4.0.1](http://kontaktio.github.io/kontakt-android-sdk/4.0.2/Javadoc/) (Documentation points to `4.0.2`) |
+| **iOS**     | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/)                                  |
+
+The documentation points to `4.0.2` because there is none specifically for `4.0.1`. The Android SDK Version `4.0.2` [could not be installed](https://github.com/kontaktio/kontakt-android-sdk/issues/186).
 
 ## Advantages
 
-- Works with any beacon (because the Kontakt.io SDK wraps the native beacon libraries (while adding more) - no Kontakt.io SDK API key is necessary.
+- Works with any beacon (becquse the Kontakt.io SDK wraps the native beacon libraries (while adding more) - no Kontakt.io SDK API key is necessary.
 - Especially useful with [Kontakt.io](http://kontakt.io/) beacons because additional information like the **unique id** (on the back of each beacon), the **battery power level** and others are available and get synchronized with your Kontakt.io online panel.
 - Highly customizable configurations (e.g. for setting arbitrary monitoring intervals on Android)
 
@@ -135,7 +137,8 @@ export default class MinimalExample extends Component {
 ## ToDo:
 
 - Update Android Eddystone feature:
-  * Add *multiple* Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
-  * Add Eddystone Frames Selection configuration option
+
+  - Add _multiple_ Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
+  - Add Eddystone Frames Selection configuration option
 
 - iOS: Eddystone support
