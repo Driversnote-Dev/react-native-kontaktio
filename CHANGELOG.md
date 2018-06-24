@@ -12,12 +12,12 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 * Add CHANGELOG
 
 ### Fixed
-* Handle illegal callback invocation exception
+* Handle illegal callback invocation exception, by @JonasWho (see #21)
 
 ## [v2.0.4] - 2017-10-25
 
 ### Changed
-* Compatibility with React Native 0.48 and up
+* Compatibility with React Native 0.48 and up, by @exKAZUu (see #19)
 
 ## [v2.0.0] - 2017-06-08
 
