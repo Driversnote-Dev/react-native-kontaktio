@@ -16,6 +16,8 @@ import com.kontakt.sdk.android.ble.manager.listeners.ScanStatusListener;
 import com.kontakt.sdk.android.ble.manager.listeners.SpaceListener;
 import com.kontakt.sdk.android.ble.manager.listeners.SecureProfileListener;
 import com.kontakt.sdk.android.ble.spec.Telemetry;
+import com.kontakt.sdk.android.ble.spec.KontaktTelemetry;
+import com.kontakt.sdk.android.ble.spec.Acceleration;
 import com.kontakt.sdk.android.common.profile.IBeaconDevice;
 import com.kontakt.sdk.android.common.profile.IBeaconRegion;
 import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
@@ -44,8 +46,9 @@ final class BeaconListeners {
         return new IBeaconListener() {
             @Override
             public void onIBeaconDiscovered(IBeaconDevice iBeacon, IBeaconRegion region) {
-                //Beacon discovered
-                Log.i("IBeaconListener", "IBeacon discovered: " + iBeacon.toString() + ", belongs to region " + region.toString());
+                // Beacon discovered
+                Log.i("IBeaconListener",
+                        "IBeacon discovered: " + iBeacon.toString() + ", belongs to region " + region.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("beacon", createMapWithIBeacon(iBeacon));
                 outputMap.putMap("region", createMapWithRegion(region));
@@ -54,8 +57,9 @@ final class BeaconListeners {
 
             @Override
             public void onIBeaconsUpdated(List<IBeaconDevice> iBeacons, IBeaconRegion region) {
-                //Beacons updated
-                Log.i("IBeaconListener", "IBeacons updated: " + iBeacons.toString() + ", belongs to region " + region.toString());
+                // Beacons updated
+                Log.i("IBeaconListener",
+                        "IBeacons updated: " + iBeacons.toString() + ", belongs to region " + region.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putArray("beacons", createArrayWithIBeacons(iBeacons));
                 outputMap.putMap("region", createMapWithRegion(region));
@@ -64,8 +68,9 @@ final class BeaconListeners {
 
             @Override
             public void onIBeaconLost(IBeaconDevice iBeacon, IBeaconRegion region) {
-                //Beacon lost
-                Log.i("IBeaconListener", "IBeacon lost: " + iBeacon.toString() + ", belongs to region " + region.toString());
+                // Beacon lost
+                Log.i("IBeaconListener",
+                        "IBeacon lost: " + iBeacon.toString() + ", belongs to region " + region.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("beacon", createMapWithIBeacon(iBeacon));
                 outputMap.putMap("region", createMapWithRegion(region));
@@ -78,7 +83,7 @@ final class BeaconListeners {
         return new EddystoneListener() {
             @Override
             public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-                //Eddystone discovered
+                // Eddystone discovered
                 Log.i("EddystoneListener", "Eddystone discovered: " + eddystone.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("eddystone", createMapWithEddystone(eddystone));
@@ -88,7 +93,7 @@ final class BeaconListeners {
 
             @Override
             public void onEddystonesUpdated(List<IEddystoneDevice> eddystones, IEddystoneNamespace namespace) {
-                //Eddystone updated
+                // Eddystone updated
                 Log.i("EddystoneListener", "Eddystones updated: " + eddystones.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putArray("eddystones", createArrayWithEddystones(eddystones));
@@ -98,7 +103,7 @@ final class BeaconListeners {
 
             @Override
             public void onEddystoneLost(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-                //Eddystone lost
+                // Eddystone lost
                 Log.i("EddystoneListener", "Eddystone lost: " + eddystone.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("eddystone", createMapWithEddystone(eddystone));
@@ -112,7 +117,7 @@ final class BeaconListeners {
         return new SpaceListener() {
             @Override
             public void onRegionEntered(IBeaconRegion region) {
-                //IBeacon region has been entered
+                // IBeacon region has been entered
                 Log.i("SpaceListener", "region entered: " + region.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("region", createMapWithRegion(region));
@@ -121,7 +126,7 @@ final class BeaconListeners {
 
             @Override
             public void onRegionAbandoned(IBeaconRegion region) {
-                //IBeacon region has been abandoned
+                // IBeacon region has been abandoned
                 Log.i("SpaceListener", "region abandoned: " + region.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("region", createMapWithRegion(region));
@@ -130,7 +135,7 @@ final class BeaconListeners {
 
             @Override
             public void onNamespaceEntered(IEddystoneNamespace namespace) {
-                //Eddystone namespace has been entered
+                // Eddystone namespace has been entered
                 Log.i("SpaceListener", "namespace entered: " + namespace.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("namespace", createMapWithNamespace(namespace));
@@ -139,7 +144,7 @@ final class BeaconListeners {
 
             @Override
             public void onNamespaceAbandoned(IEddystoneNamespace namespace) {
-                //Eddystone namespace has been abandoned
+                // Eddystone namespace has been abandoned
                 Log.i("SpaceListener", "namespace abandoned: " + namespace.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("namespace", createMapWithNamespace(namespace));
@@ -152,7 +157,7 @@ final class BeaconListeners {
         return new ScanStatusListener() {
             @Override
             public void onScanStart() {
-                //Scan started
+                // Scan started
                 Log.i("ScanStatusListener", "scan started");
                 WritableMap map = Arguments.createMap();
                 map.putString("status", "START");
@@ -161,7 +166,7 @@ final class BeaconListeners {
 
             @Override
             public void onScanStop() {
-                //Scan stopped
+                // Scan stopped
                 // THIS IS NOT TRIGGERED!
                 Log.i("ScanStatusListener", "scan stopped");
                 WritableMap map = Arguments.createMap();
@@ -171,7 +176,7 @@ final class BeaconListeners {
 
             @Override
             public void onScanError(ScanError error) {
-                //Error occured
+                // Error occured
                 // Invoked if an error occurs during a scan or scan initialization.
                 Log.i("ScanStatusListener", "scan error occured: " + error);
                 WritableMap map = Arguments.createMap();
@@ -185,7 +190,7 @@ final class BeaconListeners {
 
             @Override
             public void onMonitoringCycleStart() {
-                //Monitoring cycle started
+                // Monitoring cycle started
                 Log.i("ScanStatusListener", "monitoring cycle started");
                 WritableMap map = Arguments.createMap();
                 map.putString("status", "START");
@@ -194,7 +199,7 @@ final class BeaconListeners {
 
             @Override
             public void onMonitoringCycleStop() {
-                //Monitoring cycle finished
+                // Monitoring cycle finished
                 Log.i("ScanStatusListener", "monitoring cycle finished");
                 WritableMap map = Arguments.createMap();
                 map.putString("status", "STOP");
@@ -203,11 +208,11 @@ final class BeaconListeners {
         };
     }
 
-    SecureProfileListener createSecureProfileListener(){
+    SecureProfileListener createSecureProfileListener() {
         return new SecureProfileListener() {
             @Override
             public void onProfileDiscovered(ISecureProfile profile) {
-                //Profiles updated
+                // Profiles updated
                 Log.i("SecureProfileListener", "profile discovered: " + profile.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("profile", createMapWithProfile(profile));
@@ -217,7 +222,7 @@ final class BeaconListeners {
             @Override
             public void onProfilesUpdated(List<ISecureProfile> profiles) {
 
-                //Profile discovered
+                // Profile discovered
                 Log.i("SecureProfileListener", "profile updated: " + profiles.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putArray("profile", createArrayWithProfiles(profiles));
@@ -226,7 +231,7 @@ final class BeaconListeners {
 
             @Override
             public void onProfileLost(ISecureProfile profile) {
-                //Profile lost
+                // Profile lost
                 Log.i("SecureProfileListener", "profile lost: " + profile.toString());
                 outputMap = Arguments.createMap();
                 outputMap.putMap("profile", createMapWithProfile(profile));
@@ -235,13 +240,13 @@ final class BeaconListeners {
         };
     }
 
-
     /*
      * Helpers
      */
 
     /**
      * Creates a map with parameters to send to JS
+     * 
      * @param beacon iBeaconDevice
      * @return
      */
@@ -262,7 +267,7 @@ final class BeaconListeners {
         b.putInt("batteryPower", beacon.getBatteryPower());
         b.putInt("txPower", beacon.getTxPower());
         b.putString("firmwareVersion", beacon.getFirmwareVersion());
-        b.putString("uniqueId", beacon.getUniqueId());  // unique 4-digit code on backside of beacon
+        b.putString("uniqueId", beacon.getUniqueId()); // unique 4-digit code on backside of beacon
         b.putBoolean("isShuffled", beacon.isShuffled());
 
         return b;
@@ -270,6 +275,7 @@ final class BeaconListeners {
 
     /**
      * Creates a map with parameters to send to JS
+     * 
      * @param eddystone IEddystoneDevice
      * @return
      */
@@ -305,34 +311,68 @@ final class BeaconListeners {
         e.putInt("batteryPower", eddystone.getBatteryPower());
         e.putInt("txPower", eddystone.getTxPower());
         e.putString("firmwareVersion", eddystone.getFirmwareVersion());
-        e.putString("uniqueId", eddystone.getUniqueId());  // unique 4-digit code on backside of beacon
+        e.putString("uniqueId", eddystone.getUniqueId()); // unique 4-digit code on backside of beacon
         e.putBoolean("isShuffled", eddystone.isShuffled());
 
         return e;
     }
+
     /**
      * Creates a map with parameters to send to JS
+     * 
      * @param profile ISecureProfile
      * @return
      */
     private WritableMap createMapWithProfile(ISecureProfile profile) {
         WritableMap e = new WritableNativeMap();
         e.putString("name", profile.getName());
-        e.putString("address", profile.getMacAddress());
+        e.putString("macAddress", profile.getMacAddress());
         e.putDouble("rssi", profile.getRssi());
 
         // Kontakt.io specific
         e.putInt("batteryLevel", profile.getBatteryLevel());
         e.putInt("txPower", profile.getTxPower());
         e.putString("firmwareRevision", profile.getFirmwareRevision());
-        e.putString("uniqueId", profile.getUniqueId());  // unique 4-digit code on backside of beacon
+        e.putString("uniqueId", profile.getUniqueId()); // unique 4-digit code on backside of beacon
         e.putBoolean("isShuffled", profile.isShuffled());
+        // KontaktTelemetry
+        KontaktTelemetry kontaktTelemetry = profile.getTelemetry();
+        if (kontaktTelemetry != null) {
+            WritableMap t = new WritableNativeMap();
+            t.putInt("batteryLevel", kontaktTelemetry.getBatteryLevel());
+            t.putInt("temperature", kontaktTelemetry.getTemperature());
+            t.putInt("lightSensorPercentage", kontaktTelemetry.getLightSensor());
+            t.putInt("accelerometerSensitivity", kontaktTelemetry.getSensitivity());
+            t.putInt("scannedBleDevices", kontaktTelemetry.getBleDevices());
+            t.putInt("bleScans", kontaktTelemetry.getBleScans());
+            t.putInt("uptime", kontaktTelemetry.getUptime());
+            t.putInt("systemLoad", kontaktTelemetry.getSystemLoad());
+            t.putInt("wifiScans", kontaktTelemetry.getWifiScans());
+            t.putInt("timestamp", kontaktTelemetry.getTimestamp());
+            t.putInt("secondsSinceLastDoubleTap", kontaktTelemetry.getLastDoubleTap());
+            t.putInt("secondsSinceLastThreshold", kontaktTelemetry.getLastThreshold());
+            // Acceleration
+            Acceleration acceleration = kontaktTelemetry.getAcceleration();
+            if (acceleration != null) {
+                WritableMap a = new WritableNativeMap();
+                a.putInt("x", acceleration.getX());
+                a.putInt("y", acceleration.getY());
+                a.putInt("z", acceleration.getZ());
+                t.putMap("acceleration", a);
+            } else {
+                t.putString("acceleration", null);
+            }
+            e.putMap("telemetry", t);
+        } else {
+            e.putString("telemetry", null);
+        }
 
         return e;
     }
 
     /**
      * Creates a map with parameters to send to JS
+     * 
      * @param region iBeaconRegion
      * @return
      */
@@ -349,6 +389,7 @@ final class BeaconListeners {
 
     /**
      * Creates a map with parameters to send to JS
+     * 
      * @param region IEddystoneNamespace
      * @return
      */
@@ -364,6 +405,7 @@ final class BeaconListeners {
 
     /**
      * Creates an array with all beacons in iBeaconDeviceList
+     * 
      * @param iBeaconDeviceList List of beacons
      * @return
      */
@@ -378,6 +420,7 @@ final class BeaconListeners {
 
     /**
      * Creates an array with all eddystones in iEddystoneDeviceList
+     * 
      * @param iEddystoneDeviceList List of eddystones
      * @return
      */
@@ -392,6 +435,7 @@ final class BeaconListeners {
 
     /**
      * Creates an array with all eddystones in iEddystoneDeviceList
+     * 
      * @param iSecureProfileList List of eddystones
      * @return
      */
