@@ -2,36 +2,37 @@
 
 Cross-platform React Native module for detecting beacons with **Android** and **iOS** devices.
 
-Kontakt.io SDK Versions:
+Kontakt.io SDK Versions of newest release:
 
-| OS             | SDK Version           |
-|:---------------|:----------------------|
-| **Android**    | [3.3.3](http://kontaktio.github.io/kontakt-android-sdk/3.3.3/Javadoc/) |
-| **iOS**        | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/) |
+| OS          | SDK Version                                                                                              |
+| :---------- | :------------------------------------------------------------------------------------------------------- |
+| **Android** | [4.0.1](http://kontaktio.github.io/kontakt-android-sdk/4.0.2/Javadoc/) (Documentation points to `4.0.2`) |
+| **iOS**     | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/)                                  |
+
+The documentation points to `4.0.2` because there is none specifically for `4.0.1`. The Android SDK Version `4.0.2` [could not be installed](https://github.com/kontaktio/kontakt-android-sdk/issues/186).
 
 ## Advantages
 
-* Works with any beacon (because the Kontakt.io SDK wraps the native beacon libraries (while adding more) - no Kontakt.io SDK API key is necessary.
-* Especially useful with [Kontakt.io](http://kontakt.io/) beacons because additional information like the **unique id** (on the back of each beacon), the **battery power level** and others are available and get synchronized with your Kontakt.io online panel.
-* Highly customizable configurations (e.g. for setting arbitrary monitoring intervals on Android)
-
+- Works with any beacon (becquse the Kontakt.io SDK wraps the native beacon libraries (while adding more) - no Kontakt.io SDK API key is necessary.
+- Especially useful with [Kontakt.io](http://kontakt.io/) beacons because additional information like the **unique id** (on the back of each beacon), the **battery power level** and others are available and get synchronized with your Kontakt.io online panel.
+- Highly customizable configurations (e.g. for setting arbitrary monitoring intervals on Android)
 
 ## Setup
 
-* [Android Setup](/docs/setup.android.md)
-* [iOS Setup](/docs/setup.ios.md)
+- [Android Setup](/docs/setup.android.md)
+- [iOS Setup](/docs/setup.ios.md)
 
 ## API Documentation
 
-* [Android Documentation](/docs/api.android.md)
-* [iOS Documentation](/docs/api.ios.md)
+- [Android Documentation](/docs/api.android.md)
+- [iOS Documentation](/docs/api.ios.md)
 
 ## Examples
 
 ### Extensive Example
 
-* [Android extensive Example](/Example/src/Example.android.js)
-* [iOS extensive Example](/Example/src/Example.ios.js)
+- [Android extensive Example](/Example/src/Example.android.js)
+- [iOS extensive Example](/Example/src/Example.ios.js)
 
 ### Minimal Example
 
@@ -58,7 +59,7 @@ export default class MinimalExample extends Component {
       'beaconsDidUpdate',
       ({ beacons, region }) => {
         console.log('beaconsDidUpdate', beacons, region);
-      }
+      },
     );
   }
 
@@ -91,12 +92,9 @@ export default class MinimalExample extends Component {
       .catch(error => alert('error', error));
 
     // Add beacon listener
-    kontaktEmitter.addListener(
-      'didDiscoverDevices',
-      ({ beacons }) => {
-        console.log('didDiscoverDevices', beacons);
-      }
-    );
+    kontaktEmitter.addListener('didDiscoverDevices', ({ beacons }) => {
+      console.log('didDiscoverDevices', beacons);
+    });
   }
 
   render() {
@@ -107,40 +105,40 @@ export default class MinimalExample extends Component {
 
 ## Run Example to test the module
 
-1. Clone this repository, connect an Android and/or Apple device to your computer and have some (Kontakt.io) beacons handy
+1.  Clone this repository, connect an Android and/or Apple device to your computer and have some (Kontakt.io) beacons handy
 
-2. Open a terminal window, bash to the `Example/` folder, run `npm install` and start the react-native server
+2.  Open a terminal window, bash to the `Example/` folder, run `npm install` and start the react-native server
 
-	```bash
-	$ cd react-native-kontaktio/Example
-	$ npm install
-	$ npm start
-	```
-	
-3. Build the example and run it on your device. The app will appear under the name `KontaktIoSimpleTest`:
+    ```bash
+    $ cd react-native-kontaktio/Example
+    $ npm install
+    $ npm start
+    ```
 
-	* Android:
-	
-		```bash
-		$ react-native run-android
-		```
-	
-	* iOS
+3.  Build the example and run it on your device. The app will appear under the name `KontaktIoSimpleTest`:
 
-		```bash
-		$ react-native run-ios
-		```
+    - Android:
+
+          	```bash
+          	$ react-native run-android
+          	```
+
+    - iOS
+
+          	```bash
+          	$ react-native run-ios
+          	```
 
 ## Further notes
 
-* Beacons support is part of Android versions 4.3 and up.
-	* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
-* A physical device must be used for testing, at best some Kontakt.io beacons.
+- Beacons support is part of Android versions 4.3 and up. \* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
+- A physical device must be used for testing, at best some Kontakt.io beacons.
 
 ## ToDo:
 
-* Update Android Eddystone feature:
-	* Add *multiple* Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
-	* Add Eddystone Frames Selection configuration option
+- Update Android Eddystone feature:
 
-* iOS: Eddystone support
+  - Add _multiple_ Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
+  - Add Eddystone Frames Selection configuration option
+
+- iOS: Eddystone support

@@ -9,35 +9,41 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 ## Unreleased
 
 ### Added
-* Add CHANGELOG
-* _Android_: Add KontaktTelemetry (with Acceleration) - only works with BeaconPros
+
+- Add CHANGELOG
+- _Android_: Add KontaktTelemetry (with Acceleration) - only works with BeaconPros
 
 ### Changed
-* _Android_: Update to SDK version 3.3.3
+
+- _Android_: Update to SDK version 4.0.1 (Important: Version 4.0.0. removes support for Kontakt.io nRF51-based devices (Beacon, Tough Beacon, USB Beacon) with firmware < 4.0)
 
 ### Fixed
-* Handle illegal callback invocation exception, by @JonasWho (see #21)
+
+- Handle illegal callback invocation exception, by @JonasWho (see #21)
 
 ## [v2.0.4] - 2017-10-25
 
 ### Changed
-* Compatibility with React Native 0.48 and up, by @exKAZUu (see #19)
+
+- Compatibility with React Native 0.48 and up, by @exKAZUu (see #19)
 
 ## [v2.0.0] - 2017-06-08
 
 ### Added
-* _iOS_ support: Discovery, ranging and monitoring possible
-* _Android_: Basic Eddystone support
-* _Android_: New method getBeaconRegions() to get all regions which are set to scan.
 
+- _iOS_ support: Discovery, ranging and monitoring possible
+- _Android_: Basic Eddystone support
+- _Android_: New method getBeaconRegions() to get all regions which are set to scan.
 
 ### Changed
-* _Android_: Rename `init()` to `connect()` and improve functionality so that `disconnect()` is the opposite action.
-* Updated example apps
-* Improved documentation (start-up documentation tested for react-native versions below and after 0.40.0)
+
+- _Android_: Rename `init()` to `connect()` and improve functionality so that `disconnect()` is the opposite action.
+- Updated example apps
+- Improved documentation (start-up documentation tested for react-native versions below and after 0.40.0)
 
 ### Fixed
-* Several bug fixes
+
+- Several bug fixes
 
 [unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.4...master
 [v2.0.4]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.3...v2.0.4
