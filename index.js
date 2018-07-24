@@ -119,6 +119,8 @@ if (Platform.OS === 'ios') {
   const stopRangingBeaconsInAllRegions =
     KontaktModule.stopRangingBeaconsInAllRegions;
   const getRangedRegions = KontaktModule.getRangedRegions;
+  const isRangingAvailable = KontaktModule.isRangingAvailable;
+  const isMonitoringAvailable = KontaktModule.isMonitoringAvailable;
 
   const startMonitoringForRegion = KontaktModule.startMonitoringForRegion;
   const stopMonitoringForRegion = KontaktModule.stopMonitoringForRegion;
@@ -142,11 +144,13 @@ if (Platform.OS === 'ios') {
     stopRangingBeaconsInRegion,
     stopRangingBeaconsInAllRegions,
     getRangedRegions,
+    isRangingAvailable,
     // monitoring
     startMonitoringForRegion,
     stopMonitoringForRegion,
     stopMonitoringForAllRegions,
     getMonitoredRegions,
+    isMonitoringAvailable,
   };
 }
 

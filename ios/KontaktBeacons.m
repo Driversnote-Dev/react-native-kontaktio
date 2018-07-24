@@ -320,7 +320,6 @@ RCT_REMAP_METHOD(restartDiscovery,
     }
 }
 
-// is discovering (TODO: test)
 RCT_REMAP_METHOD(isDiscovering,
                  isDiscovering_resolver:(RCTPromiseResolveBlock)resolve
                  isDiscovering_rejecter:(RCTPromiseRejectBlock)reject)
@@ -403,6 +402,20 @@ RCT_REMAP_METHOD(getRangedRegions,
     }
 }
 
+RCT_REMAP_METHOD(isRangingAvailable,
+                 isRangingAvailable_resolver:(RCTPromiseResolveBlock)resolve
+                 isRangingAvailable_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        BOOL isRangingAvailable = [KTKBeaconManager isRangingAvailable];
+        resolve(@(isRangingAvailable));
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"isRangingAvailable", @"Could not check ranging availability", error);
+    }
+}
+
+
 // MONITORING
 
 RCT_EXPORT_METHOD(startMonitoringForRegion:(NSDictionary *)dict
@@ -470,6 +483,22 @@ RCT_REMAP_METHOD(getMonitoredRegions,
         reject(@"getMonitoredRegions", @"Could not getMonitoredRegions", error);
     }
 }
+
+RCT_REMAP_METHOD(isMonitoringAvailable,
+                 isMonitoringAvailable_resolver:(RCTPromiseResolveBlock)resolve
+                 isMonitoringAvailable_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        BOOL isMonitoringAvailable = [KTKBeaconManager isMonitoringAvailable];
+        resolve(@(isMonitoringAvailable));
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"isMonitoringAvailable", @"Could not check monitoring availability", error);
+    }
+}
+
+
+// AUTHORIZATION
 
 RCT_REMAP_METHOD(getAuthorizationStatus,
                  getAuthorizationStatus_resolver:(RCTPromiseResolveBlock)resolve
