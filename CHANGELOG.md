@@ -6,13 +6,19 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 **TODO**: Add missing versions to CHANGELOG
 
-## Unreleased
+## [unreleased]
+
+### Added
+
+- [Flow](https://flow.org/) support: All Javascript code is now typed and the type definitions are made
+available via `.js.flow` files.
+- [Eslint](https://eslint.org/) added for the local development of the tool.
 
 ## [v2.1.0] - 2018-06-24
 
 ### Added
 
-- _Android_: Add Secure Profile. It is used when scanning for Beacon Pros, by @jampueroc (see #36) 
+- _Android_: Add Secure Profile. It is used when scanning for Beacon Pros, by @jampueroc (see #36)
 - _Android_: Add KontaktTelemetry (with Acceleration) to Secure Profile - only works with BeaconPros, by @Andruschenko (see #36)
 - Add CHANGELOG
 
@@ -49,6 +55,7 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 - Several bug fixes
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.4...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.1.0...master
+[v2.1.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.4...v2.1.0
 [v2.0.4]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.3...v2.0.4
 [v2.0.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v1.2.0...v2.0.0
