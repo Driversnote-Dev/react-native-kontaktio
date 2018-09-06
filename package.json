@@ -2,7 +2,7 @@
   "name": "react-native-kontaktio",
   "version": "2.1.0",
   "description": "React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to own some Kontakt.io beacons, configure them via their managment console and have your api-key handy.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "keywords": [
     "react-native",
     "react-component",
@@ -31,8 +31,23 @@
     }
   ],
   "scripts": {
-    "wml": "watchman watch-del . && wml start"
+    "wml": "watchman watch-del . && wml start",
+    "build": "flow-remove-types src/ -d dist/",
+    "generate:flow": "node_modules/.bin/flow gen-flow-files src/ --out-dir flow/",
+    "prepublish": "yarn run build"
   },
   "nativePackage": true,
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.14.0",
+    "flow-bin": "^0.80.0",
+    "flow-remove-types": "^1.2.3"
+  },
+  "peerDependencies": {
+    "react-native": ">= 0.20.0"
+  }
 }
