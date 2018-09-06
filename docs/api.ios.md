@@ -22,7 +22,7 @@ The following two objects are the main players of this module and will be referr
     	rssi: number
     	proximity: string (either IMMEDIATE, NEAR, FAR or UNKNOWN)
     	// if Kontakt.io beacon this is useful, otherwise mostly -1 or similar
-    	accuracy: string (distance in meters)
+    	accuracy: number (distance in meters)
     }
     ```
 

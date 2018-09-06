@@ -1,3 +1,10 @@
+// @flow
+import type {
+  ScanPeriodLimits,
+  ForceScanConfigurationOptions,
+  ActivityCheckConfigurationOptions,
+} from './types';
+
 export const IBEACON = 'IBEACON';
 export const EDDYSTONE = 'EDDYSTONE';
 export const SECURE_PROFILE = 'SECURE_PROFILE';
@@ -12,7 +19,7 @@ export const scanPeriod = {
   RANGING: 'RANGING',
   MONITORING: 'MONITORING',
   // Default values equal configuration MONITORING
-  create: ({ activePeriod = 8000, passivePeriod = 30000 }) => ({
+  create: ({ activePeriod = 8000, passivePeriod = 30000 }: ScanPeriodLimits) => ({
     activePeriod,
     passivePeriod,
   }),
@@ -23,7 +30,7 @@ export const activityCheckConfiguration = {
   MINIMAL: 'MINIMAL',
   DEFAULT: 'DEFAULT',
   // Default values equal configuration MINIMAL
-  create: ({ inactivityTimeout = 3000, checkPeriod = 1000 }) => ({
+  create: ({ inactivityTimeout = 3000, checkPeriod = 1000 }: ActivityCheckConfigurationOptions) => ({
     inactivityTimeout,
     checkPeriod,
   }),
@@ -33,7 +40,7 @@ export const forceScanConfiguration = {
   DISABLED: 'DISABLED',
   MINIMAL: 'MINIMAL',
   // Default values equal configuration MINIMAL
-  create: ({ forceScanActivePeriod = 1000, forceScanPassivePeriod = 500 }) => ({
+  create: ({ forceScanActivePeriod = 1000, forceScanPassivePeriod = 500 }: ForceScanConfigurationOptions) => ({
     forceScanActivePeriod,
     forceScanPassivePeriod,
   }),

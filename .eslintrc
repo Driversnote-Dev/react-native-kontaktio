@@ -1,0 +1,15 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb-base",
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": [
+    "flowtype"
+  ],
+  "rules": {
+    "import/no-unresolved": ["error", { "ignore": ["^react-native$"] }],
+    "implicit-arrow-linebreak": [0],
+    "lines-between-class-members": [2, { "exceptAfterSingleLine": true }]
+  }
+}

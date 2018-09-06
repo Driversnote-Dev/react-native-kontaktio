@@ -151,7 +151,7 @@ When not calling `configure()`, the following default values are used:
 {
   scanMode: scanMode.BALANCED,
   scanPeriod: scanPeriod.RANGING, // activePeriod = 60000ms, passivePeriod = 0ms
-  activeCheckConfiguration: activeCheckConfiguration.DEFAULT,
+  activeCheckConfiguration: activityCheckConfiguration.DEFAULT,
   forceScanConfiguration: forceScanConfiguration.MINIMAL, // forceScanActivePeriod = 1000ms, forceScanPassivePeriod = 500ms
   deviceUpdateCallbackInterval: deviceUpdateCallbackInterval.DEFAULT // 3000ms,
   monitoringEnabled: monitoringEnabled.TRUE,
