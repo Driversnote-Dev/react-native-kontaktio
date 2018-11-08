@@ -201,21 +201,37 @@ public class KontaktModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setBeaconRegion(ReadableMap regionParams, Promise promise) {
-        regionManager.setBeaconRegion(regionParams, promise);
+        if (regionManager != null) {
+            regionManager.setBeaconRegion(regionParams, promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+        }
     }
 
     @ReactMethod
     public void setBeaconRegions(ReadableArray regionsParams, Promise promise) {
-        regionManager.setBeaconRegions(regionsParams, promise);
+        if (regionManager != null) {
+            regionManager.setBeaconRegions(regionsParams, promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+        }
     }
 
     @ReactMethod
     public void getBeaconRegions(Promise promise) {
-        regionManager.getBeaconRegions(promise);
+        if (regionManager != null) {
+            regionManager.getBeaconRegions(promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+        }
     }
 
     @ReactMethod
     public void setEddystoneNamespace(ReadableMap namespaceParams, Promise promise) {
-        regionManager.setEddystoneNamespace(namespaceParams, promise);
+        if (regionManager != null) {
+            regionManager.setEddystoneNamespace(namespaceParams, promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+        }
     }
 }
