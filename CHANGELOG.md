@@ -8,6 +8,16 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+### Changed
+
+- _Android_: Wrap every call of so-far not-error-handled methods into an if-else statement which checks whether its object which is created after the `connect()` call is defined to avoid null-pointer exceptions.
+
+## [v2.2.0] - 2018-11-08
+
+### Changed
+
+- _Android_: Upgraded gradle build tools to Version 25
+
 ## [v2.1.0] - 2018-06-24
 
 ### Added
@@ -49,6 +59,9 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 - Several bug fixes
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.4...master
+
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.2.0...master
+[v2.2.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.1.0...v2.2.0
+[v2.1.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.4...v2.1.0
 [v2.0.4]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.0.3...v2.0.4
 [v2.0.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v1.2.0...v2.0.0
