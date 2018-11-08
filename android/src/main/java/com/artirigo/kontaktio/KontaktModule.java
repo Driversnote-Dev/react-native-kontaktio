@@ -104,7 +104,7 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     OnServiceReadyListener serviceReadyListener = new OnServiceReadyListener() {
         /**
          * Assuring that the callback is only called once (i.e. connectPromise only resolved once)
-         * 
+         *
          * From http://facebook.github.io/react-native/docs/native-modules-android.html#callbacks :
          * > A native module is supposed to invoke its callback only once. It can, however, store the callback and invoke it later.
          */
@@ -165,7 +165,11 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     // From Configuration
     @ReactMethod
     public void configure(ReadableMap params, Promise promise) {
-        configuration.configureProximityManager(params, promise);
+        if (configuration != null) {
+            configuration.configureProximityManager(params, promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The configuration object is not defined.");
+        }
     }
 
     // From RegionManager
