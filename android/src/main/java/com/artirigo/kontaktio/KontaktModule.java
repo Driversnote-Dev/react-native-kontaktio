@@ -147,19 +147,35 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     // From ScanManager
     @ReactMethod
     public void startScanning(Promise promise) {
-        scanManager.startScanning(promise);
+        if (scanManager != null) {
+            scanManager.startScanning(promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+        }
     }
     @ReactMethod
     public void stopScanning(Promise promise) {
-        scanManager.stopScanning(promise);
+        if (scanManager != null) {
+            scanManager.stopScanning(promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+        }
     }
     @ReactMethod
     public void restartScanning(Promise promise) {
-        scanManager.restartScanning(promise);
+        if (scanManager != null) {
+            scanManager.restartScanning(promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+        }
     }
     @ReactMethod
     public void isScanning(Promise promise) {
-        scanManager.isScanning(promise);
+        if (scanManager != null) {
+            scanManager.isScanning(promise);
+        } else {
+            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+        }
     }
 
     // From Configuration
