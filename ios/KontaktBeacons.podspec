@@ -1,24 +1,21 @@
+require 'json'
+package = JSON.parse(File.read(File.join(__dir__, '../package.json')))
 
 Pod::Spec.new do |s|
-  s.name         = "KontaktBeacons"
-  s.version      = "1.0.0"
-  s.summary      = "KontaktBeacons"
-  s.description  = <<-DESC
-                  KontaktBeacons
+  s.name          = "KontaktBeacons"
+  s.version       = package['version']
+  s.summary       = "KontaktBeacons"
+  s.description   = <<-DESC
+                   Cross-platform React Native module for detecting beacons with Android and iOS devices.
                    DESC
-  s.homepage     = ""
-  s.license      = "MIT"
-  # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.author             = { "author" => "author@domain.cn" }
+  s.license       = "MIT"
+  s.homepage      = "https://github.com/Artirigo/react-native-kontaktio"
+  s.author        = { "Andre Kovac" => "me@andrekovac.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/author/KontaktBeacons.git", :tag => "master" }
-  s.source_files  = "KontaktBeacons/**/*.{h,m}"
-  s.requires_arc = true
-
+  s.source         = { :git => "https://github.com/Artirigo/react-native-kontaktio.git", :tag => "master" }
+  s.source_files  = "ios/**/*.{h,m}"
+  s.requires_arc  = true
 
   s.dependency "React"
-  #s.dependency "others"
 
 end
-
-  
