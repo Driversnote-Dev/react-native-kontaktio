@@ -439,11 +439,12 @@ RCT_EXPORT_METHOD(startRangingBeaconsInRegion:(NSDictionary *)dict
             case kCLAuthorizationStatusNotDetermined:
                 [self.beaconManager requestLocationAlwaysAuthorization];
                 break;
+            case kCLAuthorizationStatusAuthorizedWhenInUse:
             case kCLAuthorizationStatusAuthorizedAlways:
                 // Good :)
                 break;
             default:
-                [NSException raise:@"Cannot request LocationAlwaysAuthorization" format:@"requestAlwaysAuthorization does not have permissions for startRangingBeaconsInRegion"];
+                [NSException raise:@"anouthorizedException" format:@"Should ask for location authorization."];
                 break;
         }
         if ([KTKBeaconManager isRangingAvailable]) {
