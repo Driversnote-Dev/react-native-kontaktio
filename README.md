@@ -7,7 +7,7 @@ Kontakt.io SDK Versions of newest release:
 | OS          | SDK Version                                                                                              |
 | :---------- | :------------------------------------------------------------------------------------------------------- |
 | **Android** | [4.0.1](http://kontaktio.github.io/kontakt-android-sdk/4.0.2/Javadoc/) (Documentation points to `4.0.2`) |
-| **iOS**     | [1.4.3](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/)                                  |
+| **iOS**     | [1.5.1](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/)                                  |
 
 The documentation points to `4.0.2` because there is none specifically for `4.0.1`. The Android SDK Version `4.0.2` [could not be installed](https://github.com/kontaktio/kontakt-android-sdk/issues/186).
 
@@ -120,14 +120,14 @@ export default class MinimalExample extends Component {
     - Android:
 
       	```bash
-      	$ react-native run-android
-      	```
+        	$ react-native run-android
+      ```
 
     - iOS
 
       	```bash
-      	$ react-native run-ios
-      	```
+        	$ react-native run-ios
+      ```
 
 ## Further notes
 
@@ -141,4 +141,3 @@ export default class MinimalExample extends Component {
   - Add _multiple_ Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
   - Add Eddystone Frames Selection configuration option
 
-- iOS: Eddystone support (Corresponding PR to be merged soon)
