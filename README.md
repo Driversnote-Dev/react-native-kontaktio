@@ -120,14 +120,14 @@ export default class MinimalExample extends Component {
     - Android:
 
       	```bash
-      	$ react-native run-android
-      	```
+        	$ react-native run-android
+      ```
 
     - iOS
 
       	```bash
-      	$ react-native run-ios
-      	```
+        	$ react-native run-ios
+      ```
 
 ## Further notes
 
@@ -141,4 +141,3 @@ export default class MinimalExample extends Component {
   - Add _multiple_ Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
   - Add Eddystone Frames Selection configuration option
 
-- iOS: Eddystone support (Corresponding PR to be merged soon)
