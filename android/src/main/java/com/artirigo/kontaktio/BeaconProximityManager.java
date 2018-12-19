@@ -31,7 +31,7 @@ class BeaconProximityManager {
         this.kontaktApiKey = (kontaktApiKey == null) || kontaktApiKey.isEmpty() ? "NO_API_KEY" : kontaktApiKey;
     }
 
-    void init(ReadableArray beaconTypes, Promise promise) throws Exception {
+    ProximityManager init(ReadableArray beaconTypes) throws Exception {
         // init
         KontaktSDK.initialize(kontaktApiKey);
 
@@ -55,7 +55,8 @@ class BeaconProximityManager {
             } else if (beaconTypes.getString(0).equals(SECURE_PROFILE)) {
                 proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
             } else {
-                throw new Exception("The value of the beaconType(s) has to be either IBEACON, EDDYSTONE or SECURE_PROFILE");
+                throw new Exception(
+                        "The value of the beaconType(s) has to be either IBEACON, EDDYSTONE or SECURE_PROFILE");
             }
         } else if (beaconTypes.size() == 2) {
             if ((beaconTypes.getString(0).equals(IBEACON) && beaconTypes.getString(1).equals(EDDYSTONE))
@@ -69,16 +70,20 @@ class BeaconProximityManager {
                 proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
                 proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
             } else {
-                throw new Exception("The beaconTypes values have to be IBEACON, EDDYSTONE or SECURE_PROFILE. If added, SECURE_PROFILE has to go last.");
+                throw new Exception(
+                        "The beaconTypes values have to be IBEACON, EDDYSTONE or SECURE_PROFILE. If added, SECURE_PROFILE has to go last.");
             }
         } else if (beaconTypes.size() == 3) {
-            if ((beaconTypes.getString(0).equals(IBEACON) && beaconTypes.getString(1).equals(EDDYSTONE) && beaconTypes.getString(2).equals(SECURE_PROFILE))
-                    || (beaconTypes.getString(0).equals(EDDYSTONE) && beaconTypes.getString(1).equals(IBEACON) && beaconTypes.getString(2).equals(SECURE_PROFILE))) {
+            if ((beaconTypes.getString(0).equals(IBEACON) && beaconTypes.getString(1).equals(EDDYSTONE)
+                    && beaconTypes.getString(2).equals(SECURE_PROFILE))
+                    || (beaconTypes.getString(0).equals(EDDYSTONE) && beaconTypes.getString(1).equals(IBEACON)
+                            && beaconTypes.getString(2).equals(SECURE_PROFILE))) {
                 proximityManager.setIBeaconListener(beaconListeners.createIBeaconListener());
                 proximityManager.setSecureProfileListener(beaconListeners.createSecureProfileListener());
                 proximityManager.setEddystoneListener(beaconListeners.createEddystoneListener());
             } else {
-                throw new Exception("The beaconTypes values have to be IBEACON, EDDYSTONE or SECURE_PROFILE. If added, SECURE_PROFILE has to go last.");
+                throw new Exception(
+                        "The beaconTypes values have to be IBEACON, EDDYSTONE or SECURE_PROFILE. If added, SECURE_PROFILE has to go last.");
             }
         } else {
             throw new Exception("beaconTypes array has to have less than 3 arguments or be empty");
@@ -87,6 +92,8 @@ class BeaconProximityManager {
         // Add further listeners
         proximityManager.setSpaceListener(beaconListeners.createSpaceListener());
         proximityManager.setScanStatusListener(beaconListeners.createScanStatusListener());
+
+        return proximityManager;
     }
 
     void disconnect(Promise promise) {
@@ -94,6 +101,15 @@ class BeaconProximityManager {
             proximityManager.disconnect();
             proximityManager = null;
             promise.resolve(null);
+        } catch (Exception e) {
+            promise.reject(Constants.EXCEPTION, e);
+        }
+    }
+
+    void isConnected(Promise promise) {
+        try {
+            boolean isConnected = proximityManager.isConnected();
+            promise.resolve(isConnected);
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
         }

@@ -1,11 +1,13 @@
 package com.artirigo.kontaktio;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 
 import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
 import com.kontakt.sdk.android.ble.device.BeaconRegion;
@@ -16,8 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.artirigo.kontaktio.ReactUtils.sendEvent;
+
 /**
- * Kontakt.io Documentation: http://kontaktio.github.io/kontakt-android-sdk/2.1.0/Javadoc/overview-summary.html
+ * Kontakt.io Documentation:
+ * http://kontaktio.github.io/kontakt-android-sdk/2.1.0/Javadoc/overview-summary.html
  *
  * Created by André Kovac on 12/04/16.
  *
@@ -40,6 +45,7 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     private static final String SORT_DISABLED = "SORT_DISABLED";
 
     private ProximityManager proximityManager;
+    // Local BeaconProximityManager class initializes the beacon scanner
     private BeaconProximityManager beaconProximityManager;
     private Configuration configuration;
     private BeaconListeners beaconListeners;
@@ -48,10 +54,12 @@ public class KontaktModule extends ReactContextBaseJavaModule {
 
     // Promise used to connect to beacons
     private Promise connectPromise;
+    private WritableMap connectMap;
 
     public KontaktModule(ReactApplicationContext reactAppContext) {
         super(reactAppContext);
         this.reactAppContext = reactAppContext;
+        this.connectMap = Arguments.createMap();
     }
 
     @Override
@@ -62,17 +70,18 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        constants.put(DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID, String.valueOf(KontaktSDK.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID));
+        constants.put(DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID,
+                String.valueOf(KontaktSDK.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID));
         constants.put(DEFAULT_KONTAKT_NAMESPACE_ID, String.valueOf(KontaktSDK.DEFAULT_KONTAKT_NAMESPACE_ID));
         constants.put(BEACON_REGION_ANY_MAJOR, BeaconRegion.ANY_MAJOR);
         constants.put(BEACON_REGION_ANY_MINOR, BeaconRegion.ANY_MINOR);
-//        constants.put(PROXIMITY_IMMEDIATE, String.valueOf(Proximity.IMMEDIATE));
-//        constants.put(PROXIMITY_NEAR, String.valueOf(Proximity.NEAR));
-//        constants.put(PROXIMITY_FAR, String.valueOf(Proximity.FAR));
-//        constants.put(PROXIMITY_UNKNOWN, String.valueOf(Proximity.UNKNOWN));
-//        constants.put(SORT_ASC, String.valueOf(DistanceSort.ASC));
-//        constants.put(SORT_DESC, String.valueOf(DistanceSort.DESC));
-//        constants.put(SORT_DISABLED, String.valueOf(DistanceSort.DISABLED));
+        // constants.put(PROXIMITY_IMMEDIATE, String.valueOf(Proximity.IMMEDIATE));
+        // constants.put(PROXIMITY_NEAR, String.valueOf(Proximity.NEAR));
+        // constants.put(PROXIMITY_FAR, String.valueOf(Proximity.FAR));
+        // constants.put(PROXIMITY_UNKNOWN, String.valueOf(Proximity.UNKNOWN));
+        // constants.put(SORT_ASC, String.valueOf(DistanceSort.ASC));
+        // constants.put(SORT_DESC, String.valueOf(DistanceSort.DESC));
+        // constants.put(SORT_DISABLED, String.valueOf(DistanceSort.DISABLED));
         return constants;
     }
 
@@ -86,9 +95,9 @@ public class KontaktModule extends ReactContextBaseJavaModule {
             connectPromise = promise;
 
             beaconProximityManager = new BeaconProximityManager(reactAppContext, apiKey);
-            beaconProximityManager.init(beaconTypes, promise);
+            proximityManager = beaconProximityManager.init(beaconTypes);
 
-            proximityManager = beaconProximityManager.getProximityManager();
+            // proximityManager = beaconProximityManager.getProximityManager();
             configuration = beaconProximityManager.getConfiguration();
             beaconListeners = beaconProximityManager.getBeaconListeners();
             scanManager = beaconProximityManager.getScanManager();
@@ -102,23 +111,23 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     }
 
     OnServiceReadyListener serviceReadyListener = new OnServiceReadyListener() {
-        /**
-         * Assuring that the callback is only called once (i.e. connectPromise only resolved once)
-         *
-         * From http://facebook.github.io/react-native/docs/native-modules-android.html#callbacks :
-         * > A native module is supposed to invoke its callback only once. It can, however, store the callback and invoke it later.
-         */
-        boolean callbackWasCalled = false;
-
         @Override
         public void onServiceReady() {
-            if (callbackWasCalled) return;
-            callbackWasCalled = true;
-
+            connectMap = Arguments.createMap();
             try {
+                // Send event
+                connectMap.putBoolean("isReady", true);
+                sendEvent(reactAppContext, "beaconInitStatus", connectMap);
+                // Resolve promise
                 connectPromise.resolve(null);
             } catch (Exception e) {
-                // Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                // Catches the exception: java.lang.RuntimeException·Illegal callback invocation
+                // from native module
+
+                // Send event
+                connectMap.putBoolean("isReady", false);
+                sendEvent(reactAppContext, "beaconInitStatus", connectMap);
+                // Reject promise
                 connectPromise.reject(Constants.EXCEPTION, e);
             }
         }
@@ -130,20 +139,18 @@ public class KontaktModule extends ReactContextBaseJavaModule {
         if (beaconProximityManager != null) {
             beaconProximityManager.disconnect(promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The beaconProximityManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The beaconProximityManager object is not defined.");
         }
     }
+
     @ReactMethod
     public void isConnected(Promise promise) {
-        try {
-            if (proximityManager != null) {
-                boolean isConnected = proximityManager.isConnected();
-                promise.resolve(isConnected);
-            } else {
-                promise.resolve(false);
-            }
-        } catch (Exception e) {
-            promise.reject(Constants.EXCEPTION, e);
+        if (beaconProximityManager != null) {
+            beaconProximityManager.isConnected(promise);
+        } else {
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
         }
     }
 
@@ -153,31 +160,38 @@ public class KontaktModule extends ReactContextBaseJavaModule {
         if (scanManager != null) {
             scanManager.startScanning(promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
         }
     }
+
     @ReactMethod
     public void stopScanning(Promise promise) {
         if (scanManager != null) {
             scanManager.stopScanning(promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
         }
     }
+
     @ReactMethod
     public void restartScanning(Promise promise) {
         if (scanManager != null) {
             scanManager.restartScanning(promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
         }
     }
+
     @ReactMethod
     public void isScanning(Promise promise) {
         if (scanManager != null) {
             scanManager.isScanning(promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
         }
     }
 
@@ -187,19 +201,20 @@ public class KontaktModule extends ReactContextBaseJavaModule {
         if (configuration != null) {
             configuration.configureProximityManager(params, promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The configuration object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The configuration object is not defined.");
         }
     }
 
     // From RegionManager
     /**
-     * Replaces the currently observed region(s) with the given region
-     * If region is null or empty, the default region EVERYWHERE is used.
+     * Replaces the currently observed region(s) with the given region If region is
+     * null or empty, the default region EVERYWHERE is used.
      *
-     * Restart has to be triggered so that region changes take effect when
-     * changing regions after scan started.
+     * Restart has to be triggered so that region changes take effect when changing
+     * regions after scan started.
      *
-     * @param region Object with IBeacon region data
+     * @param region  Object with IBeacon region data
      * @param promise
      */
     @ReactMethod
@@ -207,7 +222,8 @@ public class KontaktModule extends ReactContextBaseJavaModule {
         if (regionManager != null) {
             regionManager.setBeaconRegion(regionParams, promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
         }
     }
 
@@ -216,7 +232,8 @@ public class KontaktModule extends ReactContextBaseJavaModule {
         if (regionManager != null) {
             regionManager.setBeaconRegions(regionsParams, promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
         }
     }
 
@@ -225,7 +242,8 @@ public class KontaktModule extends ReactContextBaseJavaModule {
         if (regionManager != null) {
             regionManager.getBeaconRegions(promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
         }
     }
 
@@ -234,7 +252,8 @@ public class KontaktModule extends ReactContextBaseJavaModule {
         if (regionManager != null) {
             regionManager.setEddystoneNamespace(namespaceParams, promise);
         } else {
-            promise.reject("Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
+            promise.reject(
+                    "Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
         }
     }
 }
