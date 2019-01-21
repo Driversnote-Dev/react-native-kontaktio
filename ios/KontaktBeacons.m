@@ -67,6 +67,7 @@ RCT_EXPORT_MODULE()
         @"didStartMonitoringForRegion",
         @"monitoringDidFailForRegion",
         @"didEnterRegion",
+        @"didDetermineState",
         @"didExitRegion",
         @"didRangeBeacons",
         @"rangingDidFailForRegion",
@@ -623,6 +624,21 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
     }
 }
 
+RCT_EXPORT_METHOD(requestStateForRegion:(NSDictionary *)dict
+                 requestStateForRegion_resolver:(RCTPromiseResolveBlock)resolve
+                 requestStateForRegion_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+         NSLog(@"requestStateForRegion!!! %@", [self convertDictToBeaconRegion:dict]);
+        if ([KTKBeaconManager isMonitoringAvailable]) {
+            [self.beaconManager requestStateForRegion:[self convertDictToBeaconRegion:dict]];
+        }
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"requestStateForRegion", @"Could not requestStateForRegion", error);
+    }
+}
 
 // ---------
 // LISTENERS
@@ -858,6 +874,36 @@ RCT_REMAP_METHOD(requestWhenInUseAuthorization,
     if (hasListeners) {
         [self sendEventWithName:@"didUpdateEddystone" body:event];
     }
+}
+
+- (void)beaconManager:(KTKBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(__kindof KTKBeaconRegion *)region {
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.identifier;
+    beaconRegion[@"uuid"] = [region.proximityUUID UUIDString];
+    if (region.major != nil) beaconRegion[@"major"] = region.major;
+    if (region.minor != nil) beaconRegion[@"minor"] = region.minor;
+    if (hasListeners) {
+        [self sendEventWithName:@"didDetermineState" body:@{@"region": beaconRegion, @"state": [self convertToString:state]}];
+    }
+}
+
+// this function was added because I needed a way to convert the CLRegionState enum to a string 
+- (NSString*) convertToString:(CLRegionState) whichState {
+    NSString *result = nil;
+    switch(whichState) {
+        case 0:
+            result = @"unknown";
+            break;
+        case 1:
+            result = @"inside";
+            break;
+        case 2:
+            result = @"outside";
+            break;
+        default:
+            result = @"unknown";
+    }
+    return result;
 }
 
 @end
