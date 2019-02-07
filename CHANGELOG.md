@@ -8,6 +8,16 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## [v2.5.0] - 2019-02-07
+
+### Added
+
+- _iOS_: New function `requestStateForRegion` and corresponding listener `didDetermineState`.
+
+### Changed
+
+- Improved iOS setup documentation: Added a troubleshooting case
+
 ## [v2.4.0] - 2018-12-19
 
 ### Added
@@ -73,7 +83,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.4.0...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...master
+[v2.5.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.4.0...v2.5.0
 [v2.4.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.3.0...v2.4.0
 [v2.3.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.2.0...v2.3.0
 [v2.2.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.1.0...v2.2.0
