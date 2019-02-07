@@ -149,6 +149,7 @@ if (Platform.OS === 'ios') {
     stopMonitoringForRegion,
     stopMonitoringForAllRegions,
     getMonitoredRegions,
+    requestStateForRegion,
   };
 }
 
