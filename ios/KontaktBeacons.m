@@ -309,7 +309,6 @@ RCT_REMAP_METHOD(restartDiscovery,
 {
     @try {
         [self.devicesManager restartDeviceDiscoveryWithCompletion:^(NSError *error) {
-            NSLog(@"ERROR in restartScanning: %@", error.localizedDescription);
             if (error != nil) {
                 [NSException raise:@"Cannot restart beacon discovery" format:@"error in restartDeviceDiscoveryWithCompletion"];
             }
