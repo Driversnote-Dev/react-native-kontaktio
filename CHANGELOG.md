@@ -8,6 +8,10 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+### Changed
+
+- _Android_: Improved behavior of the`isConnected` function to resolve with `true` if `connect` wasn't called before and only reject in case of other errors.
+
 ## [v2.5.0] - 2019-02-07
 
 ### Added
