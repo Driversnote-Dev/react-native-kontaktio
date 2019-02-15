@@ -8,9 +8,11 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## [v2.5.1] - 2019-02-15
+
 ### Changed
 
-- _Android_: Improved behavior of the`isConnected` function to resolve with `true` if `connect` wasn't called before and only reject in case of other errors.
+- _Android_: Improved behavior of the `isConnected` function to resolve with `true` if `connect` wasn't called before and only reject in case of other errors.
 
 ## [v2.5.0] - 2019-02-07
 
@@ -87,7 +89,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.1...master
+[v2.5.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...v2.5.1
 [v2.5.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.4.0...v2.5.0
 [v2.4.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.3.0...v2.4.0
 [v2.3.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.2.0...v2.3.0
