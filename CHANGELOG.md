@@ -8,6 +8,12 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## [v2.5.2] - 2019-02-15
+
+### Fixed
+
+- _Android_: syntax error in `isConnected` if-else statement.
+
 ## [v2.5.1] - 2019-02-15
 
 ### Changed
@@ -89,7 +95,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.1...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.2...master
+[v2.5.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.1...v2.5.2
 [v2.5.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...v2.5.1
 [v2.5.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.4.0...v2.5.0
 [v2.4.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.3.0...v2.4.0
