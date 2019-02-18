@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import android.util.Log;
+
 import static com.artirigo.kontaktio.ReactUtils.sendEvent;
 
 /**
@@ -146,11 +148,11 @@ public class KontaktModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void isConnected(Promise promise) {
-        if (beaconProximityManager != null) {
+        if (beaconProximityManager != null && proximityManager != null) {
             beaconProximityManager.isConnected(promise);
         } else {
-            promise.reject(
-                    "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+            Log.w(Constants.TAG, "Did you forget to call connect() or did the connect() call fail? The beaconProximityManager object is not defined.");
+            promise.resolve(false);
         }
     }
 
