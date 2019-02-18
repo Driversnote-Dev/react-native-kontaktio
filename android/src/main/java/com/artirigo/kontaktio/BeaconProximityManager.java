@@ -108,12 +108,8 @@ class BeaconProximityManager {
 
     void isConnected(Promise promise) {
         try {
-            if (proximityManager != null) {
-                boolean isConnected = proximityManager.isConnected();
-                promise.resolve(isConnected);
-            } else {
-                promise.resolve(false);
-            }
+            boolean isConnected = proximityManager.isConnected();
+            promise.resolve(isConnected);
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
         }
