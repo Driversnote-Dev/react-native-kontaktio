@@ -4,21 +4,11 @@ All notable changes to this project will be documented in this file. If a contri
 
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
-**TODO**: Add missing versions to CHANGELOG
-
 ## Unreleased
 
-## [v2.5.2] - 2019-02-15
+## [v2.5.4] - 2019-02-18
 
-### Fixed
-
-- _Android_: syntax error in `isConnected` if-else statement.
-
-## [v2.5.1] - 2019-02-15
-
-### Changed
-
-- _Android_: Improved behavior of the `isConnected` function to resolve with `true` if `connect` wasn't called before and only reject in case of other errors.
+- _Android_: Improved behavior of the `isConnected` function to resolve with `false` if `connect` wasn't called before and only reject in case of other errors. With this fix, `isConnected` may be called anytime. So far calling it before `connect` was called lead to a Promise rejection which is counter-intuitive because you'd expect to call this function to check whether this is the case.
 
 ## [v2.5.0] - 2019-02-07
 
@@ -95,9 +85,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.2...master
-[v2.5.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.1...v2.5.2
-[v2.5.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...v2.5.1
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.4...master
+[v2.5.4]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...v2.5.4
 [v2.5.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.4.0...v2.5.0
 [v2.4.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.3.0...v2.4.0
 [v2.3.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.2.0...v2.3.0
