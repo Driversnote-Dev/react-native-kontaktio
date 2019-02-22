@@ -148,7 +148,7 @@ public class KontaktModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void isConnected(Promise promise) {
-        if (beaconProximityManager != null && proximityManager != null) {
+        if (beaconProximityManager != null || proximityManager != null) {
             beaconProximityManager.isConnected(promise);
         } else {
             Log.w(Constants.TAG, "Did you forget to call connect() or did the connect() call fail? The beaconProximityManager object is not defined.");
