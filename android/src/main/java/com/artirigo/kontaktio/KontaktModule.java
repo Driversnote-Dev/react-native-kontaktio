@@ -189,11 +189,11 @@ public class KontaktModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void isScanning(Promise promise) {
-        if (scanManager != null) {
+        if (scanManager != null || proximityManager != null) {
             scanManager.isScanning(promise);
         } else {
-            promise.reject(
-                    "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+            Log.w(Constants.TAG, "Did you forget to call connect() or did the connect() call fail? The scanManager object is not defined.");
+            promise.resolve(false);
         }
     }
 
