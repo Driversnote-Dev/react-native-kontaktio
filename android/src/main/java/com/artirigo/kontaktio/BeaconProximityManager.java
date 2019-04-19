@@ -99,7 +99,6 @@ class BeaconProximityManager {
     void disconnect(Promise promise) {
         try {
             proximityManager.disconnect();
-            proximityManager = null;
             promise.resolve(null);
         } catch (Exception e) {
             promise.reject(Constants.EXCEPTION, e);
