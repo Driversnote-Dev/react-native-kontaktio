@@ -6,6 +6,12 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## [v2.6.0] - 2019-05-09
+
+- _Android_: Don't set `proximityManager` to `null` in `disconnect` function.
+- _Android_: Make calls to `isConnected` function safer.
+- _Android_: Make calls to `isScanning` function safer.
+
 ## [v2.5.4] - 2019-02-18
 
 - _Android_: Improved behavior of the `isConnected` function to resolve with `false` if `connect` wasn't called before and only reject in case of other errors. With this fix, `isConnected` may be called anytime. So far calling it before `connect` was called lead to a Promise rejection which is counter-intuitive because you'd expect to call this function to check whether this is the case.
@@ -85,7 +91,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.4...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.0...master
+[v2.6.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.4...v2.6.0
 [v2.5.4]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...v2.5.4
 [v2.5.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.4.0...v2.5.0
 [v2.4.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.3.0...v2.4.0
