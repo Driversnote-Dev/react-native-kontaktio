@@ -78,6 +78,10 @@ RCT_EXPORT_MODULE()
     return @{ @"DEFAULT_API_KEY": @"default-kontaktio-api-key" };
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
 
 // Will be called when this module's first listener is added.
 -(void)startObserving {
@@ -739,7 +743,7 @@ RCT_EXPORT_METHOD(requestStateForRegion:(NSDictionary *)dict
     }
 }
 
-// this function was added because I needed a way to convert the CLRegionState enum to a string 
+// this function was added because I needed a way to convert the CLRegionState enum to a string
 - (NSString*) convertToString:(CLRegionState) whichState {
     NSString *result = nil;
     switch(whichState) {
