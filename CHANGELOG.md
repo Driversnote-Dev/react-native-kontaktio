@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file. If a contri
 
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
-## Unreleased
+## [unreleased]
+
+## [v2.6.2] - 2019-06-07
+
+### Changed
+
+- Update `KontaktBeacons.podspec`
 
 ## [v2.6.1] - 2019-05-22
 
@@ -101,7 +107,9 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.0...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.2...master
+[v2.6.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.1...v2.6.2
+[v2.6.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.0...v2.6.1
 [v2.6.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.4...v2.6.0
 [v2.5.4]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.0...v2.5.4
 [v2.5.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.4.0...v2.5.0
