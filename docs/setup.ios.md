@@ -76,6 +76,7 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
     | ----------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------- |
     | NSLocationAlwaysUsageDescription    | Your text of the permission for the user | User allows the app to use the device location even when the app is in the background |
     | NSLocationWhenInUseUsageDescription | Your text of the permission for the user | User allows the app                                                                   |
+    | NSLocationAlwaysAndWhenInUseUsageDescription | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information at all times. |
 
 	Just copy-paste the key from here and the text will automatically change to the more elaborate version when you press enter:
 
