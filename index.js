@@ -156,7 +156,7 @@ if (Platform.OS === 'ios') {
     //Eddystone
     startEddystoneDiscovery,
     stopEddystoneDiscoveryInRegion,
-    stopEddystoneDiscoveryInAllRegions
+    stopEddystoneDiscoveryInAllRegions,
     requestStateForRegion,
   };
 }
