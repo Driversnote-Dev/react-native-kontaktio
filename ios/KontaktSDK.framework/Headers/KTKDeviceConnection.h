@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -13,6 +13,7 @@
 #import "KTKFirmware.h"
 #import "KTKDeviceCredentials.h"
 #import "KTKDeviceConfiguration.h"
+#import "KTKDeviceSensorsReading.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,7 +35,16 @@ typedef void (^KTKDeviceConnectionWriteCompletion)(BOOL synchronized, KTKDeviceC
  *  @param configuration The configuration object. Result of the read operation.
  *  @param error         An error object containing the error that indicates why the operation failed.
  */
-typedef void (^KTKDeviceConnectionReadCompletion)(KTKDeviceConfiguration * _Nullable configuration, NSError * _Nullable error);
+typedef void (^KTKDeviceConnectionReadCompletion)(__kindof KTKDeviceConfiguration * _Nullable configuration, NSError * _Nullable error);
+
+/**
+ *  A block object to be executed when the sensors readings are updated.
+ *
+ *  @param reading  A sensors reading object. Result of the operation.
+ *  @param error    An error object containing the error that indicates why the operation failed.
+ *  @param stop     A reference to a Boolean value. The block can set the value to YES to stop further updates of the sensors readings otherwise connection and updates will be running indefinitely. The stop argument is an out-only argument. You should only ever set this Boolean to YES within the block.
+ */
+typedef void (^KTKDeviceConnectionSensorsUpdate)(KTKDeviceSensorsReading * _Nullable reading, NSError * _Nullable error, BOOL * _Nonnull stop);
 
 /**
  *  A completion block object to be executed when the update operation finishes.
@@ -168,6 +178,18 @@ typedef void (^KTKDeviceConnectionUpdateCompletion)(BOOL synchronized, NSError *
  *  @param completion A block object to be executed when the read operation finishes.
  */
 - (void)readConfigurationWithCompletion:(KTKDeviceConnectionReadCompletion)completion;
+
+/**
+ *  Listens for sensors updates from the connection device.
+ *
+ *  @param updateBlock A block object to be executed when the sensors values are update.
+ */
+- (void)sensorsUpdatesWithBlock:(KTKDeviceConnectionSensorsUpdate)updateBlock;
+
+/**
+ *  Stops listening for sensors updates.
+ */
+- (void)stopSensorsUpdates;
 
 /**
  *  Updates a device to the latest available firmware.

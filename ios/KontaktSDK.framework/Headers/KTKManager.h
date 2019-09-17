@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -31,6 +31,32 @@ typedef NS_ENUM(NSUInteger, KTKManagerRole) {
      *  Operator Role
      */
     KTKManagerRoleOperator,
+};
+
+/**
+ *  Subscription Plans
+ */
+typedef NS_OPTIONS(NSUInteger, KTKManagerSubscriptionPlan) {
+    /**
+     *  Not Applicable
+     */
+    KTKManagerSubscriptionPlanNotApplicable     = 0,
+    /**
+     *  None
+     */
+    KTKManagerSubscriptionPlanNone              = 1 << 0,
+    /**
+     *  Legacy
+     */
+    KTKManagerSubscriptionPlanLegacy            = 1 << 1,
+    /**
+     *  Management
+     */
+    KTKManagerSubscriptionPlanManagement        = 1 << 2,
+    /**
+     *  Location Engine
+     */
+    KTKManagerSubscriptionPlanLocationEngine    = 1 << 3,
 };
 
 #pragma mark - KTKManager (Interface)
@@ -69,7 +95,7 @@ typedef NS_ENUM(NSUInteger, KTKManagerRole) {
 /**
  *  The manager's API Key. (read-only)
  */
-@property (nonatomic, strong, readonly) NSString *apiKey;
+@property (nonatomic, strong, readonly) NSString * _Nullable apiKey;
 
 /**
  *  The manager's user role. (read-only)
@@ -77,6 +103,13 @@ typedef NS_ENUM(NSUInteger, KTKManagerRole) {
  *  @see KTKManagerRole
  */
 @property (nonatomic, assign, readonly) KTKManagerRole role;
+
+/**
+ *  The manager's company subscription plan. (read-only)
+ *
+ *  @see KTKManagerSubscriptionPlan
+ */
+@property (nonatomic, assign, readonly) KTKManagerSubscriptionPlan subscriptionPlan;
 
 @end
 

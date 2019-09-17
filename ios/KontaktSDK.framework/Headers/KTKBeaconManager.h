@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -14,7 +14,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - External Helpers
-extern NSUUID * KTKKontaktProximityUUID();
+extern NSUUID * KTKKontaktProximityUUID(void);
 
 #pragma mark -
 @protocol KTKBeaconManagerDelegate;

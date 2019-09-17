@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.4.4
+//  Version: 1.5.1
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -20,6 +20,7 @@ FOUNDATION_EXPORT const unsigned char KontaktSDKVersionString[];
 #import "KTKDevice.h"
 #import "KTKDeviceCredentials.h"
 #import "KTKDeviceConfiguration.h"
+#import "KTKDeviceGatewayConfiguration.h"
 #import "KTKFirmware.h"
 #import "KTKAction.h"
 #import "KTKManager.h"
@@ -28,5 +29,6 @@ FOUNDATION_EXPORT const unsigned char KontaktSDKVersionString[];
 #import "KTKEddystoneManager.h"
 #import "KTKDevicesManager.h"
 #import "KTKDeviceConnection.h"
+#import "KTKDeviceGatewayConnection.h"
 #import "KTKTrigger.h"
 

@@ -8,10 +8,12 @@
 
 #import <KontaktSDK/KontaktSDK.h>
 
-@interface KontaktBeacons() <KTKBeaconManagerDelegate, KTKDevicesManagerDelegate>
+@interface KontaktBeacons() <KTKBeaconManagerDelegate,
+    KTKDevicesManagerDelegate,KTKEddystoneManagerDelegate>
 
 @property (strong, nonatomic) KTKBeaconManager *beaconManager;
 @property (strong, nonatomic) KTKDevicesManager *devicesManager;
+@property (strong, nonatomic) KTKEddystoneManager *eddystoneManager;
 
 @property (assign, nonatomic) BOOL dropEmptyRanges;
 @property (assign, nonatomic) NSTimeInterval discoveryInterval;
@@ -47,6 +49,7 @@ RCT_EXPORT_MODULE()
         // DevicesManager for kontaktio specific fields like uniqueId
         self.devicesManager = [[KTKDevicesManager alloc] initWithDelegate:self];
 
+        self.eddystoneManager = [[KTKEddystoneManager alloc] initWithDelegate:self];
         // Default values
         self.dropEmptyRanges = YES;
         self.connectNearbyBeacons = NO;
@@ -70,6 +73,9 @@ RCT_EXPORT_MODULE()
         @"rangingDidFailForRegion",
         @"didDiscoverDevices",
         @"discoveryDidFail",
+        @"didDiscoverEddystones",
+        @"didFailToStartDiscoverEddystones",
+        @"didUpdateEddystone"
     ];
 }
 
@@ -163,6 +169,24 @@ RCT_EXPORT_MODULE()
     }
 }
 
+-(KTKEddystoneRegion *)convertDictToEddystoneRegion:(NSDictionary *)dict {
+    if (dict[@"namespaceID"] != nil) {
+        if (dict[@"instanceID"] == nil) {
+            return [[KTKEddystoneRegion alloc]  initWithNamespaceID:[RCTConvert NSString:dict[@"namespaceID"]]];
+        } else {
+            return [[KTKEddystoneRegion alloc]  initWithNamespaceID:[RCTConvert NSString:dict[@"namespaceID"]]
+                                                         instanceID:[RCTConvert NSString:dict[@"instanceID"]]];
+        }
+    }
+    if (dict[@"URL"] != nil){
+        return [[KTKEddystoneRegion alloc]  initWithURL:[NSURL URLWithString:[RCTConvert NSString:dict[@"URL"]]]];
+    }
+    if (dict[@"URLDomain"] != nil){
+        return [[KTKEddystoneRegion alloc]  initWithURLDomain:[RCTConvert NSString:dict[@"URLDomain"]]];
+    }
+    return nil;
+}
+
 -(NSString *)stringForProximity:(CLProximity)proximity {
     switch (proximity) {
         case CLProximityUnknown:    return @"unknown";
@@ -199,6 +223,8 @@ RCT_EXPORT_MODULE()
         case KTKDeviceModelCloudBeacon: return @"CloudBeacon";
         case KTKDeviceModelCardBeacon: return @"CardBeacon";
         case KTKDeviceModelProBeacon: return @"ProBeacon";
+        default:
+            return @"Invalid";
     }
 }
 
@@ -223,6 +249,27 @@ RCT_EXPORT_MODULE()
         case kCLAuthorizationStatusNotDetermined:       return @"notDetermined";
         case kCLAuthorizationStatusRestricted:          return @"restricted";
     }
+}
+
+-(NSMutableDictionary *)parseRegion:(KTKEddystoneRegion *)region {
+    NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
+    beaconRegion[@"identifier"] = region.namespaceID;
+    beaconRegion[@"instanceID"] =region.instanceID;
+    beaconRegion[@"URL"] =region.URL;
+    beaconRegion[@"URLDomain"] =region.URLDomain;
+    return beaconRegion;
+}
+-(NSMutableDictionary *) parseEddystone:(KTKEddystone *)eddystone {
+    NSMutableDictionary *beaconDict = [[NSMutableDictionary alloc] init];
+    beaconDict[@"accuracy"] = @(eddystone.accuracy);
+    beaconDict[@"proximity"] = @(eddystone.proximity);
+    beaconDict[@"identifier"] = [eddystone.identifier UUIDString];
+    beaconDict[@"namespace"] = [eddystone.eddystoneUID namespaceID];
+    beaconDict[@"instanceId"] = [eddystone.eddystoneUID instanceID];
+    beaconDict[@"url"] = [[eddystone.eddystoneURL url] absoluteString];
+    if (eddystone.RSSI != nil) beaconDict[@"rssi"] = eddystone.RSSI;
+    if (@(eddystone.updatedAt) != nil) beaconDict[@"updatedAt"] = @(eddystone.updatedAt);
+    return beaconDict;
 }
 
 // ---------
@@ -266,6 +313,52 @@ RCT_EXPORT_METHOD(configure:(NSDictionary *)dict
     } @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
         reject(@"configure", @"Could not configure beacon manager", error);
+    }
+}
+
+// EDDYSTONE
+
+RCT_EXPORT_METHOD(startEddystoneDiscovery:(NSDictionary *)dict
+                  startEddystoneDiscovery_resolver:(RCTPromiseResolveBlock)resolve
+                  startEddystoneDiscovery_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        if (dict == nil) {
+            [self.eddystoneManager startEddystoneDiscoveryInRegion:nil];
+        } else {
+             [self.eddystoneManager startEddystoneDiscoveryInRegion:[self convertDictToEddystoneRegion:dict]];
+        }
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"startEddystoneDiscovery", @"Could not start beacon discovery", error);
+    }
+}
+
+
+RCT_EXPORT_METHOD(stopEddystoneDiscoveryInRegion:(NSDictionary *)dict
+                  stopEddystoneDiscoveryInRegion_resolver:(RCTPromiseResolveBlock)resolve
+                  stopEddystoneDiscoveryInRegion_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [self.eddystoneManager stopEddystoneDiscoveryInRegion:[self convertDictToEddystoneRegion:dict]];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopEddystoneDiscoveryInRegion", @"Could not stopRangingBeaconsInRegion", error);
+    }
+}
+
+RCT_REMAP_METHOD(stopEddystoneDiscoveryInAllRegions,
+                 stopEddystoneDiscoveryInAllRegions_resolver:(RCTPromiseResolveBlock)resolve
+                 stopEddystoneDiscoveryInAllRegions_rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [self.eddystoneManager stopEddystoneDiscoveryInAllRegions];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:@"com.artirigo.kontakt" code:0 userInfo:[self errorInfoTextForException:exception]];
+        reject(@"stopRangingBeaconsInAllRegions", @"Could not stopRangingBeaconsInAllRegions", error);
     }
 }
 
@@ -342,6 +435,18 @@ RCT_EXPORT_METHOD(startRangingBeaconsInRegion:(NSDictionary *)dict
                   startRangingBeaconsInRegion_rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
+        switch ([KTKBeaconManager locationAuthorizationStatus]) {
+            case kCLAuthorizationStatusNotDetermined:
+                [self.beaconManager requestLocationAlwaysAuthorization];
+                break;
+            case kCLAuthorizationStatusAuthorizedWhenInUse:
+            case kCLAuthorizationStatusAuthorizedAlways:
+                // Good :)
+                break;
+            default:
+                [NSException raise:@"unouthorizedException" format:@"Should ask for location authorization."];
+                break;
+        }
         if ([KTKBeaconManager isRangingAvailable]) {
             [self.beaconManager startRangingBeaconsInRegion:[self convertDictToBeaconRegion:dict]];
         }
@@ -684,7 +789,7 @@ RCT_EXPORT_METHOD(requestStateForRegion:(NSDictionary *)dict
                         NSLog(@"in read CONFIGuration uniqueId: %@, uniqueId from config: %@, uuid: %@, minor: %@", device.uniqueID, configuration.uniqueID, [configuration.proximityUUID UUIDString], configuration.minor);
                     } else {
                         NSLog(@"in read configuration: beacon with uniqueId %@, error: %@", device.uniqueID, error.localizedDescription);
-                        [NSException raise:@"Error in readConfigurationWithCompletion" format:@"%@", error.localizedDescription];
+                        // [NSException raise:@"Error in readConfigurationWithCompletion" format:@"%@", error.localizedDescription];
                     }
                 }];
             } @catch (NSException *exception) {
@@ -692,24 +797,22 @@ RCT_EXPORT_METHOD(requestStateForRegion:(NSDictionary *)dict
             }
         }
 
+        NSMutableDictionary *beaconDict = [[NSMutableDictionary alloc] init];
+        if (device.name != nil) beaconDict[@"name"] = device.name;
+        if (device.uniqueID != nil) beaconDict[@"uniqueId"] = device.uniqueID;
+        if (device.firmwareVersion != nil) beaconDict[@"firmwareVersion"] = device.firmwareVersion;
+        if (device.batteryLevel != nil) beaconDict[@"batteryLevel"] = [NSNumber numberWithLong:device.batteryLevel];
+        if (device.batteryPowered != nil) beaconDict[@"batteryPowered"] =@(device.batteryPowered);
+        if (device.transmissionPower != nil) beaconDict[@"transmissionPower"] = [self numberForTxPowerLevel:device.transmissionPower];
+        if (@(device.hasConfigurationProfile) != nil) beaconDict[@"hasConfigurationProfile"] = @(device.hasConfigurationProfile);
+        if (@(device.shuffled) != nil) beaconDict[@"shuffled"] = @(device.shuffled);
+        if (@(device.locked) != nil) beaconDict[@"locked"] = @(device.locked);
+        if (device.model != nil) beaconDict[@"model"] = [self stringForModel:device.model];
+        if (device.peripheral.name != nil) beaconDict[@"peripheral"] = device.peripheral.name;
+        if (device.RSSI != nil) beaconDict[@"rssi"] = device.RSSI;
+        if (@(device.updatedAt) != nil) beaconDict[@"updatedAt"] = @(device.updatedAt);
 
-        [deviceArray addObject:@{
-                                 @"name": device.name,
-                                 @"uniqueId": device.uniqueID,
-                                 @"firmwareVersion": device.firmwareVersion,
-                                 @"batteryLevel": [NSNumber numberWithLong:device.batteryLevel],
-                                 @"batteryPowered": @(device.batteryPowered),
-                                 @"transmissionPower": [self numberForTxPowerLevel:device.transmissionPower],
-                                 @"hasConfigurationProfile": @(device.hasConfigurationProfile),
-                                 @"shuffled": @(device.shuffled),
-                                 @"locked": @(device.locked),
-                                 // advertisingProfile not exposed since it will be replaced soon.
-                                 @"model": [self stringForModel:device.model],
-                                 @"peripheral": device.peripheral.name,
-                                 @"rssi": device.RSSI,
-                                 @"updatedAt": @(device.updatedAt),
-//                                 @"distance": KTKCalculateDistanceFrom(device.transmissionPower, device.RSSI)
-                                 }];
+        [deviceArray addObject:beaconDict];
     }
 
     NSDictionary *event = @{
@@ -728,6 +831,50 @@ RCT_EXPORT_METHOD(requestStateForRegion:(NSDictionary *)dict
     }
 }
 
+- (void)eddystoneManager:(KTKEddystoneManager *)manager
+   didDiscoverEddystones:(NSSet *)eddystones
+                inRegion:(__kindof KTKEddystoneRegion *_Nullable)region {
+    if (self.dropEmptyRanges && eddystones.count == 0) {
+        return;
+    }
+
+    NSMutableArray *deviceArray = [[NSMutableArray alloc] init];
+
+    NSMutableDictionary *beaconRegion = [self parseRegion:region];
+
+    for (KTKEddystone *eddystone in eddystones) {
+        NSMutableDictionary *beaconDict = [self parseEddystone:eddystone];
+        [deviceArray addObject:beaconDict];
+    }
+    NSDictionary *event = @{
+                            @"region": beaconRegion,
+                            @"eddystones": deviceArray
+                            };
+
+    if (hasListeners) {
+        [self sendEventWithName:@"didDiscoverEddystones" body:event];
+    }
+}
+
+- (void)eddystoneManagerDidFailToStartDiscovery:(KTKEddystoneManager *)manager
+                                      withError:(NSError *_Nullable)error {
+    if (hasListeners) {
+        [self sendEventWithName:@"didFailToStartDiscoverEddystones" body:@{ @"error": error.localizedDescription }];
+    }
+}
+
+- (void)eddystoneManager:(KTKEddystoneManager *)manager
+      didUpdateEddystone:(KTKEddystone *)eddystone
+               withFrame:(KTKEddystoneFrameType)frameType {
+    NSDictionary *event = @{
+                            @"eddystone": [self parseEddystone:eddystone]
+                            };
+
+    if (hasListeners) {
+        [self sendEventWithName:@"didUpdateEddystone" body:event];
+    }
+}
+
 - (void)beaconManager:(KTKBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(__kindof KTKBeaconRegion *)region {
     NSMutableDictionary *beaconRegion = [[NSMutableDictionary alloc] init];
     beaconRegion[@"identifier"] = region.identifier;
@@ -739,7 +886,7 @@ RCT_EXPORT_METHOD(requestStateForRegion:(NSDictionary *)dict
     }
 }
 
-// this function was added because I needed a way to convert the CLRegionState enum to a string 
+// this function was added because I needed a way to convert the CLRegionState enum to a string
 - (NSString*) convertToString:(CLRegionState) whichState {
     NSString *result = nil;
     switch(whichState) {

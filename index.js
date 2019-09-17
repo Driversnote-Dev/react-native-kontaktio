@@ -124,8 +124,14 @@ if (Platform.OS === 'ios') {
   const stopMonitoringForRegion = KontaktModule.stopMonitoringForRegion;
   const stopMonitoringForAllRegions = KontaktModule.stopMonitoringForAllRegions;
   const getMonitoredRegions = KontaktModule.getMonitoredRegions;
-  
+
   const requestStateForRegion = KontaktModule.requestStateForRegion;
+
+  const requestStateForRegion = KontaktModule.requestStateForRegion;
+
+  const startEddystoneDiscovery = (region = null) => (KontaktModule.startEddystoneDiscovery(region));
+  const stopEddystoneDiscoveryInRegion = KontaktModule.stopEddystoneDiscoveryInRegion;
+  const stopEddystoneDiscoveryInAllRegions = KontaktModule.stopEddystoneDiscoveryInAllRegions;
 
   Kontakt = {
     init,
@@ -150,6 +156,10 @@ if (Platform.OS === 'ios') {
     stopMonitoringForAllRegions,
     getMonitoredRegions,
     requestStateForRegion,
+    // eddystone
+    startEddystoneDiscovery,
+    stopEddystoneDiscoveryInRegion,
+    stopEddystoneDiscoveryInAllRegions,
   };
 }
 
