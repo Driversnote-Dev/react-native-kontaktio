@@ -6,6 +6,17 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+## [v2.7.0] - 2019-09-17
+
+### Added
+
+- _iOS_: Update Kontakt.io SDK to version `1.5.1` 
+
+### Changed
+
+- _iOS_: Eddystone support
+- _iOS_: Other minor code fixes
+
 ## [v2.6.2] - 2019-06-07
 
 ### Changed
@@ -108,6 +119,7 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 
 [unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.2...master
+[v2.7.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.2...v2.7.0
 [v2.6.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.1...v2.6.2
 [v2.6.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.0...v2.6.1
 [v2.6.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.5.4...v2.6.0
