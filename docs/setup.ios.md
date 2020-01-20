@@ -20,6 +20,14 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
       	$ npm install --save react-native-kontaktio
       	```
 
+    **(For RN >= 0.60)**
+    - `Update pods`
+
+        ```bash
+        $ cd ios
+        $ pod install
+        ```
+
 2. **(Skip for RN >= 0.60)** Link module (use `rnpm` for React Native versions older than `0.27`)
 
         react-native link react-native-kontaktio
