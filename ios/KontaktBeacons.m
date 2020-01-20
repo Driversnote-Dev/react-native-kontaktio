@@ -6,7 +6,7 @@
   #import <React/RCTConvert.h>
 #endif
 
-#import <KontaktSDK.h>
+#import <KontaktSDK/KontaktSDK.h>
 
 @interface KontaktBeacons() <KTKBeaconManagerDelegate,
     KTKDevicesManagerDelegate,KTKEddystoneManagerDelegate>
