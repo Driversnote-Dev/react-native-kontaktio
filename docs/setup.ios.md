@@ -20,11 +20,11 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
       	$ npm install --save react-native-kontaktio
       	```
 
-2.  Link module (use `rnpm` for React Native versions older than `0.27`)
+2. **(Skip for RN >= 0.60)** Link module (use `rnpm` for React Native versions older than `0.27`)
 
         react-native link react-native-kontaktio
 
-3.  Manually link **Kontakt.io SDK**
+3. **(Skip for RN >= 0.60)** Manually link **Kontakt.io SDK**
 
     - Open the projects workspace in **XCode**
 
@@ -47,7 +47,7 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
 
     It should now also appear both in the **`Embedded Binaries`** section as well as in the **`Linked Frameworks and Libraries`** section below it.
 
-4.  Add Framework Search paths so that Xcode can find the added framework
+4. **(Skip for RN >= 0.60)** Add Framework Search paths so that Xcode can find the added framework
 
     - Go to the **Build Settings** tab and search for **"framework search paths"**.
     - Add the following to _Framework Search Paths_ (select **recursive [v]**):
@@ -58,7 +58,7 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
 
       ![](images/ios_installation_step04.png)
 
-5.  Add run script
+5. **(Skip for RN >= 0.60)** Add run script
 
     - In the **`Build Phases`** tab, click the **`+`** button at the top and select **`New Run Script Phase`**. Enter the following code into the script text field:
 
