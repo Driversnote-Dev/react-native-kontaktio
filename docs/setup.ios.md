@@ -74,9 +74,9 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
 
     | Key                                 | Value                                    | Description                                                                           |
     | ----------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------- |
-    | NSLocationAlwaysUsageDescription    | Your text of the permission for the user | User allows the app to use the device location even when the app is in the background |
-    | NSLocationWhenInUseUsageDescription | Your text of the permission for the user | User allows the app                                                                   |
-    | NSLocationAlwaysAndWhenInUseUsageDescription | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information at all times. |
+    | NSLocationWhenInUseUsageDescription | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationwheninuseusagedescription) |
+    | NSLocationAlwaysUsageDescription    | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information at all times (i.e. even when the app is in the background). **DEPRECATED** in iOS versions later than 10.0 [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysusagedescription) |
+    | NSLocationAlwaysAndWhenInUseUsageDescription | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information at all times. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysandwheninuseusagedescription) |
 
 	Just copy-paste the key from here and the text will automatically change to the more elaborate version when you press enter:
 
