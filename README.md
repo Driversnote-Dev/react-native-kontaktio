@@ -120,13 +120,13 @@ export default class MinimalExample extends Component {
     - Android:
 
       	```bash
-        	$ react-native run-android
+      $ react-native run-android
       ```
 
     - iOS
 
       	```bash
-        	$ react-native run-ios
+      $ react-native run-ios
       ```
 
 ## Further notes
