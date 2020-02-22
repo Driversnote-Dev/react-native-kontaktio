@@ -6,6 +6,16 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+## [v2.7.1] - 2020-02-22
+
+### Added
+
+- Support for RN >= 0.60 and autolinking (incl. pod install section), by @pkondrashkov (see #67)
+
+### Changed
+
+- Update of permission information, by @nylsoo (see #63)
+
 ## [v2.7.0] - 2019-09-17
 
 ### Added
@@ -118,7 +128,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.2...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.1...master
+[v2.7.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.0...v2.7.1
 [v2.7.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.2...v2.7.0
 [v2.6.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.1...v2.6.2
 [v2.6.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.0...v2.6.1
