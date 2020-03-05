@@ -2,35 +2,43 @@
 
 Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk/quickstart/#setup) have to be met.
 
-## Mostly automatic setup (recommended)
+## Auto-linking (React Native v0.60+)
+
+1. Add package
+
+	```bash
+	$ yarn add react-native-kontaktio
+	```
+
+2. Update pods
+
+    ```bash
+    $ cd ios
+    $ pod install
+    ```
+
+3. Add permissions as described [below](#add-permissions).
+
+
+## Mostly automatic setup (React Native older than v0.60)
 
 When installing both, Android and iOS, steps _1_ and _2_ only have to be run once for both platforms.
 
 1.  Install the package
 
-    - `yarn`
+    ```bash
+    $ yarn add react-native-kontaktio
+    ```
 
-      	```bash
-      	$ yarn add react-native-kontaktio
-      	```
+2. Link module (use `rnpm` for React Native versions older than `0.27`)
 
-    - `npm`
+    ```bash
+    $ react-native link react-native-kontaktio
+    ```
 
-      	```bash
-      	$ npm install --save react-native-kontaktio
-      	```
+3. Add permissions as described [below](#add-permissions).
 
-    **(For RN >= 0.60)**
-    - `Update pods`
-
-        ```bash
-        $ cd ios
-        $ pod install
-        ```
-
-2. **(Skip for RN >= 0.60)** Link module (use `rnpm` for React Native versions older than `0.27`)
-
-        react-native link react-native-kontaktio
+## Manual setup
 
 3. **(Skip for RN >= 0.60)** Manually link **Kontakt.io SDK**
 
@@ -75,22 +83,33 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
     ```
     ![](images/ios_installation_step05.png)
 
+---
 
-6.  Add permissions
+## Add permissions
 
-    Go to the **Info** tab and add in the top section **`Custom iOS Target Properties`** add either one of the following permissions:
+Go to the **Info** tab and add in the top section **`Custom iOS Target Properties`** the following permissions:
+
+- **Bluetooth**
 
     | Key                                 | Value                                    | Description                                                                           |
     | ----------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------- |
-    | NSLocationWhenInUseUsageDescription | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationwheninuseusagedescription) |
-    | NSLocationAlwaysUsageDescription    | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information at all times (i.e. even when the app is in the background). **DEPRECATED** in iOS versions later than 10.0 [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysusagedescription) |
-    | NSLocationAlwaysAndWhenInUseUsageDescription | Your text of the permission for the user | A message that tells the user why the app is requesting access to the user’s location information at all times. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysandwheninuseusagedescription) |
+    | NSBluetoothAlwaysUsageDescription | Your text of the permission for the user | A message that tells the user why the app needs access to Bluetooth. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nsbluetoothalwaysusagedescription) |
 
-	Just copy-paste the key from here and the text will automatically change to the more elaborate version when you press enter:
+    Just copy-paste the key from here and the text will automatically change to the more elaborate version when you press enter (for example):
 
-	![](images/ios_installation_step06_permission.png)
+    ![](images/ios_installation_step06_permission.png)
 
----
+
+- **Location**
+
+    Choose either the first or the second permission and if you target iOS versions earlier than iOS 11, add the third permission.
+
+    | Key                                 | Value                                    | Description                                                                           |
+    | ----------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------- |
+    | NSLocationWhenInUseUsageDescription | **iOS 11.0+** Grant permission to access location when the app is in use | A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationwheninuseusagedescription) |
+    | NSLocationAlwaysAndWhenInUseUsageDescription | **iOS 11.0+** Grant permission to access location when the app is in use and when it is in the background | A message that tells the user why the app is requesting access to the user’s location information at all times. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysandwheninuseusagedescription) |
+    | --- | --- | --- |
+    | NSLocationAlwaysUsageDescription    | **DEPRECATED** in iOS versions 11.0+ - Use this key if your iOS app accesses location information in the background, and you deploy to a target earlier than iOS 11. | A message that tells the user why the app is requesting access to the user’s location information at all times (i.e. even when the app is in the background). [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysusagedescription) |
 
 ## Known Issues
 
