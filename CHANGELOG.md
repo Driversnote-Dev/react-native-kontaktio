@@ -6,6 +6,13 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+## [v2.7.2] - 2020-03-06
+
+### Changed
+
+- Updated setup docs to include instructions on auto-linking
+- Added new minimal example to README which works with RN 0.61
+
 ## [v2.7.1] - 2020-02-22
 
 ### Added
@@ -20,7 +27,7 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ### Added
 
-- _iOS_: Update Kontakt.io SDK to version `1.5.1` 
+- _iOS_: Update Kontakt.io SDK to version `1.5.1`
 
 ### Changed
 
@@ -90,7 +97,7 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ### Added
 
-- _Android_: Add Secure Profile. It is used when scanning for Beacon Pros, by @jampueroc (see #36) 
+- _Android_: Add Secure Profile. It is used when scanning for Beacon Pros, by @jampueroc (see #36)
 - _Android_: Add KontaktTelemetry (with Acceleration) to Secure Profile - only works with BeaconPros, by @Andruschenko (see #36)
 - Add CHANGELOG
 
@@ -128,7 +135,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.1...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.2...master
+[v2.7.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.1...v2.7.2
 [v2.7.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.0...v2.7.1
 [v2.7.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.2...v2.7.0
 [v2.6.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.1...v2.6.2
