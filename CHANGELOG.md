@@ -6,6 +6,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+- _Android_: Update Kontakt.io SDK to version `5.0.0`
+
 ## [v2.7.2] - 2020-03-06
 
 ### Changed

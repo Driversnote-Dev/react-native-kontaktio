@@ -340,7 +340,7 @@ final class BeaconListeners {
         if (kontaktTelemetry != null) {
             WritableMap t = new WritableNativeMap();
             t.putInt("batteryLevel", kontaktTelemetry.getBatteryLevel());
-            t.putInt("temperature", kontaktTelemetry.getTemperature());
+            t.putDouble("temperature", kontaktTelemetry.getTemperature());
             t.putInt("lightSensorPercentage", kontaktTelemetry.getLightSensor());
             t.putInt("accelerometerSensitivity", kontaktTelemetry.getSensitivity());
             t.putInt("scannedBleDevices", kontaktTelemetry.getBleDevices());

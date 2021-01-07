@@ -6,10 +6,9 @@ Kontakt.io SDK Versions of newest release:
 
 | OS          | SDK Version                                                                                              |
 | :---------- | :------------------------------------------------------------------------------------------------------- |
-| **Android** | [4.0.1](http://kontaktio.github.io/kontakt-android-sdk/4.0.2/Javadoc/) (Documentation points to `4.0.2`) |
 | **iOS**     | [1.5.1](http://kontaktio.github.io/kontakt-ios-sdk/Documentation/html/)                                  |
+| **Android** | [5.0.0](https://github.com/kontaktio/kontakt-android-sdk)                                                |
 
-The documentation points to `4.0.2` because there is none specifically for `4.0.1`. The Android SDK Version `4.0.2` [could not be installed](https://github.com/kontaktio/kontakt-android-sdk/issues/186).
 
 ## Advantages
 
