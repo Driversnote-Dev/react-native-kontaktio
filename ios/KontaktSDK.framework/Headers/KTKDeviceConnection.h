@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -13,7 +13,7 @@
 #import "KTKFirmware.h"
 #import "KTKDeviceCredentials.h"
 #import "KTKDeviceConfiguration.h"
-#import "KTKDeviceSensorsReading.h"
+#import "KTKDeviceDataLoggerReading.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -44,7 +44,7 @@ typedef void (^KTKDeviceConnectionReadCompletion)(__kindof KTKDeviceConfiguratio
  *  @param error    An error object containing the error that indicates why the operation failed.
  *  @param stop     A reference to a Boolean value. The block can set the value to YES to stop further updates of the sensors readings otherwise connection and updates will be running indefinitely. The stop argument is an out-only argument. You should only ever set this Boolean to YES within the block.
  */
-typedef void (^KTKDeviceConnectionSensorsUpdate)(KTKDeviceSensorsReading * _Nullable reading, NSError * _Nullable error, BOOL * _Nonnull stop);
+typedef void (^KTKDeviceConnectionSensorsUpdate)(KTKDeviceDataLoggerReading * _Nullable reading, NSError * _Nullable error, BOOL * _Nonnull stop);
 
 /**
  *  A completion block object to be executed when the update operation finishes.
@@ -128,6 +128,11 @@ typedef void (^KTKDeviceConnectionUpdateCompletion)(BOOL synchronized, NSError *
  */
 @property (nonatomic, readwrite, getter=isKeepAlive) BOOL keepAlive;
 
+/**
+ *  A Boolean value indicating whether the devices rtc time should be updated automatically. Defaults to `YES`.
+ */
+@property (nonatomic, readwrite, getter=isUpdateTimeAutomatically) BOOL updateTimeAutomatically;
+
 #pragma mark - Static Methods
 ///--------------------------------------------------------------------
 /// @name Static Methods
@@ -184,12 +189,12 @@ typedef void (^KTKDeviceConnectionUpdateCompletion)(BOOL synchronized, NSError *
  *
  *  @param updateBlock A block object to be executed when the sensors values are update.
  */
-- (void)sensorsUpdatesWithBlock:(KTKDeviceConnectionSensorsUpdate)updateBlock;
+- (void)sensorsUpdatesWithBlock:(KTKDeviceConnectionSensorsUpdate)updateBlock __attribute__((deprecated("Please use [KTKNearbyDevice telemetry] property instead")));
 
 /**
  *  Stops listening for sensors updates.
  */
-- (void)stopSensorsUpdates;
+- (void)stopSensorsUpdates __attribute__((deprecated("Please use [KTKNearbyDevice telemetry] property instead")));
 
 /**
  *  Updates a device to the latest available firmware.

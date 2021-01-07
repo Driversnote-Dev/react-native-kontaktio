@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -90,6 +90,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @see KTKDeviceModel
  */
 @property (nonatomic, assign, readonly) KTKDeviceModel model;
+
+/**
+ *  Device symbol. (read-only)
+ *
+ *  @see KTKDeviceSymbol
+ */
+@property (nonatomic, assign, readonly) KTKDeviceSymbol symbol;
+
 
 /**
  *  Device manager's ID. (read-only)

@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright © 2017 Kontakt.io. All rights reserved.
 //
@@ -9,22 +9,17 @@
 
 #import "KTKDeviceDefinitions.h"
 
-#pragma mark -
-typedef struct {
-    uint8_t x;
-    uint8_t y;
-    uint8_t z;
-} KTKAcceleration;
-
-typedef NS_OPTIONS(NSUInteger, KTKNearbyDeviceTelemetryError) {
-    /**
-     *  Internal error, Gateway does not operate correctly, other flags can be cleared despite errors occur.
-     */
-    KTKNearbyDeviceTelemetryErrorInternal      = 1 << 0,
+typedef NS_OPTIONS(uint16_t, KTKNearbyDeviceTelemetryError) {
     /**
      *  No Internet Connection
      */
-    KTKNearbyDeviceTelemetryErrorNoInternet    = 1 << 1
+    KTKNearbyDeviceTelemetryErrorNoInternet    = 1 << 15
+};
+
+typedef NS_ENUM(uint8_t, KTKDeviceDataLoggerStatus) {
+    KTKDeviceDataLoggerStatusUnavailable = 0,
+    KTKDeviceDataLoggerStatusDisabled,
+    KTKDeviceDataLoggerStatusEnabled,
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,10 +27,24 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - KTKNearbyDeviceTelemetry (Interface)
 @interface KTKNearbyDeviceTelemetry : NSObject <NSCopying>
 
+#pragma mark - Identification
+///--------------------------------------------------------------------
+/// @name Identification
+///--------------------------------------------------------------------
+
+@property (nonatomic, readonly, copy) NSString * _Nullable uniqueID;
+
+@property (nonatomic, readonly, copy) NSNumber * _Nullable channel;
+
 #pragma mark - Basic System Health
 ///--------------------------------------------------------------------
 /// @name Basic System Health
 ///--------------------------------------------------------------------
+
+/**
+ *  Current RSSI value for the device. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable RSSI;
 
 /**
  *  The current value of real time clock. (read-only)
@@ -80,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Raw Accelerometer data filtered with lowpass filter. (read-only)
  */
-@property (nonatomic, readonly, assign) KTKAcceleration acceleration;
+@property (nonatomic, readonly, assign) KTKDeviceAcceleration acceleration;
 
 /**
  *  Seconds since last doubletap event. Doubletap event occurs when doubletap pattern is detected by accelerometer. (read-only)
@@ -96,6 +105,28 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, copy) NSNumber * _Nullable lastThreshold;
 
+/**
+ *  Index of current event. Wraps around. Used to identify each threshold event
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable movementID;
+
+#pragma mark - Button
+///--------------------------------------------------------------------
+/// @name Button
+///--------------------------------------------------------------------
+
+/**
+ * Seconds since last Click event. Click event is specified in Button Specification Behavior. (read-only)
+ *
+ *  Saturates on 65535 (0xFFFF) value. 65535 (0xFFFF) default value when button click is disabled.
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable lastSingleClick;
+
+/**
+ * A number of Click events. Click event is specified in Button Specification Behavior. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable singleClickCount;
+
 #pragma mark - Sensors
 ///--------------------------------------------------------------------
 /// @name Sensors
@@ -110,6 +141,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  Temperature in degree Celsius. (read-only)
  */
 @property (nonatomic, readonly, copy) NSNumber * _Nullable temperature;
+
+/**
+ *  Relative Humidity Percentage (0-100). (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable humidity;
+
+/**
+ *  States of GPIOs. (read-only)
+ */
+@property (nonatomic, readonly, assign) struct KTKNearbyDeviceGPIOStates GPIOStates;
 
 #pragma mark - Scanning
 ///--------------------------------------------------------------------
@@ -140,6 +181,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  WiFi scanning statistics. Scans/s, 10 seconds average. (read-only)
  */
 @property (nonatomic, readonly, copy) NSNumber * _Nullable wifiScans;
+
+
+#pragma mark - Data Logger
+///--------------------------------------------------------------------
+/// @name Data Logger
+///--------------------------------------------------------------------
+
+/**
+ *  A Boolean value indicating whether the data logger functionality is turned `ON`.
+ */
+@property (nonatomic, readonly, assign) KTKDeviceDataLoggerStatus dataLoggerStatus;
 
 
 @end

@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -220,6 +220,15 @@ extern NSUUID * KTKKontaktProximityUUID(void);
  *  @see [KTKBeaconManager locationAuthorizationStatus]
  */
 - (void)beaconManager:(KTKBeaconManager*)manager didChangeLocationAuthorizationStatus:(CLAuthorizationStatus)status;
+
+/**
+ *  Tells the delegate that the authorization status for the application changed iOS 14.0+.
+ *
+ *  @param manager The beacon manager object reporting the event.
+ *
+ *  @see [KTKBeaconManager accuracyAuthorization]
+ */
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager;
 
 #pragma mark - Monitoring Beacon Regions Reporting
 ///--------------------------------------------------------------------

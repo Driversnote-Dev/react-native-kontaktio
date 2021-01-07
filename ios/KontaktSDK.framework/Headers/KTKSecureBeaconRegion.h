@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -71,6 +71,15 @@ NS_ASSUME_NONNULL_BEGIN
                                       major:(CLBeaconMajorValue)major
                                       minor:(CLBeaconMinorValue)minor
                                  identifier:(NSString *)identifier;
+
+/**
+ *  Initializes and returns a region object that targets a beacon with the specified proximity ID, major value, and minor value.
+ *
+ *  @param region  The beacon region to be encoded as secure region. This value must not be nil.
+ *
+ *  @return An initialized secure beacon region object.
+ */
+- (instancetype)initWithRegion:(KTKBeaconRegion*)region;
 
 @end
 
