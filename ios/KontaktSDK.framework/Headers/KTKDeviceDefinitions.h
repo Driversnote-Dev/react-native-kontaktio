@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -136,6 +136,14 @@ typedef NS_OPTIONS(NSInteger, KTKDeviceAdvertisingPackets) {
      */
     KTKDeviceAdvertisingPacketsKontaktTLM      = 1 << 8,
     /**
+     *  iBeacon Button packet.
+     */
+    KTKDeviceAdvertisingPacketsIBeaconButton   = 1 << 9,
+    /**
+     *  Kontakt Location packet.
+     */
+    KTKDeviceAdvertisingPacketsKontaktLocation = 1 << 10,
+    /**
      *  All supprted Eddystone packets.
      */
     KTKDeviceAdvertisingPacketsEddystoneAll    = (NSInteger)0b00000000000000000000000000011100,
@@ -221,7 +229,6 @@ typedef NS_ENUM(NSInteger, KTKDeviceModel) {
      *  Cloud Beacon
      */
     KTKDeviceModelCloudBeacon = 4,
-    
     /**
      *  Card Beacon
      */
@@ -233,7 +240,98 @@ typedef NS_ENUM(NSInteger, KTKDeviceModel) {
     /**
      *  Gateway
      */
-    KTKDeviceModelGateway = 7
+    KTKDeviceModelGateway = 7,
+    /**
+     *  Tag Beacon
+     */
+    KTKDeviceModelTagBeacon = 8,
+    /**
+     *  Smart Beacon 3 (Retrofit)
+     */
+    KTKDeviceModelSmartBeacon3 = 9,
+    /**
+     *  Heavy Duty Beacon
+     */
+    KTKDeviceModelHeavyDutyBeacon = 10,
+    /**
+     *  Card Beacon 2
+     */
+    KTKDeviceModelCardBeacon2 = 11,
+    /**
+     *  Minew E5
+     */
+    KTKDeviceModelMinewE5 = 20,
+    /**
+     *  Minew E7
+     */
+    KTKDeviceModelMinewE7 = 21,
+    /**
+     *  Minew E8
+     */
+    KTKDeviceModelMinewE8 = 22,
+    /**
+     *  Minew i3
+     */
+    KTKDeviceModelMinewI3 = 23,
+    /**
+     *  Minew i7
+     */
+    KTKDeviceModelMinewI7 = 24,
+    /**
+     *  Minew S1
+     */
+    KTKDeviceModelMinewS1 = 25,
+    /**
+     *  Lanyard Tag
+     */
+    KTKDeviceModelLanyardTag = 26,
+    /**
+     *  Nano Tag
+     */
+    KTKDeviceModelNanoTag = 27,
+    /**
+     *  Puck Beacon
+     */
+    KTKDeviceModelPuckBeacon = 28,
+    /**
+     *  Portal Light
+     */
+    KTKDeviceModelPortalLight= 29,
+};
+
+/**
+ *  A kontakt device symbols.
+ */
+typedef NS_ENUM(NSInteger, KTKDeviceSymbol) {
+    KTKDeviceSymbolInvalid  = -1,
+    KTKDeviceSymbolUnknown,
+    KTKDeviceSymbolSB16_2,
+    KTKDeviceSymbolTB15_1,
+    KTKDeviceSymbolGW14_1,
+    KTKDeviceSymbolUB16_2,
+    KTKDeviceSymbolCT16_2,
+    KTKDeviceSymbolGW16_2,
+    KTKDeviceSymbolBP16_3,
+    KTKDeviceSymbolS18_3,
+    KTKDeviceSymbolSB18_3,
+    KTKDeviceSymbolHD18_3,
+    KTKDeviceSymbolCT18_3,
+    KTKDeviceSymbolC18_3,
+    KTKDeviceSymbolSB18_3H,
+    KTKDeviceSymbolTB18_2,
+    KTKDeviceSymbolBT18_3,
+    KTKDeviceSymbolUT19_1,
+    KTKDeviceSymbolBT19_4,
+    KTKDeviceSymbolM_E5 = 20,
+    KTKDeviceSymbolM_E7 = 21,
+    KTKDeviceSymbolM_E8 = 22,
+    KTKDeviceSymbolM_I3 = 23,
+    KTKDeviceSymbolM_I7 = 24,
+    KTKDeviceSymbolM_S1 = 25,
+    KTKDeviceSymbolLB20_1 = 26,
+    KTKDeviceSymbolBT20_1 = 27,
+    KTKDeviceSymbolPB20_1 = 28,
+    KTKDeviceSymbolGW20_1 = 29,
 };
 
 /**
@@ -330,3 +428,43 @@ typedef NS_ENUM(NSInteger, KTKDeviceMotionDetectionMode) {
      */
     KTKDeviceMotionDetectionModeAlarm    = 2
 };
+
+/**
+ *  A device data logger fields.
+ */
+typedef NS_OPTIONS(uint32_t, KTKDeviceDataLoggerFields) {
+    KTKDeviceDataLoggerFieldsTemperature8   = 1 << 0,
+    KTKDeviceDataLoggerFieldsTemperature16  = 1 << 1,
+    KTKDeviceDataLoggerFieldsHumidity       = 1 << 2,
+    KTKDeviceDataLoggerFieldsLightLevel     = 1 << 3,
+    KTKDeviceDataLoggerFieldsAccelerometer  = 1 << 4,
+    KTKDeviceDataLoggerFieldsDebugCounter   = 1 << 5,
+    KTKDeviceDataLoggerFieldsTimestamp      = 1 << 6,
+    KTKDeviceDataLoggerFieldsBattery        = 1 << 7,
+};
+
+/**
+ *  A kontakt GPIO state options.
+ */
+typedef NS_ENUM(int8_t, KTKGPIOState) {
+    KTKGPIOStateOff = -1,
+    KTKGPIOStateLow,
+    KTKGPIOStateHigh,
+    KTKGPIOStateInput,
+};
+
+/**
+ *  A kontakt device GPIOs states.
+ */
+struct KTKNearbyDeviceGPIOStates {
+    KTKGPIOState pin[8];
+};
+
+/**
+ *  A device acceleration structure.
+ */
+typedef struct {
+    int8_t x;
+    int8_t y;
+    int8_t z;
+} KTKDeviceAcceleration;

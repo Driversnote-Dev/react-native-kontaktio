@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -100,6 +100,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @see KTKDeviceModel
  */
 @property (nonatomic, readonly, assign) KTKDeviceModel model;
+
+/**
+ *  Device symbol in Kontakt.io's unified convention. (read-only)
+ *  @warning *Important:* Symbol will be replacing `model` property. Same rules applies to `symbol` as to `model` in regards to adveritisng limitations.
+ *
+ */
+@property (nonatomic, readonly, assign) KTKDeviceSymbol symbol;
 
 /**
  *  CoreBluetooth Peripheral object associated with the device. (read-only)

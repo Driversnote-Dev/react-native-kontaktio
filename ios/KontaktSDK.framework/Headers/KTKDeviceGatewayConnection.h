@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright © 2017 Kontakt.io. All rights reserved.
 //
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 typedef void (^KTKDeviceGatewayConnectionGetWiFiBlock)(NSSet <KTKDeviceGatewayWiFiNetwork *>* _Nullable networks, __kindof KTKDeviceGatewayConfiguration * _Nullable configuration, NSError * _Nullable error);
 
-#pragma mark - KTKDeviceConnection (Interface)
+#pragma mark - KTKDeviceGatewayConnection (Interface)
 @interface KTKDeviceGatewayConnection : KTKDeviceConnection
 
 #pragma mark - Connection Methods

@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 1.5.1
+//  Version: 3.0.4
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -8,6 +8,7 @@
 #import "KTKDeviceDefinitions.h"
 #import "KTKCloudModel.h"
 #import "KTKDevicePowerSaving.h"
+#import "KTKDeviceConfigurationGPIO.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -104,11 +105,6 @@ __attribute__((deprecated("Please use `packets` property instead")));
 @property (nonatomic, strong, readwrite) NSNumber * _Nullable minor;
 
 /**
- *  A reference transmission power for iBeacon advertising (measured at 1 meter).
- */
-@property (nonatomic, strong, readwrite) NSNumber * _Nullable referenceTXPowerIBeacon __attribute__((deprecated("Please use `rssiAt1Meter` property instead")));
-
-/**
  *  A reference transmission power values for iBeacon advertising (measured at 1 meter).
  */
 @property (nonatomic, strong, readwrite) NSArray <NSNumber *>* _Nullable rssiAt1Meter;
@@ -134,29 +130,55 @@ __attribute__((deprecated("Please use `packets` property instead")));
 @property (nonatomic, copy, readwrite) NSURL * _Nullable URL;
 
 /**
- *  A reference transmission power for Eddystone advertising (measured at 0 meters).
- */
-@property (nonatomic, strong, readwrite) NSNumber * _Nullable referenceTXPowerEddystone __attribute__((deprecated("Please use `rssiAt0Meter` property instead")));
-
-/**
  *  A reference transmission power values for Eddystone advertising (measured at 0 meters).
  */
 @property (nonatomic, strong, readwrite) NSArray <NSNumber *>* _Nullable rssiAt0Meter;
 
+#pragma mark - Telemetry Properties
+///--------------------------------------------------------------------
+/// @name Telemetry Properties
+///--------------------------------------------------------------------
+
+/**
+ *  Telemetry temperature offset value. This property is currently available only on NRF52 chipset devices.
+ *
+ *  This property can be used to calibrate temperature readings.
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable temperatureOffset;
+
+#pragma mark - Data Logger Properties
+///--------------------------------------------------------------------
+/// @name Data Logger Properties
+///--------------------------------------------------------------------
+
+@property (nonatomic, strong, readwrite) NSNumber *dataLoggerSamplingInterval;
+
+@property (nonatomic, assign, readwrite) KTKDeviceDataLoggerFields dataLoggerFields;
+    
 #pragma mark - Features Properties
 ///--------------------------------------------------------------------
 /// @name Features Properties
 ///--------------------------------------------------------------------
 
 /**
- *  The current value of real time clock. This property is currently available only on Beacon PRO device.
+ *  The current value of real time clock. This property is currently available only on NRF52 chipset devices.
  */
 @property (nonatomic, strong, readwrite) NSDate * _Nullable rtcDate;
+
+@property (nonatomic, strong, readwrite) NSArray<KTKDeviceConfigurationGPIO *> * _Nullable GPIOStates;
 
 #pragma mark - Secure Configuration
 ///--------------------------------------------------------------------
 /// @name Secure Configuration
 ///--------------------------------------------------------------------
+
+/**
+ *  Raw properties dictionary.
+ *
+ *  Raw Secure Configuration Key Value storage.
+ *  This is represented in the Cloud API as `customConfiguration`.
+ */
+@property (nonatomic, strong, readwrite) NSDictionary<NSString *, NSData *> * _Nullable rawProperties;
 
 /**
  *  A response data object.
