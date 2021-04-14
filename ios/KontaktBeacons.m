@@ -84,6 +84,10 @@ RCT_EXPORT_MODULE()
     return @{ @"DEFAULT_API_KEY": @"default-kontaktio-api-key" };
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
 
 // Will be called when this module's first listener is added.
 -(void)startObserving {
