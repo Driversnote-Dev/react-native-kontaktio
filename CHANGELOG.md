@@ -6,6 +6,12 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+## [v2.9.0] - 2021-11-13
+
+### Changed
+
+- _Android_: Change the Kontakt.io SDK source and update to version `5.0.15`
+
 ## [v2.8.0] - 2021-01-10
 
 ### Changed
@@ -142,7 +148,9 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 - Several bug fixes
 
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.2...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.9.0...master
+[v2.9.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.8.0...v2.9.0
+[v2.8.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.2...v2.8.0
 [v2.7.2]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.1...v2.7.2
 [v2.7.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.0...v2.7.1
 [v2.7.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.6.2...v2.7.0

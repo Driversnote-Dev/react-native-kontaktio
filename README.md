@@ -6,7 +6,7 @@ Kontakt.io SDK Versions of newest release:
 
 | OS          | SDK Version                                                                                              |
 | :---------- | :------------------------------------------------------------------------------------------------------- |
-| **Android** | [5.0.0](https://github.com/kontaktio/kontakt-android-sdk)                                                |
+| **Android** | [5.0.15](https://github.com/kontaktio/kontakt-android-sdk)                                               |
 | **iOS**     | [3.0.4](https://github.com/kontaktio/kontakt-ios-sdk/tree/v3.0.4)                                        |
 
 
