@@ -6,6 +6,13 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+## [v2.10.0] - 2021-11-26
+
+### Changed
+
+- _Android_: Migrate to androidx.
+- _Android_: Downgrade the Kontakt.io SDK to version `5.0.14` since it is the last version to target Android SDK 30 and since versions >= `5.0.15` might trigger the new Android 12 bluetooth permission model.
+
 ## [v2.9.0] - 2021-11-13
 
 ### Changed
