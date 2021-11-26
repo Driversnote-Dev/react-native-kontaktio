@@ -1,6 +1,6 @@
 package com.artirigo.kontaktio;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
