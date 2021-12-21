@@ -12,7 +12,7 @@ Kontakt.io SDK Versions of newest release:
 
 ## Advantages
 
-- Works with any beacon (becquse the Kontakt.io SDK wraps the native beacon libraries (while adding more) - no Kontakt.io SDK API key is necessary.
+- Works with any beacon (because the Kontakt.io SDK wraps the native beacon libraries (while adding more) - no Kontakt.io SDK API key is necessary.
 - Especially useful with [Kontakt.io](http://kontakt.io/) beacons because additional information like the **unique id** (on the back of each beacon), the **battery power level** and others are available and get synchronized with your Kontakt.io online panel.
 - Highly customizable configurations (e.g. for setting arbitrary monitoring intervals on Android)
 
