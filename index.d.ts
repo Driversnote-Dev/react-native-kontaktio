@@ -100,20 +100,17 @@ export type IBeacon = IBeaconAndroid | IBeaconIos | IBeaconIosDiscovery;
 
 export type BeaconType = typeof IBEACON | typeof EDDYSTONE;
 
-export type RegionAndroid = {
+export type RegionBase = {
   uuid: string;
   identifier: string;
-  secureUuid?: string;
   major?: number;
   minor?: number;
+  uniqueId?: string;
 };
 
-export type RegionIos = {
-  uuid: string;
-  identifier: string;
-  major?: number;
-  minor?: number;
-};
+export type RegionAndroid = RegionBase & { secureUuid?: string };
+
+export type RegionIos = RegionBase;
 
 export type RegionType = RegionAndroid | RegionIos;
 
