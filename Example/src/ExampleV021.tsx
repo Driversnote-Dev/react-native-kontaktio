@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -49,27 +50,18 @@ export default class ExampleV021 extends Component {
 
   componentDidMount() {
     KontaktBeacons.initKontaktSDKWithApiKey('MY_KONTAKTIO_API_KEY');
-    DeviceEventEmitter.addListener(
-      'beaconsDidRange',
-      (data) => {
-        this.setState({
-          beacons: data.beacons.filter(beacon => beacon.rssi < 0),
-        });
-        data.beacons.map(beacon => console.log('minor', beacon.minor));
-      }
-    );
-    DeviceEventEmitter.addListener(
-      'scanInitStatus',
-      (data) => {
-        this.setState({ scanInitStatus: data.status });
-      }
-    );
-    DeviceEventEmitter.addListener(
-      'scanStatus',
-      (data) => {
-        this.setState({ scanStatus: data.scanStatus });
-      }
-    );
+    DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
+      this.setState({
+        beacons: data.beacons.filter((beacon) => beacon.rssi < 0),
+      });
+      data.beacons.map((beacon) => console.log('minor', beacon.minor));
+    });
+    DeviceEventEmitter.addListener('scanInitStatus', (data) => {
+      this.setState({ scanInitStatus: data.status });
+    });
+    DeviceEventEmitter.addListener('scanStatus', (data) => {
+      this.setState({ scanStatus: data.scanStatus });
+    });
   }
 
   _startScanning = () => {
@@ -91,15 +83,35 @@ export default class ExampleV021 extends Component {
   _renderBeacons = () => {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
 
-    return this.state.beacons.sort((a, b) => (-1 * (a.rssi - b.rssi))).map((beacon, ind) => (
-      <View key={ind} style={[styles.beacon, {backgroundColor: colors[beacon.minor - 1]}]}>
-        <Text style={{fontWeight: 'bold'}}>{beacon.uniqueID}</Text>
-        <Text>Minor: {beacon.minor}, RSSI: {beacon.rssi}</Text>
-        <Text>Distance: {beacon.accuracy}, Proximity: {beacon.proximity}</Text>
-        <Text>Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}</Text>
-        <Text>FirmwareVersion: {beacon.firmwareVersion}, UniqueID: {beacon.uniqueID}</Text>
-      </View>
-    ), this);
+    return this.state.beacons
+      .sort((a, b) => -1 * (a.rssi - b.rssi))
+      .map(
+        (beacon, ind) => (
+          <View
+            key={ind}
+            style={[
+              styles.beacon,
+              { backgroundColor: colors[beacon.minor - 1] },
+            ]}
+          >
+            <Text style={{ fontWeight: 'bold' }}>{beacon.uniqueID}</Text>
+            <Text>
+              Minor: {beacon.minor}, RSSI: {beacon.rssi}
+            </Text>
+            <Text>
+              Distance: {beacon.accuracy}, Proximity: {beacon.proximity}
+            </Text>
+            <Text>
+              Battery Power: {beacon.batteryPower}, TxPower: {beacon.txPower}
+            </Text>
+            <Text>
+              FirmwareVersion: {beacon.firmwareVersion}, UniqueID:{' '}
+              {beacon.uniqueID}
+            </Text>
+          </View>
+        ),
+        this
+      );
   };
 
   // _renderWaitingForBeacons = () => (

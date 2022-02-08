@@ -1,5 +1,5 @@
-import kontaktIoExample from './src/main';
-kontaktIoExample('ios');
+import kontaktIoExample from './src/main.ios';
+kontaktIoExample();
 
 // import { AppRegistry } from 'react-native';
 // import Placeholder from './src/Placeholder';
