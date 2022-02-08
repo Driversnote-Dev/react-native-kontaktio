@@ -22,7 +22,7 @@ export type IBeaconBase = {
   uniqueId?: string;
 };
 
-type Proximity = 'IMMEDIATE' | 'NEAR' | 'FAR' | 'UNKNOWN';
+export type Proximity = 'IMMEDIATE' | 'NEAR' | 'FAR' | 'UNKNOWN';
 
 /**
  * If you create this type by intersecting the types IBeaconBase and
@@ -100,7 +100,7 @@ export type IBeacon = IBeaconAndroid | IBeaconIos | IBeaconIosDiscovery;
 
 export type BeaconType = typeof IBEACON | typeof EDDYSTONE;
 
-type RegionAndroid = {
+export type RegionAndroid = {
   uuid: string;
   identifier: string;
   secureUuid?: string;
@@ -108,7 +108,7 @@ type RegionAndroid = {
   minor?: number;
 };
 
-type RegionIos = {
+export type RegionIos = {
   uuid: string;
   identifier: string;
   major?: number;
