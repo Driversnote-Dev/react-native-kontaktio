@@ -143,12 +143,11 @@ export default class IBeaconExample extends Component<{}, State> {
         );
         this.setState({
           monitoredRegionsCloseBy: monitoredRegionsCloseBy.reduce(
-            (result, val, ind) => {
+            (result: Array<RegionType>, val, ind) => {
               // don't add disappeared region to array
               if (ind === index) return result;
               // add all other regions to array
               else {
-                // @ts-ignore
                 result.push(val);
                 return result;
               }

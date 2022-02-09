@@ -127,12 +127,11 @@ export default class IBeaconExample extends Component<{}, State> {
           this._isIdenticalBeacon(lostBeacon, beacon)
         );
         this.setState({
-          beacons: beacons.reduce((result, val, ind) => {
+          beacons: beacons.reduce((result: Array<IBeaconAndroid>, val, ind) => {
             // don't add disappeared beacon to array
             if (ind === index) return result;
             // add all other beacons to array
             else {
-              // @ts-ignore
               result.push(val);
               return result;
             }
@@ -157,12 +156,14 @@ export default class IBeaconExample extends Component<{}, State> {
             this._isIdenticalBeacon(updatedBeacon, beacon)
           );
           this.setState({
-            beacons: beacons.reduce((result, val, ind) => {
-              // replace current beacon values for updatedBeacon, keep current value for others
-              // @ts-ignore
-              ind === index ? result.push(updatedBeacon) : result.push(val);
-              return result;
-            }, []),
+            beacons: beacons.reduce(
+              (result: Array<IBeaconAndroid>, val, ind) => {
+                // replace current beacon values for updatedBeacon, keep current value for others
+                ind === index ? result.push(updatedBeacon) : result.push(val);
+                return result;
+              },
+              []
+            ),
           });
         });
       }
