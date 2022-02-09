@@ -215,5 +215,7 @@ export type KontaktiOSType = KontaktBaseType & {
 export const KontaktModule = NativeModules.KontaktBeacons;
 
 export type KontaktType = KontaktAndroidType & KontaktiOSType;
+
 declare const module: KontaktType;
+
 export default module;

@@ -11,7 +11,7 @@ import {
   monitoringEnabled,
   monitoringSyncInterval,
 } from './configurations';
-import type { ConfigType, BeaconType, RegionType } from './index.d';
+import type { KontaktType, ConfigType, BeaconType, RegionType } from './types';
 
 // If the native module (i.e. Java module) is prefixed with "RCT",
 // the NativeModules name does not include "RCT".
@@ -181,4 +181,6 @@ if (Platform.OS === 'ios') {
   };
 }
 
-export default Kontakt;
+export * from './types';
+
+export default Kontakt as KontaktType;
