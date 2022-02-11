@@ -1,10 +1,14 @@
 {
   "name": "react-native-kontaktio",
-  "version": "3.0.0",
+  "version": "2.10.0",
   "description": "React-native module for detecting [Kontakt.io](http://kontakt.io/) beacons. You have to own some Kontakt.io beacons, configure them via their managment console and have your api-key handy.",
   "main": "lib/index.js",
   "types": "lib/types.d.ts",
   "files": [
+    "KontaktBeacons.podspec",
+    "android/build.gradle",
+    "android/src",
+    "ios/",
     "lib/**/*"
   ],
   "keywords": [
@@ -39,7 +43,7 @@
     },
     {
       "email": "me@andrekovac.com",
-      "name": "Andruschenko"
+      "name": "André Kovac"
     }
   ],
   "scripts": {
