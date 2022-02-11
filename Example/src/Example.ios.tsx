@@ -142,18 +142,17 @@ export default class IBeaconExample extends Component<{}, State> {
           this._isIdenticalRegion(exitRegion, region)
         );
         this.setState({
-          monitoredRegionsCloseBy: monitoredRegionsCloseBy.reduce(
-            (result: Array<RegionType>, val, ind) => {
-              // don't add disappeared region to array
-              if (ind === index) return result;
-              // add all other regions to array
-              else {
-                result.push(val);
-                return result;
-              }
-            },
-            []
-          ),
+          monitoredRegionsCloseBy: monitoredRegionsCloseBy.reduce<
+            Array<RegionType>
+          >((result, val, ind) => {
+            // don't add disappeared region to array
+            if (ind === index) return result;
+            // add all other regions to array
+            else {
+              result.push(val);
+              return result;
+            }
+          }, []),
         });
       }
     );

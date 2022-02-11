@@ -127,7 +127,7 @@ export default class IBeaconExample extends Component<{}, State> {
           this._isIdenticalBeacon(lostBeacon, beacon)
         );
         this.setState({
-          beacons: beacons.reduce((result: Array<IBeaconAndroid>, val, ind) => {
+          beacons: beacons.reduce<Array<IBeaconAndroid>>((result, val, ind) => {
             // don't add disappeared beacon to array
             if (ind === index) return result;
             // add all other beacons to array
@@ -156,8 +156,8 @@ export default class IBeaconExample extends Component<{}, State> {
             this._isIdenticalBeacon(updatedBeacon, beacon)
           );
           this.setState({
-            beacons: beacons.reduce(
-              (result: Array<IBeaconAndroid>, val, ind) => {
+            beacons: beacons.reduce<Array<IBeaconAndroid>>(
+              (result, val, ind) => {
                 // replace current beacon values for updatedBeacon, keep current value for others
                 ind === index ? result.push(updatedBeacon) : result.push(val);
                 return result;
@@ -264,7 +264,10 @@ export default class IBeaconExample extends Component<{}, State> {
    * Helper function used to identify equal beacons
    */
   _isIdenticalBeacon = (b1: IBeaconAndroid, b2: IBeaconAndroid) =>
-    b1.major === b2.major && b1.minor === b2.minor;
+    b1.uniqueId === b2.uniqueId &&
+    b1.uuid === b2.uuid &&
+    b1.major === b2.major &&
+    b1.minor === b2.minor;
 
   _renderBeacons = () => {
     const colors = ['#F7C376', '#EFF7B7', '#F4CDED', '#A2C8F9', '#AAF7AF'];
