@@ -25,11 +25,7 @@ export type IBeaconBase = {
 export type Proximity = 'IMMEDIATE' | 'NEAR' | 'FAR' | 'UNKNOWN';
 
 /**
- * If you create this type by intersecting the types IBeaconBase and
- * BeaconAndroid, flow cannot infer the type correctly anymore if used
- * as a disjount union.
- *
- * Docs about disjount unions: https://flow.org/en/docs/types/unions/#toc-disjoint-unions
+ * Beacon response while scanning on Android
  */
 export type IBeaconAndroid = {
   // IBeaconBase
@@ -52,7 +48,7 @@ export type IBeaconAndroid = {
 };
 
 /**
- * Beacon response while ranging or monitoring
+ * Beacon response while ranging or monitoring on iOS
  */
 export type IBeaconIos = {
   // IBeaconBase
