@@ -69,11 +69,15 @@ export type IBeaconIosDiscovery = {
   // 'Kontakt' by default for Kontakt.io beacons
   uniqueId: string;
   firmwareVersion: string;
+  /**
+   * percentage as integer (same as 'batteryPower' for Android)
+   */
   batteryLevel: number;
-  // percentage as int (same as 'batteryPower' for Android)
   batteryPowered: boolean;
+  /**
+   * same as 'txPower' for Android
+   */
   transmissionPower: number;
-  // same as 'txPower' for Android
   hasConfigurationProfile: boolean;
   shuffled: boolean;
   locked: boolean;
@@ -174,10 +178,13 @@ export type KontaktAndroidType = KontaktBaseType & {
   monitoringEnabled: typeof monitoringEnabled;
   monitoringSyncInterval: typeof monitoringSyncInterval;
 
+  /**
+   * @deprecated Please use 'connect' instead
+   */
   init?: (
     apiKey: string | undefined,
     beaconTypes: Array<BeaconType> | undefined
-  ) => Promise<void>; // @deprecated
+  ) => Promise<void>;
 };
 
 export type KontaktiOSType = KontaktBaseType & {
