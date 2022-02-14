@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, NativeEventEmitter } from 'react-native';
-
+import { View, NativeEventEmitter, Alert } from 'react-native';
 import Kontakt, { KontaktModule } from 'react-native-kontaktio';
+
 const { init, startDiscovery } = Kontakt;
 
 const kontaktEmitter = new NativeEventEmitter(KontaktModule);
@@ -11,17 +11,14 @@ const kontaktEmitter = new NativeEventEmitter(KontaktModule);
  */
 export default class MinimalExample extends Component {
   componentDidMount() {
-    init()
+    init('')
       .then(() => startDiscovery())
-      .catch(error => alert('error', error));
+      .catch((error: Error) => Alert.alert('error', error.message));
 
     // Add beacon listener
-    kontaktEmitter.addListener(
-      'didDiscoverDevices',
-      ({ beacons }) => {
-        console.log('didDiscoverDevices', beacons);
-      }
-    );
+    kontaktEmitter.addListener('didDiscoverDevices', ({ beacons }) => {
+      console.log('didDiscoverDevices', beacons);
+    });
   }
 
   render() {
