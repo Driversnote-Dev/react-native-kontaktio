@@ -1,0 +1,75 @@
+# OSX
+.DS_Store
+
+# Xcode
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+Pods/
+ios/Pods/*
+
+# Android/IJ
+*.iml
+.idea
+.gradle
+local.properties
+android/.project
+android/.settings/
+android/app/.project
+android/app/.settings/
+android/app/.classpath
+android/app/src/main/assets/index.android.bundle
+android/app/src/main/res/drawable-*
+
+# VSCode
+.vscode/*
+
+# node.js
+node_modules/
+npm-debug.log
+
+# TypeScript compile output
+lib/
+
+# BUCK
+buck-out/
+\.buckd/
+android/app/libs
+*.keystore
+!debug.keystore
+
+# CRNA
+.expo/
+android-release.bundle
+android-release.bundle.map
+android-release.bundle.meta
+ios-release.bundle
+ios-release.bundle.map
+ios-release.bundle.meta
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+
+# CocoaPods
+ios/Pods/
+
+# Yarn
+yarn-error.log
