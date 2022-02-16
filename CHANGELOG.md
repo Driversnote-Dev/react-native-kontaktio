@@ -6,6 +6,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+## [v3.0.0] - 2022-02-16
+
 ### Changed
 
 - Migrated library to TypeScript
@@ -159,7 +161,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 - Several bug fixes
 
-[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.10.0...master
+[unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v3.0.0...master
+[v3.0.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.10.0...v3.0.0
 [v2.10.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.9.0...v2.10.0
 [v2.9.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.8.0...v2.9.0
 [v2.8.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.7.2...v2.8.0
