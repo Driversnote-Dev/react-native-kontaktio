@@ -47,6 +47,18 @@ export type IBeaconAndroid = {
   isShuffled: string;
 };
 
+export type SecureProfileAndroid = {
+  name?: string;
+  uniqueId: string;
+  firmwareRevision: string;
+  macAddress: string;
+  rssi: number;
+  batteryLevel: number;
+  isShuffled: boolean;
+  txPower: number;
+  telemetry?: any;
+};
+
 /**
  * Beacon response while ranging or monitoring on iOS
  */
@@ -98,7 +110,7 @@ export type IBeaconWithUniqueId =
 
 export type IBeacon = IBeaconAndroid | IBeaconIos | IBeaconIosDiscovery;
 
-export type BeaconType = typeof IBEACON | typeof EDDYSTONE;
+export type BeaconType = typeof IBEACON | typeof EDDYSTONE | typeof SECURE_PROFILE;
 
 export type RegionBase = {
   uuid: string;
