@@ -6,6 +6,11 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+## [v3.1.0] - 2022-02-17
+
+- Improve TypeScript types for secure profiles.
+- _Android_: Update Kontakt.io SDK to version `5.0.25-pre-31`
+
 ## [v3.0.1] - 2022-02-16
 
 ### Changed
@@ -161,7 +166,10 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 - Several bug fixes
 
+## Full changelogs
+
 [unreleased]: https://github.com/Artirigo/react-native-kontaktio/compare/v3.0.1...master
+[v3.1.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v3.0.1...v3.1.0
 [v3.0.1]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.10.0...v3.0.1
 [v2.10.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.9.0...v2.10.0
 [v2.9.0]: https://github.com/Artirigo/react-native-kontaktio/compare/v2.8.0...v2.9.0
