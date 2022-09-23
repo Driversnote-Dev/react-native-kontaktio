@@ -4,11 +4,10 @@ Cross-platform React Native module for detecting beacons with **Android** and **
 
 Kontakt.io SDK Versions of newest release:
 
-| OS          | SDK Version                                                                                              |
-| :---------- | :------------------------------------------------------------------------------------------------------- |
-| **Android** | [5.0.25-pre-31](https://github.com/kontaktio/kontakt-android-sdk)                                        |
-| **iOS**     | [3.0.4](https://github.com/kontaktio/kontakt-ios-sdk/tree/v3.0.4)                                        |
-
+| OS          | SDK Version                                                                                          |
+| :---------- | :--------------------------------------------------------------------------------------------------- |
+| **Android** | [7.0.6](https://kontakt-api-docs.stoplight.io/docs/dev-ctr-sdks/423dcaf4067cc-android-sdk-changelog) |
+| **iOS**     | [3.0.4](https://github.com/kontaktio/kontakt-ios-sdk/tree/v3.0.4)                                    |
 
 ## Advantages
 
@@ -41,7 +40,7 @@ Make sure to follow the setup instructions carefully for `iOS` and `Android` and
 check the React Native logs to see console statements containing incoming beacon signals.
 
 ```js
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   Alert,
   DeviceEventEmitter,
@@ -53,8 +52,8 @@ import {
   Text,
 } from 'react-native';
 
-import Kontakt, {KontaktModule} from 'react-native-kontaktio';
-const {connect, init, startDiscovery, startScanning} = Kontakt;
+import Kontakt, { KontaktModule } from 'react-native-kontaktio';
+const { connect, init, startDiscovery, startScanning } = Kontakt;
 
 const kontaktEmitter = new NativeEventEmitter(KontaktModule);
 
@@ -75,7 +74,7 @@ const requestLocationPermission = async () => {
         buttonNeutral: 'Ask Me Later',
         buttonNegative: 'Cancel',
         buttonPositive: 'OK',
-      },
+      }
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       return true;
@@ -100,8 +99,8 @@ const beaconSetup = async () => {
       Alert.alert(
         'Permission error',
         'Location permission not granted. Cannot scan for beacons',
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-        {cancelable: false},
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+        { cancelable: false }
       );
     }
   } else {
@@ -112,11 +111,14 @@ const beaconSetup = async () => {
 
   // Add beacon listener
   if (isAndroid) {
-    DeviceEventEmitter.addListener('beaconsDidUpdate', ({beacons, region}) => {
-      console.log('beaconsDidUpdate', beacons, region);
-    });
+    DeviceEventEmitter.addListener(
+      'beaconsDidUpdate',
+      ({ beacons, region }) => {
+        console.log('beaconsDidUpdate', beacons, region);
+      }
+    );
   } else {
-    kontaktEmitter.addListener('didDiscoverDevices', ({beacons}) => {
+    kontaktEmitter.addListener('didDiscoverDevices', ({ beacons }) => {
       console.log('didDiscoverDevices', beacons);
     });
   }
@@ -164,14 +166,22 @@ export default App;
 
     - Android:
 
-      	```bash
+          ```bash
+
       $ react-native run-android
+
+      ```
+
       ```
 
     - iOS
 
-      	```bash
+          ```bash
+
       $ react-native run-ios
+
+      ```
+
       ```
 
 ## Further notes
@@ -185,4 +195,3 @@ export default App;
 
   - Add _multiple_ Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
   - Add Eddystone Frames Selection configuration option
-
