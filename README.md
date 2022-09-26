@@ -166,22 +166,14 @@ export default App;
 
     - Android:
 
-          ```bash
-
+      ```bash
       $ react-native run-android
-
-      ```
-
       ```
 
     - iOS
 
-          ```bash
-
+      ```bash
       $ react-native run-ios
-
-      ```
-
       ```
 
 ## Further notes
