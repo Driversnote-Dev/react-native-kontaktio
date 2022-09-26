@@ -46,7 +46,7 @@ class BeaconProximityManager {
         proximityManager
                 .spaces()
                 .forceResolveRegions(Collections.singletonList(UUID.fromString(proximityUuid)))
-                .forceResolveNamespaces(Collections.singletonList(proximityUuid.refplace("-", "")));
+                .forceResolveNamespaces(Collections.singletonList(proximityUuid.replace("-", "")));
 
         // Instantiate helpers
         beaconListeners = new BeaconListeners(reactAppContext);
