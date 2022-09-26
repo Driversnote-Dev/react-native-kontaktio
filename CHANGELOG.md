@@ -6,6 +6,10 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## [unreleased]
 
+- _Android_: Update Kontakt.io SDK to version `7.0.6`
+- _Android_: Update target SDK to 31 and add `BLUETOOTH_SCAN` and `BLUETOOTH_CONNECT` to permissions used.
+- _Android_: Added ability for KontaktIO anchor 2 beacons to include `uniqueId` in ranging data.
+
 ## [v3.1.0] - 2022-02-17
 
 - Improve TypeScript types for secure profiles.
