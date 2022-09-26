@@ -1,8 +1,5 @@
 package com.artirigo.kontaktio;
 
-import java.util.Collections;
-import java.util.UUID;
-
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -40,13 +37,6 @@ class BeaconProximityManager {
 
         // create manager
         proximityManager = ProximityManagerFactory.create(reactAppContext);
-
-        // this forces the new Anchor 2 beacons to include `uniqueId` with beacon ranging data
-        String proximityUuid = String.valueOf(KontaktSDK.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID);
-        proximityManager
-                .spaces()
-                .forceResolveRegions(Collections.singletonList(UUID.fromString(proximityUuid)))
-                .forceResolveNamespaces(Collections.singletonList(proximityUuid.replace("-", "")));
 
         // Instantiate helpers
         beaconListeners = new BeaconListeners(reactAppContext);
