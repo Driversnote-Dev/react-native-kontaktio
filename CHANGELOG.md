@@ -4,8 +4,6 @@ All notable changes to this project will be documented in this file. If a contri
 
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
-## [unreleased]
-
 ## [v4.0.0] - 2022-09-26
 
 - _Android_: Update Kontakt.io SDK to version `7.0.6`
