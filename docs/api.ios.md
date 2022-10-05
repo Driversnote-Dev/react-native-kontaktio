@@ -39,9 +39,9 @@ The following three objects are the main players of this module and will be refe
     	name: string  // 'Kontakt' by default for Kontakt.io beacons
     	uniqueId: string
     	firmwareVersion: string
-    	batteryLevel: number (percentage as int) // batteryPower for Android
+    	batteryLevel: number (percentage as int) // batteryPower equivalent for Android
     	batteryPowered: boolean
-    	transmissionPower: number  // txPower for Android
+    	transmissionPower: number  // txPower equivalent for Android
     	hasConfigurationProfile: boolean
     	shuffled: boolean
     	locked: boolean

@@ -42,7 +42,7 @@ A minimal example (created with [React Native v0.69.5](https://github.com/facebo
 4. Check the React Native logs to see console statements containing incoming beacon signals.
 
 ```ts
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   Alert,
   DeviceEventEmitter,
@@ -246,7 +246,7 @@ export default App;
 1. Fork and clone this repository
 2. Run `yarn` to install the dependencies
 3. Make code changes
-4. Run `yarn tsc` to compile the TypeScript files in the the `lib` folder.
+4. Delete `lib` folder if it exists and run `yarn tsc` to compile the TypeScript files in the the `lib` folder.
 5. In the `package.json` file of an example app point to the this directory, e.g.
 
     ```json

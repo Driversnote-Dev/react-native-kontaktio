@@ -1,8 +1,8 @@
 # Android Setup
 
-Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk/quickstart/#setup) have to be met.
+Some [Kontakt.io beacons prerequisites](https://kontakt-api-docs.stoplight.io/docs/dev-ctr-sdks/ZG9jOjMwMzg3NjQ5-quickstart-setup#prerequisites) have to be met.
 
-### Auto-linking (React Native v0.60+)
+## Auto-linking (React Native v0.60+)
 
 1. Add package
 
@@ -40,8 +40,10 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
 
 	(`...` denote omitted lines)
 
-3. `Android Marshmallow` (6.0) or higher: Don't forget to ask the user to grant the `android.permission.ACCESS_COARSE_LOCATION` permission - see the minimal example in the `README`).
+3. `Android Marshmallow` (6.0) or higher: Don't forget to ask the user to grant the `android.permission.ACCESS_FINE_LOCATION` permission in your application code - see the minimal example in the `README`).
 
+
+## Setup for old versions of React Native
 
 ### Mostly automatic setup (React Native older than v0.60)
 
