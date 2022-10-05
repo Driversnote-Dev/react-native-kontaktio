@@ -163,6 +163,13 @@ type KontaktBaseType = {
 };
 
 export type KontaktAndroidType = KontaktBaseType & {
+  /**
+   * Connect to the Kontaktio beacon service. Has to be called to initialize beacon scanning etc.
+   *
+   * To retrieve `uniqueId` and other meta info (e.g. `batteryPower`, `firmwareVersion` etc.),
+   * add `SECURE_PROFILE` to the `beaconTypes` argument.
+   * Listen for "profile*" events (i.e. `profileDidAppear` etc.).
+   */
   connect: (
     /**
      * Kontakt.io API key
