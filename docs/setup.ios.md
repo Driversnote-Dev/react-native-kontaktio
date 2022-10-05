@@ -10,14 +10,14 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
 	$ yarn add react-native-kontaktio
 	```
 
-2. Update pods
+2. Install the pod
 
     ```bash
     $ cd ios
     $ pod install
     ```
 
-3. Add permissions as described [below](#add-permissions).
+3. Add permissions as described [in the 'Add permissions' section](#add-permissions).
 
 
 ## Mostly automatic setup (React Native older than v0.60)
@@ -36,7 +36,7 @@ When installing both, Android and iOS, steps _1_ and _2_ only have to be run onc
     $ react-native link react-native-kontaktio
     ```
 
-3. Add permissions as described [below](#add-permissions).
+3. Add permissions as described [in the 'Add permissions' section](#add-permissions).
 
 ## Manual setup
 
@@ -91,8 +91,8 @@ Go to the **Info** tab and add in the top section **`Custom iOS Target Propertie
 
 - **Bluetooth**
 
-    | Key                                 | Value                                    | Description                                                                           |
-    | ----------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------- |
+    | Key                               | Value                                    | Description                                                                                                                                                                                                                          |
+    | --------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
     | NSBluetoothAlwaysUsageDescription | Your text of the permission for the user | A message that tells the user why the app needs access to Bluetooth. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nsbluetoothalwaysusagedescription) |
 
     Just copy-paste the key from here and the text will automatically change to the more elaborate version when you press enter (for example):
@@ -104,12 +104,12 @@ Go to the **Info** tab and add in the top section **`Custom iOS Target Propertie
 
     Choose either the first or the second permission and if you target iOS versions earlier than iOS 11, add the third permission.
 
-    | Key                                 | Value                                    | Description                                                                           |
-    | ----------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------- |
-    | NSLocationWhenInUseUsageDescription | **iOS 11.0+** Grant permission to access location when the app is in use | A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationwheninuseusagedescription) |
-    | NSLocationAlwaysAndWhenInUseUsageDescription | **iOS 11.0+** Grant permission to access location when the app is in use and when it is in the background | A message that tells the user why the app is requesting access to the user’s location information at all times. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysandwheninuseusagedescription) |
-    | --- | --- | --- |
-    | NSLocationAlwaysUsageDescription    | **DEPRECATED** in iOS versions 11.0+ - Use this key if your iOS app accesses location information in the background, and you deploy to a target earlier than iOS 11. | A message that tells the user why the app is requesting access to the user’s location information at all times (i.e. even when the app is in the background). [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysusagedescription) |
+    | Key                                          | Value                                                                                                                                                                | Description                                                                                                                                                                                                                                                                                                                  |
+    | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | NSLocationWhenInUseUsageDescription          | **iOS 11.0+** Grant permission to access location when the app is in use                                                                                             | A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationwheninuseusagedescription)              |
+    | NSLocationAlwaysAndWhenInUseUsageDescription | **iOS 11.0+** Grant permission to access location when the app is in use and when it is in the background                                                            | A message that tells the user why the app is requesting access to the user’s location information at all times. [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysandwheninuseusagedescription)                                   |
+    | ---                                          | ---                                                                                                                                                                  | ---                                                                                                                                                                                                                                                                                                                          |
+    | NSLocationAlwaysUsageDescription             | **DEPRECATED** in iOS versions 11.0+ - Use this key if your iOS app accesses location information in the background, and you deploy to a target earlier than iOS 11. | A message that tells the user why the app is requesting access to the user’s location information at all times (i.e. even when the app is in the background). [See documentation for more information](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationalwaysusagedescription) |
 
 ## Known Issues
 

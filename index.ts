@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from "react-native";
 
 import {
   IBEACON,
@@ -10,8 +10,8 @@ import {
   forceScanConfiguration,
   monitoringEnabled,
   monitoringSyncInterval,
-} from './configurations';
-import type { KontaktType, ConfigType, BeaconType, RegionType } from './types';
+} from "./configurations";
+import type { KontaktType, ConfigType, BeaconType, RegionType } from "./types";
 
 // If the native module (i.e. Java module) is prefixed with "RCT",
 // the NativeModules name does not include "RCT".
@@ -21,6 +21,9 @@ export const KontaktModule = NativeModules.KontaktBeacons;
  * Methods shared in android and iOS
  */
 export const configure = (
+  /**
+   * beacon scanning configuration
+   */
   params: ConfigType | undefined | null = null
 ): Promise<void> => KontaktModule.configure(params);
 
@@ -29,7 +32,7 @@ let Kontakt = {};
 /**
  * Android
  */
-if (Platform.OS === 'android') {
+if (Platform.OS === "android") {
   const connect = (
     apiKey: string | undefined | null = null,
     beaconTypes: Array<BeaconType> | undefined | null = null
@@ -105,12 +108,26 @@ if (Platform.OS === 'android') {
 /**
  * iOS
  */
-if (Platform.OS === 'ios') {
-  const init = (apiKey: string | undefined | null = null): Promise<void> =>
-    KontaktModule.init(apiKey);
+if (Platform.OS === "ios") {
+  const init = (
+    /**
+     * Optional Kontakt.io API key
+     *
+     * May not be provided for scanning and ranging.
+     * Necessary for reading out beacon config.
+     */
+    apiKey: string | undefined | null = null
+  ): Promise<void> => KontaktModule.init(apiKey);
 
   const startDiscovery = (
-    config: { interval: number } | undefined
+    config:
+      | {
+          /**
+           * scanning interval in milliseconds
+           */
+          interval: number;
+        }
+      | undefined
   ): Promise<void> => KontaktModule.startDiscovery(config);
   const stopDiscovery: () => Promise<void> = KontaktModule.stopDiscovery;
   const restartDiscovery: () => Promise<void> = KontaktModule.restartDiscovery;
@@ -181,6 +198,6 @@ if (Platform.OS === 'ios') {
   };
 }
 
-export * from './types';
+export * from "./types";
 
 export default Kontakt as KontaktType;

@@ -32,28 +32,38 @@ Kontakt.io SDK Versions of newest release:
 - [Android extensive Example](/Example/src/Example.android.js)
 - [iOS extensive Example](/Example/src/Example.ios.js)
 
-### Minimal Example
+### Minimal TypeScript Example
 
-A minimal example (created with [React Native v0.61](https://github.com/facebook/react-native/releases/tag/v0.61.0))
-with the default configuration and no specifically set regions. Thus, the default region `everywhere` (i.e. all beacons) is automatically used.
-Make sure to follow the setup instructions carefully for `iOS` and `Android` and
-check the React Native logs to see console statements containing incoming beacon signals.
+A minimal example (created with [React Native v0.69.5](https://github.com/facebook/react-native/releases/tag/v0.69.5) and TypeScript) with the default configuration and no specifically set regions. Thus, the default region `everywhere` (i.e. all beacons) is automatically used.
 
-```js
-import React, { useEffect } from 'react';
+1. Follow the setup instructions carefully for `iOS` and `Android` to install `react-native-kontaktio` for both platforms.
+2. Start a new React Native TypeScript project (`npx react-native init BeaconTest --template react-native-template-typescript`) and replace `App.tsx` with the example code below.
+3. Run the app on a real device (`iOS` or `Android` - not a simulator)
+4. Check the React Native logs to see console statements containing incoming beacon signals.
+
+```ts
+import React, {useEffect} from 'react';
 import {
   Alert,
   DeviceEventEmitter,
   NativeEventEmitter,
-  Platform,
   PermissionsAndroid,
+  Platform,
   SafeAreaView,
   StatusBar,
+  StyleSheet,
   Text,
+  View,
 } from 'react-native';
 
 import Kontakt, { KontaktModule } from 'react-native-kontaktio';
-const { connect, init, startDiscovery, startScanning } = Kontakt;
+const {
+  connect,
+  init,
+  startDiscovery,
+  startRangingBeaconsInRegion,
+  startScanning,
+} = Kontakt;
 
 const kontaktEmitter = new NativeEventEmitter(KontaktModule);
 
@@ -66,7 +76,7 @@ const isAndroid = Platform.OS === 'android';
 const requestLocationPermission = async () => {
   try {
     const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
         title: 'Location Permission',
         message:
@@ -106,47 +116,88 @@ const beaconSetup = async () => {
   } else {
     // iOS
     await init();
+
+    /**
+     * Will discover Kontakt.io beacons only
+     */
     await startDiscovery();
+
+    /**
+     * Works with any beacon(also virtual beacon, e.g. https://github.com/timd/MactsAsBeacon)
+     * Requires user to allow GPS Location (at least while in use)
+     *
+     * change to match your beacon values
+     */
+    await startRangingBeaconsInRegion({
+      identifier: '',
+      uuid: 'A4826DE4-1EA9-4E47-8321-CB7A61E4667E',
+      major: 1,
+      minor: 34,
+    });
   }
 
   // Add beacon listener
   if (isAndroid) {
+    /* works with any beacon */
     DeviceEventEmitter.addListener(
       'beaconsDidUpdate',
       ({ beacons, region }) => {
-        console.log('beaconsDidUpdate', beacons, region);
-      }
+        console.log('beaconsDidUpdate', { beacons, region });
+      },
     );
   } else {
+    /* works with Kontakt.io beacons only */
     kontaktEmitter.addListener('didDiscoverDevices', ({ beacons }) => {
-      console.log('didDiscoverDevices', beacons);
+      console.log('didDiscoverDevices', { beacons });
+    });
+
+    /* works with any beacon */
+    kontaktEmitter.addListener('didRangeBeacons', ({ beacons, region }) => {
+      console.log('didRangeBeacons', { beacons, region });
     });
   }
 };
 
-const App: () => React$Node = () => {
+const App: React.FC = () => {
   useEffect(() => {
-    beaconSetup();
+    Promise.resolve().then(beaconSetup);
+
+    return () => {
+      // remove event listeners
+      if (isAndroid) {
+        kontaktEmitter.removeAllListeners('beaconsDidUpdate');
+      } else {
+        kontaktEmitter.removeAllListeners('didDiscoverDevices');
+        kontaktEmitter.removeAllListeners('didRangeBeacons');
+      }
+    };
   }, []);
 
   return (
-    <>
+    <SafeAreaView>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <Text>react-native-kontaktio Example</Text>
-      </SafeAreaView>
-    </>
+      <View style={styles.wrapper}>
+        <Text style={styles.title}>react-native-kontaktio Example</Text>
+        <Text>Check console.log statements</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
+const styles = StyleSheet.create({
+  wrapper: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    paddingVertical: 10,
+    fontSize: 30,
+  },
+});
+
 export default App;
 ```
-
-## Run Example to test the module
-
-1. Go to the [Getting Started section](https://reactnative.dev/docs/getting-started.html) of the React Native docs and select the `React Native CLI Quickstart` tab (bluetooth is not yet supported by Expo).
-2. Run the app to verify everything works (`react-native run-android` or `react-native run-ios`)
-3. Copy the Minimal Example code from above into the `App.js` file which got created.
 
 ---
 
@@ -179,7 +230,7 @@ export default App;
 ## Further notes
 
 - Beacons support is part of Android versions 4.3 and up. \* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
-- A physical device must be used for testing, at best some Kontakt.io beacons.
+- A physical device must be used for testing and some beacons (Kontakt.io beacons to be able to use all features).
 
 ## ToDo:
 
@@ -187,3 +238,31 @@ export default App;
 
   - Add _multiple_ Eddystone namespaces, i.e. add function `setEddystoneNamespaces`
   - Add Eddystone Frames Selection configuration option
+
+## Contribute
+
+### Test library changes locally
+
+1. Fork and clone this repository
+2. Run `yarn` to install the dependencies
+3. Make code changes
+4. Run `yarn tsc` to compile the TypeScript files in the the `lib` folder.
+5. In the `package.json` file of an example app point to the this directory, e.g.
+
+    ```json
+    "dependencies": {
+      ...
+      "react-native-kontaktio": "../react-native-kontaktio"
+    },
+    ```
+6. Build and run on a real device
+
+### Upgrade Kontakt.io API versions
+
+#### Android
+
+In `build.gradle` file change the version in the following line
+
+```
+implementation "io.kontakt.mvn:sdk:7.0.6"
+```

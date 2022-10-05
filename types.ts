@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules } from "react-native";
 import {
   IBEACON,
   EDDYSTONE,
@@ -9,7 +9,7 @@ import {
   forceScanConfiguration,
   monitoringEnabled,
   monitoringSyncInterval,
-} from './configurations';
+} from "./configurations";
 
 export type IBeaconMinimum = {
   major: number;
@@ -22,7 +22,7 @@ export type IBeaconBase = {
   uniqueId?: string;
 };
 
-export type Proximity = 'IMMEDIATE' | 'NEAR' | 'FAR' | 'UNKNOWN';
+export type Proximity = "IMMEDIATE" | "NEAR" | "FAR" | "UNKNOWN";
 
 /**
  * Beacon response while scanning on Android
@@ -110,7 +110,10 @@ export type IBeaconWithUniqueId =
 
 export type IBeacon = IBeaconAndroid | IBeaconIos | IBeaconIosDiscovery;
 
-export type BeaconType = typeof IBEACON | typeof EDDYSTONE | typeof SECURE_PROFILE;
+export type BeaconType =
+  | typeof IBEACON
+  | typeof EDDYSTONE
+  | typeof SECURE_PROFILE;
 
 export type RegionBase = {
   uuid: string;
@@ -126,6 +129,9 @@ export type RegionIos = RegionBase;
 
 export type RegionType = RegionAndroid | RegionIos;
 
+/**
+ * beacon scanning configuration
+ */
 export type ConfigType = {
   scanMode?:
     | typeof scanMode.LOW_POWER
@@ -158,7 +164,13 @@ type KontaktBaseType = {
 
 export type KontaktAndroidType = KontaktBaseType & {
   connect: (
-    key?: string | undefined,
+    /**
+     * Kontakt.io API key
+     */
+    key?: string,
+    /**
+     * which beacon types to scan for
+     */
     beaconTypes?: Array<BeaconType> | undefined
   ) => Promise<void>;
   disconnect: () => Promise<void>;
