@@ -7,7 +7,7 @@ Kontakt.io SDK Versions of newest release:
 | OS          | SDK Version                                                                                          |
 | :---------- | :--------------------------------------------------------------------------------------------------- |
 | **Android** | [7.0.6](https://kontakt-api-docs.stoplight.io/docs/dev-ctr-sdks/423dcaf4067cc-android-sdk-changelog) |
-| **iOS**     | [3.0.4](https://github.com/kontaktio/kontakt-ios-sdk/tree/v3.0.4)                                    |
+| **iOS**     | [3.0.25](https://github.com/kontaktio/kontakt-ios-sdk/releases/tag/v3.0.25)                          |
 
 ## Advantages
 
@@ -257,7 +257,7 @@ export default App;
     ```
 6. Build and run on a real device
 
-### Upgrade Kontakt.io API versions
+### Upgrade to a new version of the Kontakt.io SDK
 
 #### Android
 
@@ -266,3 +266,8 @@ In `build.gradle` file change the version in the following line
 ```
 implementation "io.kontakt.mvn:sdk:7.0.6"
 ```
+
+#### iOS
+
+1. Go to the [Kontakt.io SDK releases page](https://github.com/kontaktio/kontakt-ios-sdk/releases) and download the newest version of  **KontaktSDK.framework.zip**.
+2. Replace the `ios/KontaktSDK.framework` folder of this library with the `Cocoapods/KontaktSDK/iOS/KontaktSDK.xcframework/ios-arm64_armv7/KontaktSDK.framework` folder which you find in the unzipped folder structure.
