@@ -1,5 +1,7 @@
 package com.artirigo.kontaktio;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -65,6 +67,7 @@ public class KontaktModule extends ReactContextBaseJavaModule {
     }
 
     @Override
+    @NonNull
     public String getName() {
         return "KontaktBeacons";
     }
@@ -257,5 +260,15 @@ public class KontaktModule extends ReactContextBaseJavaModule {
             promise.reject(
                     "Did you forget to call connect() or did the connect() call fail? The regionManager object is not defined.");
         }
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Keep: required for React Native built-in EventEmitter calls.
+    }
+    
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Keep: required for React Native built-in EventEmitter calls.
     }
 }

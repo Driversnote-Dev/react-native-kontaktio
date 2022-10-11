@@ -11,6 +11,13 @@ import {
   monitoringSyncInterval,
 } from './configurations';
 
+export type AuthorizationStatus =
+  | 'denied'
+  | 'authorizedWhenInUse'
+  | 'authorizedAlways'
+  | 'notDetermined'
+  | 'restricted';
+
 export type IBeaconMinimum = {
   major: number;
   minor: number;
@@ -104,9 +111,7 @@ export type IBeaconIosDiscoveryWithMajorMinor = IBeaconIosDiscovery & {
   minor?: number;
 };
 
-export type IBeaconWithUniqueId =
-  | IBeaconAndroid
-  | IBeaconIosDiscoveryWithMajorMinor;
+export type IBeaconWithUniqueId = IBeaconAndroid | IBeaconIosDiscoveryWithMajorMinor;
 
 export type IBeacon = IBeaconAndroid | IBeaconIos | IBeaconIosDiscovery;
 
@@ -126,11 +131,11 @@ export type RegionIos = RegionBase;
 
 export type RegionType = RegionAndroid | RegionIos;
 
+/**
+ * beacon scanning configuration
+ */
 export type ConfigType = {
-  scanMode?:
-    | typeof scanMode.LOW_POWER
-    | typeof scanMode.BALANCED
-    | typeof scanMode.LOW_LATENCY;
+  scanMode?: typeof scanMode.LOW_POWER | typeof scanMode.BALANCED | typeof scanMode.LOW_LATENCY;
   scanPeriod?:
     | typeof scanPeriod.MONITORING
     | typeof scanPeriod.RANGING
@@ -146,9 +151,7 @@ export type ConfigType = {
     | ReturnType<typeof forceScanConfiguration.create>;
   dropEmptyRanges?: boolean;
   invalidationAge?: number;
-  monitoringEnabled?:
-    | typeof monitoringEnabled.TRUE
-    | typeof monitoringEnabled.FALSE;
+  monitoringEnabled?: typeof monitoringEnabled.TRUE | typeof monitoringEnabled.FALSE;
   monitoringSyncInterval?: typeof monitoringSyncInterval.DEFAULT;
 };
 
@@ -157,8 +160,21 @@ type KontaktBaseType = {
 };
 
 export type KontaktAndroidType = KontaktBaseType & {
+  /**
+   * Connect to the Kontaktio beacon service. Has to be called to initialize beacon scanning etc.
+   *
+   * To retrieve `uniqueId` and other meta info (e.g. `batteryPower`, `firmwareVersion` etc.),
+   * add `SECURE_PROFILE` to the `beaconTypes` argument.
+   * Listen for "profile*" events (i.e. `profileDidAppear` etc.).
+   */
   connect: (
-    key?: string | undefined,
+    /**
+     * Kontakt.io API key
+     */
+    key?: string,
+    /**
+     * which beacon types to scan for
+     */
     beaconTypes?: Array<BeaconType> | undefined
   ) => Promise<void>;
   disconnect: () => Promise<void>;
@@ -193,10 +209,7 @@ export type KontaktAndroidType = KontaktBaseType & {
   /**
    * @deprecated Please use 'connect' instead
    */
-  init?: (
-    apiKey: string | undefined,
-    beaconTypes: Array<BeaconType> | undefined
-  ) => Promise<void>;
+  init?: (apiKey: string | undefined, beaconTypes: Array<BeaconType> | undefined) => Promise<void>;
 };
 
 export type KontaktiOSType = KontaktBaseType & {

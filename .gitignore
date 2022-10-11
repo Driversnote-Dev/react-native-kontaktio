@@ -21,9 +21,11 @@ DerivedData
 project.xcworkspace
 Pods/
 ios/Pods/*
+ios/.xcode.env.local
 
-# Android/IJ
-*.iml
+# Android/IntelliJ
+#
+build/
 .idea
 .gradle
 local.properties
@@ -34,13 +36,17 @@ android/app/.settings/
 android/app/.classpath
 android/app/src/main/assets/index.android.bundle
 android/app/src/main/res/drawable-*
+*.iml
+*.hprof
 
 # VSCode
 .vscode/*
 
 # node.js
+#
 node_modules/
 npm-debug.log
+yarn-error.log
 
 # TypeScript compile output
 lib/
@@ -70,6 +76,4 @@ ios-release.bundle.meta
 
 # CocoaPods
 ios/Pods/
-
-# Yarn
-yarn-error.log
+/vendor/bundle/

@@ -1,8 +1,8 @@
 # Android Setup
 
-Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk/quickstart/#setup) have to be met.
+Some [Kontakt.io beacons prerequisites](https://kontakt-api-docs.stoplight.io/docs/dev-ctr-sdks/ZG9jOjMwMzg3NjQ5-quickstart-setup#prerequisites) have to be met.
 
-### Auto-linking (React Native v0.60+)
+## Auto-linking (React Native v0.60+)
 
 1. Add package
 
@@ -10,23 +10,40 @@ Some [Kontakt.io beacons prerequisites](https://developer.kontakt.io/android-sdk
 	$ yarn add react-native-kontaktio
 	```
 
-2. In `android/app/src/main/AndroidManifest.xml` inside `<application />` register the Proximity service:
+2. In `android/app/src/main/AndroidManifest.xml` do two things:
+   
+	- Inside the `<manifest />` tag add the `android.permission.ACCESS_FINE_LOCATION` permission
+	- Inside the `<application />` tag register the Proximity `<service />`:
+
+	You should add the following two lines:
 
 	```diff
-	<application
-      android:name=".MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      ...
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-	+ <service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
-    </application>
+	<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.example2022">
+
+		<uses-permission android:name="android.permission.INTERNET" />
+	+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+		<application
+		android:name=".MainApplication"
+		...
+		android:theme="@style/AppTheme">
+		<activity
+			android:name=".MainActivity"
+			...
+			</intent-filter>
+		</activity>
+	+	<service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
+		</application>
+	</manifest>
 	```
 
 	(`...` denote omitted lines)
 
-3. `Android Marshmallow` (6.0) or higher: Don't forget to ask the user to grant the `android.permission.ACCESS_COARSE_LOCATION` permission - see the example in `README`).
+3. `Android Marshmallow` (6.0) or higher: Don't forget to ask the user to grant the `android.permission.ACCESS_FINE_LOCATION` permission in your application code - see the minimal example in the `README`).
 
+
+## Setup for old versions of React Native
 
 ### Mostly automatic setup (React Native older than v0.60)
 

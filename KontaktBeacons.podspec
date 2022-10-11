@@ -9,10 +9,10 @@ Pod::Spec.new do |s|
                    Cross-platform React Native module for detecting beacons with Android and iOS devices.
                    DESC
   s.license       = "MIT"
-  s.homepage      = "https://github.com/Artirigo/react-native-kontaktio"
+  s.homepage      = "https://github.com/Driversnote-Dev/react-native-kontaktio"
   s.author        = { "Andre Kovac" => "me@andrekovac.com" }
   s.platform     = :ios, "7.0"
-  s.source         = { :git => "https://github.com/Artirigo/react-native-kontaktio.git", :tag => "master" }
+  s.source         = { :git => "https://github.com/Driversnote-Dev/react-native-kontaktio.git", :tag => "master" }
 
   s.source_files  = "ios/**/*.{h,m}"
   s.exclude_files = "ios/KontaktSDK.framework/**/*"

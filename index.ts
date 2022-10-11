@@ -11,7 +11,7 @@ import {
   monitoringEnabled,
   monitoringSyncInterval,
 } from './configurations';
-import type { KontaktType, ConfigType, BeaconType, RegionType } from './types';
+import type { AuthorizationStatus, BeaconType, ConfigType, KontaktType, RegionType } from './types';
 
 // If the native module (i.e. Java module) is prefixed with "RCT",
 // the NativeModules name does not include "RCT".
@@ -21,6 +21,9 @@ export const KontaktModule = NativeModules.KontaktBeacons;
  * Methods shared in android and iOS
  */
 export const configure = (
+  /**
+   * beacon scanning configuration
+   */
   params: ConfigType | undefined | null = null
 ): Promise<void> => KontaktModule.configure(params);
 
@@ -54,19 +57,15 @@ if (Platform.OS === 'android') {
 
   const setBeaconRegion = (region: RegionType | null = null): void =>
     KontaktModule.setBeaconRegion(region);
-  const setBeaconRegions = (
-    regionsArray: Array<RegionType> | undefined | null = null
-  ): void => KontaktModule.setBeaconRegions(regionsArray);
-  const getBeaconRegions: () => Promise<Array<RegionType>> =
-    KontaktModule.getBeaconRegions;
+  const setBeaconRegions = (regionsArray: Array<RegionType> | undefined | null = null): void =>
+    KontaktModule.setBeaconRegions(regionsArray);
+  const getBeaconRegions: () => Promise<Array<RegionType>> = KontaktModule.getBeaconRegions;
 
-  const setEddystoneNamespace = (namespace: any) =>
-    KontaktModule.setEddystoneNamespace(namespace);
+  const setEddystoneNamespace = (namespace: any) => KontaktModule.setEddystoneNamespace(namespace);
 
   const DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID: string =
     KontaktModule.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID;
-  const DEFAULT_KONTAKT_NAMESPACE_ID: string =
-    KontaktModule.DEFAULT_KONTAKT_NAMESPACE_ID;
+  const DEFAULT_KONTAKT_NAMESPACE_ID: string = KontaktModule.DEFAULT_KONTAKT_NAMESPACE_ID;
   const ANY_MINOR: number = KontaktModule.ANY_MINOR;
   const ANY_MAJOR: number = KontaktModule.ANY_MAJOR;
 
@@ -106,22 +105,35 @@ if (Platform.OS === 'android') {
  * iOS
  */
 if (Platform.OS === 'ios') {
-  const init = (apiKey: string | undefined | null = null): Promise<void> =>
-    KontaktModule.init(apiKey);
+  const init = (
+    /**
+     * Optional Kontakt.io API key
+     *
+     * May not be provided for scanning and ranging.
+     * Necessary for reading out beacon config.
+     */
+    apiKey: string | undefined | null = null
+  ): Promise<void> => KontaktModule.init(apiKey);
 
   const startDiscovery = (
-    config: { interval: number } | undefined
+    config:
+      | {
+          /**
+           * scanning interval in milliseconds
+           */
+          interval: number;
+        }
+      | undefined
   ): Promise<void> => KontaktModule.startDiscovery(config);
   const stopDiscovery: () => Promise<void> = KontaktModule.stopDiscovery;
   const restartDiscovery: () => Promise<void> = KontaktModule.restartDiscovery;
   const isDiscovering: () => Promise<boolean> = KontaktModule.isDiscovering;
 
-  const getAuthorizationStatus: () => Promise<string> =
+  const getAuthorizationStatus: () => Promise<AuthorizationStatus> =
     KontaktModule.getAuthorizationStatus;
   const requestWhenInUseAuthorization: () => Promise<void> =
     KontaktModule.requestWhenInUseAuthorization;
-  const requestAlwaysAuthorization: () => Promise<void> =
-    KontaktModule.requestAlwaysAuthorization;
+  const requestAlwaysAuthorization: () => Promise<void> = KontaktModule.requestAlwaysAuthorization;
 
   const startRangingBeaconsInRegion = (region: RegionType): Promise<void> =>
     KontaktModule.startRangingBeaconsInRegion(region);
@@ -129,8 +141,7 @@ if (Platform.OS === 'ios') {
     KontaktModule.stopRangingBeaconsInRegion(region);
   const stopRangingBeaconsInAllRegions = (): Promise<void> =>
     KontaktModule.stopRangingBeaconsInAllRegions;
-  const getRangedRegions: () => Promise<Array<RegionType>> =
-    KontaktModule.getRangedRegions;
+  const getRangedRegions: () => Promise<Array<RegionType>> = KontaktModule.getRangedRegions;
 
   const startMonitoringForRegion = (region: RegionType): Promise<void> =>
     KontaktModule.startMonitoringForRegion(region);
@@ -138,8 +149,7 @@ if (Platform.OS === 'ios') {
     KontaktModule.stopMonitoringForRegion(region);
   const stopMonitoringForAllRegions: () => Promise<void> =
     KontaktModule.stopMonitoringForAllRegions;
-  const getMonitoredRegions: () => Promise<Array<RegionType>> =
-    KontaktModule.getMonitoredRegions;
+  const getMonitoredRegions: () => Promise<Array<RegionType>> = KontaktModule.getMonitoredRegions;
 
   const requestStateForRegion = (region: RegionType): Promise<void> =>
     KontaktModule.requestStateForRegion(region);
