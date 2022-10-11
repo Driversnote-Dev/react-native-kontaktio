@@ -11,6 +11,13 @@ import {
   monitoringSyncInterval,
 } from "./configurations";
 
+export type AuthorizationStatus =
+  | "denied"
+  | "authorizedWhenInUse"
+  | "authorizedAlways"
+  | "notDetermined"
+  | "restricted";
+
 export type IBeaconMinimum = {
   major: number;
   minor: number;

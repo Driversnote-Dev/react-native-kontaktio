@@ -11,7 +11,13 @@ import {
   monitoringEnabled,
   monitoringSyncInterval,
 } from "./configurations";
-import type { KontaktType, ConfigType, BeaconType, RegionType } from "./types";
+import type {
+  AuthorizationStatus,
+  BeaconType,
+  ConfigType,
+  KontaktType,
+  RegionType,
+} from "./types";
 
 // If the native module (i.e. Java module) is prefixed with "RCT",
 // the NativeModules name does not include "RCT".
@@ -133,7 +139,7 @@ if (Platform.OS === "ios") {
   const restartDiscovery: () => Promise<void> = KontaktModule.restartDiscovery;
   const isDiscovering: () => Promise<boolean> = KontaktModule.isDiscovering;
 
-  const getAuthorizationStatus: () => Promise<string> =
+  const getAuthorizationStatus: () => Promise<AuthorizationStatus> =
     KontaktModule.getAuthorizationStatus;
   const requestWhenInUseAuthorization: () => Promise<void> =
     KontaktModule.requestWhenInUseAuthorization;
