@@ -1,4 +1,4 @@
-import { NativeModules } from "react-native";
+import { NativeModules } from 'react-native';
 import {
   IBEACON,
   EDDYSTONE,
@@ -9,14 +9,14 @@ import {
   forceScanConfiguration,
   monitoringEnabled,
   monitoringSyncInterval,
-} from "./configurations";
+} from './configurations';
 
 export type AuthorizationStatus =
-  | "denied"
-  | "authorizedWhenInUse"
-  | "authorizedAlways"
-  | "notDetermined"
-  | "restricted";
+  | 'denied'
+  | 'authorizedWhenInUse'
+  | 'authorizedAlways'
+  | 'notDetermined'
+  | 'restricted';
 
 export type IBeaconMinimum = {
   major: number;
@@ -29,7 +29,7 @@ export type IBeaconBase = {
   uniqueId?: string;
 };
 
-export type Proximity = "IMMEDIATE" | "NEAR" | "FAR" | "UNKNOWN";
+export type Proximity = 'IMMEDIATE' | 'NEAR' | 'FAR' | 'UNKNOWN';
 
 /**
  * Beacon response while scanning on Android
@@ -111,16 +111,11 @@ export type IBeaconIosDiscoveryWithMajorMinor = IBeaconIosDiscovery & {
   minor?: number;
 };
 
-export type IBeaconWithUniqueId =
-  | IBeaconAndroid
-  | IBeaconIosDiscoveryWithMajorMinor;
+export type IBeaconWithUniqueId = IBeaconAndroid | IBeaconIosDiscoveryWithMajorMinor;
 
 export type IBeacon = IBeaconAndroid | IBeaconIos | IBeaconIosDiscovery;
 
-export type BeaconType =
-  | typeof IBEACON
-  | typeof EDDYSTONE
-  | typeof SECURE_PROFILE;
+export type BeaconType = typeof IBEACON | typeof EDDYSTONE | typeof SECURE_PROFILE;
 
 export type RegionBase = {
   uuid: string;
@@ -140,10 +135,7 @@ export type RegionType = RegionAndroid | RegionIos;
  * beacon scanning configuration
  */
 export type ConfigType = {
-  scanMode?:
-    | typeof scanMode.LOW_POWER
-    | typeof scanMode.BALANCED
-    | typeof scanMode.LOW_LATENCY;
+  scanMode?: typeof scanMode.LOW_POWER | typeof scanMode.BALANCED | typeof scanMode.LOW_LATENCY;
   scanPeriod?:
     | typeof scanPeriod.MONITORING
     | typeof scanPeriod.RANGING
@@ -159,9 +151,7 @@ export type ConfigType = {
     | ReturnType<typeof forceScanConfiguration.create>;
   dropEmptyRanges?: boolean;
   invalidationAge?: number;
-  monitoringEnabled?:
-    | typeof monitoringEnabled.TRUE
-    | typeof monitoringEnabled.FALSE;
+  monitoringEnabled?: typeof monitoringEnabled.TRUE | typeof monitoringEnabled.FALSE;
   monitoringSyncInterval?: typeof monitoringSyncInterval.DEFAULT;
 };
 
@@ -219,10 +209,7 @@ export type KontaktAndroidType = KontaktBaseType & {
   /**
    * @deprecated Please use 'connect' instead
    */
-  init?: (
-    apiKey: string | undefined,
-    beaconTypes: Array<BeaconType> | undefined
-  ) => Promise<void>;
+  init?: (apiKey: string | undefined, beaconTypes: Array<BeaconType> | undefined) => Promise<void>;
 };
 
 export type KontaktiOSType = KontaktBaseType & {
