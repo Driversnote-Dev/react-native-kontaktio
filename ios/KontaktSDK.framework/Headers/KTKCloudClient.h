@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -90,6 +90,19 @@ extern NSDictionary * _Nullable KTKCloudErrorFromError(NSError * _Nullable error
 - (void)POST:(NSString*)endpoint parameters:(NSDictionary* _Nullable)dictionary completion:(KTKKontaktResponseCompletionBlock _Nullable)completion;
 
 /**
+ *  Runs a cloud API call with a POST request.
+ *
+ *  @param endpoint   The cloud API endpoint/resource.
+ *  @param url        The cloud API url.
+ *  @param dictionary The parameters to be serialized for the request.
+ *  @param completion A block object to be executed when the request finishes.
+ *
+ *  @see KTKKontaktResponseCompletionBlock
+ *  @see KTKKontaktResponse
+ */
+- (void)POST:(NSString*)endpoint url:(NSURL*)url parameters:(NSDictionary* _Nullable)dictionary completion:(KTKKontaktResponseCompletionBlock _Nullable)completion;
+
+/**
  *  Runs a cloud API call with a POST request encoded for JSON payload.
  *
  *  @param endpoint   The cloud API endpoint/resource.
@@ -100,6 +113,31 @@ extern NSDictionary * _Nullable KTKCloudErrorFromError(NSError * _Nullable error
  *  @see KTKKontaktResponse
  */
 - (void)JSON:(NSString*)endpoint parameters:(NSDictionary* _Nullable)dictionary completion:(KTKKontaktResponseCompletionBlock _Nullable)completion;
+
+/**
+ *  Runs a cloud API call with a POST request encoded for JSON payload.
+ *
+ *  @param endpoint   The cloud API endpoint/resource.
+ *  @param url        The cloud API url.
+ *  @param dictionary The parameters to be serialized for the request.
+ *  @param completion A block object to be executed when the request finishes.
+ *
+ *  @see KTKKontaktResponseCompletionBlock
+ *  @see KTKKontaktResponse
+ */
+- (void)JSON:(NSString*)endpoint url:(NSURL*)url parameters:(NSDictionary* _Nullable)dictionary completion:(KTKKontaktResponseCompletionBlock _Nullable)completion;
+
+/**
+ *  Runs a telemetry cloud API call with a POST request encoded for JSON payload.
+ *
+ *  @param endpoint   The telemetry cloud API endpoint/resource.
+ *  @param dictionary The parameters to be serialized for the request.
+ *  @param completion A block object to be executed when the request finishes.
+ *
+ *  @see KTKKontaktResponseCompletionBlock
+ *  @see KTKKontaktResponse
+ */
+- (void)JSONTelemetry:(NSString*)endpoint parameters:(NSDictionary* _Nullable)parameters completion:(KTKKontaktResponseCompletionBlock _Nullable)completion;
 
 #pragma mark - Objects Request Methods
 ///--------------------------------------------------------------------

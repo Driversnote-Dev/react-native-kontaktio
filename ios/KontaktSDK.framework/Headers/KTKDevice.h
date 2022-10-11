@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -29,6 +29,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  Mac Address of the device. (read-only)
  */
 @property (nonatomic, strong, readonly) NSString *macAddress;
+
+/**
+ *  Battery level percentage. (read-only)
+ */
+@property (nonatomic, readonly, assign) NSUInteger batteryLevel;
+
+/**
+ *  Last Seen of the device. (read-only)
+ */
+@property (nonatomic, assign, readonly) NSTimeInterval lastSeen;
+
 
 /**
  *  Secure iBeacon proximity UUID. (read-only)
@@ -144,6 +155,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return An initialized device object.
  */
 - (instancetype)initWithUniqueID:(NSString *)uniqueID;
+
+/**
+ *  Initializes and returns a device with the specified unique identifier and type.
+ *
+ *  @param uniqueID The unique identifier.
+ *  @param deviceType The device type.
+ *
+ *  @return An initialized device object.
+ */
+- (instancetype)initWithUniqueID:(NSString *)uniqueID deviceType:(int)type;
 
 #pragma mark - Model Methods
 ///--------------------------------------------------------------------
