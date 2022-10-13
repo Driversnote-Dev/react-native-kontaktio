@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -60,6 +60,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @see https://kontakt.io/products-and-solutions/complete-beacon-security/
  */
 @property (nonatomic, readonly, assign) BOOL hasConfigurationProfile;
+
+/**
+ *  A Boolean indicating whether the device has Kontakt rtc timer.
+ */
+@property (nonatomic, readonly, assign) BOOL hasKontaktRTC;
 
 /**
  *  A Boolean indicating whether the device is currently in Shuffle mode. (read-only)

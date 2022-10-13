@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -74,7 +74,22 @@ typedef NS_ENUM(NSInteger, KTKDeviceType) {
     /**
      *  Cloud Beacon device type.
      */
-    KTKDeviceTypeCloudBeacon = 2
+    KTKDeviceTypeCloudBeacon = 2,
+    /**
+     *  Gateway device type.
+     */
+    KTKDeviceTypeGateway = 3
+    
+};
+
+/**
+ *  A Kontakt image type.
+ */
+typedef NS_ENUM(uint16_t, KTKKontaktImageType) {
+    KTKKontaktImageRAW                     ,
+    KTKKontaktImageRAWContinuous           ,
+    KTKKontaktImageCalibration             ,
+    KTKKontaktImageRecalibration           
 };
 
 /**
@@ -144,6 +159,10 @@ typedef NS_OPTIONS(NSInteger, KTKDeviceAdvertisingPackets) {
      */
     KTKDeviceAdvertisingPacketsKontaktLocation = 1 << 10,
     /**
+     *  Kontakt Location packet.
+     */
+    KTKDeviceAdvertisingPacketsKontaktPeopleDetectionFrame   = 1 << 13,
+    /**
      *  All supprted Eddystone packets.
      */
     KTKDeviceAdvertisingPacketsEddystoneAll    = (NSInteger)0b00000000000000000000000000011100,
@@ -155,6 +174,143 @@ typedef NS_OPTIONS(NSInteger, KTKDeviceAdvertisingPackets) {
      *  All supprted packets.
      */
     KTKDeviceAdvertisingPacketsAll             = (NSInteger)0b11111111111111111111111111111110
+};
+
+/**
+ *  A device Telemetry Fields
+ */
+typedef NS_OPTIONS(NSInteger, KTKDeviceTelemetryFields) {
+    /**
+     *  Raw Accelerometer.
+     */
+    KTKDeviceTelemetryFieldsRawAccelerometer                = 1 << 0,
+    /**
+     *  Movement Threshold Event.
+     */
+    KTKDeviceTelemetryFieldsMovementThresholdEvent          = 1 << 1,
+    /**
+     *  Double Tap Event.
+     */
+    KTKDeviceTelemetryFieldsDoubleTapEvent                  = 1 << 2,
+    /**
+     *  Tap Event.
+     */
+    KTKDeviceTelemetryFieldsTapEvent                        = 1 << 3,
+    /**
+     *  Light Level.
+     */
+    KTKDeviceTelemetryFieldsLightLevel                      = 1 << 4, //
+    /**
+     *  Temperature.
+     */
+    KTKDeviceTelemetryFieldsTemperature                     = 1 << 5,
+    /**
+     *  Battery.
+     */
+    KTKDeviceTelemetryFieldsBattery                         = 1 << 6,
+    /**
+     *  Button Click.
+     */
+    KTKDeviceTelemetryFieldsButtonClick                     = 1 << 7,
+    /**
+     *  Button Double Click.
+     */
+    KTKDeviceTelemetryFieldsButtonDoubleClick               = 1 << 8,
+    /**
+     *  UTC Time.
+     */
+    KTKDeviceTelemetryFieldsUTCTime                         = 1 << 9,
+    /**
+     *  Logging Enabled.
+     */
+    KTKDeviceTelemetryFieldsLoggingEnabled                  = 1 << 10,
+    /**
+     *  Identified Button Click.
+     */
+    KTKDeviceTelemetryFieldsIdentifiedButtonClick           = 1 << 11,
+    /**
+     *  Humidity.
+     */
+    KTKDeviceTelemetryFieldsHumidity                        = 1 << 12,
+    /**
+     *  Temperature 16 bits.
+     */
+    KTKDeviceTelemetryFieldsTemperature16bits               = 1 << 13,
+    /**
+     *  BLE channel.
+     */
+    KTKDeviceTelemetryFieldsBLEChannel                      = 1 << 14,
+    /**
+     *  Gpio. - depricate
+     */
+    KTKDeviceTelemetryFieldsGpio                            = 1 << 15,
+    /**
+     *  Movement event.
+     */
+    KTKDeviceTelemetryFieldsMovementEvent                   = 1 << 16,
+    /**
+     *  Air Pressure.
+     */
+    KTKDeviceTelemetryFieldsAirPressure                     = 1 << 17,
+    /**
+     *  PIR detection.
+     */
+    KTKDeviceTelemetryFieldsPIRDetection                    = 1 << 18,
+    /**
+     *  Two button info.
+     */
+    KTKDeviceTelemetryFieldsTwoButtonInfo                   = 1 << 19, //
+    /**
+     *  Air Quality.
+     */
+    KTKDeviceTelemetryFieldsAirQuality                      = 1 << 20,
+    /**
+     *  Room number.
+     */
+    KTKDeviceTelemetryFieldsRoomNumber                      = 1 << 21,
+    /**
+     *  Occupancy.
+     */
+    KTKDeviceTelemetryFieldsOccupancy                       = 1 << 22,
+    /**
+     *  BLE scan result.
+     */
+    KTKDeviceTelemetryFieldsBLEScanResult                   = 1 << 23,
+    
+    /**
+     *  Proximity report.
+     */
+    KTKDeviceTelemetryFieldsProximityReport                 = 1 << 24,
+    
+    /**
+     *  Gas Sensor.
+     */
+    KTKDeviceTelemetryFieldsGasSensor                       = 1 << 25,
+    
+    /**
+     *  Light level lux.
+     */
+    KTKDeviceTelemetryFieldsLightLevelLux                   = 1 << 26,
+    
+    /**
+     *  Inout counter.
+     */
+    KTKDeviceTelemetryFieldsInOutCount                      = 1 << 27,
+    
+    /**
+     *  Soap dispenser.
+     */
+    KTKDeviceTelemetryFieldsSoapDispenser                   = 1 << 28,
+    
+    /**
+     *  People Detection.
+     */
+    KTKDeviceTelemetryFieldsPeopleDetection                 = 1 << 29,
+    
+    /**
+     *  All supprted packets.
+     */
+    KTKDeviceTelemetryFieldsAll                             = (NSInteger)0b111111111111111111111111
 };
 
 /**
@@ -258,7 +414,35 @@ typedef NS_ENUM(NSInteger, KTKDeviceModel) {
      */
     KTKDeviceModelCardBeacon2 = 11,
     /**
+     *  Coin Tag
+     */
+    KTKDeviceModelCoinTag = 12,
+    /**
+     *  Humidity Beacon
+     */
+    KTKDeviceModelSmartBeacon3H = 13,
+    /**
+     * Tough Beacon 2
+     */
+    KTKDeviceModelToughBeacon2 = 14,
+    /**
+     *  Bracelet Tag
+     */
+    KTKDeviceModelBraceletTag = 15,
+    /**
+     *  Universal Tag
+     */
+    KTKDeviceModelUniversalTag = 16,
+    /**
+     *  Bracelet Tag 2
+     */
+    KTKDeviceModelBraceletTag2 = 17,
+    /**
      *  Minew E5
+     */
+    KTKDeviceModelTT20 = 19,
+    /**
+     *  Beacon TT 20
      */
     KTKDeviceModelMinewE5 = 20,
     /**
@@ -296,7 +480,32 @@ typedef NS_ENUM(NSInteger, KTKDeviceModel) {
     /**
      *  Portal Light
      */
-    KTKDeviceModelPortalLight= 29,
+    KTKDeviceModelPortalLight = 29,
+    /**
+     *  Smart Badge
+     */
+    KTKDeviceModelSmartBadge = 30,
+    /**
+     *  Portal Beam
+     */
+    KTKDeviceModelPortalBeam = 31,
+    /**
+     *  Nano Series
+     */
+    KTKDeviceModelNanoSeries = 32,
+    /**
+     *  Asset Tag
+     */
+    KTKDeviceModelAssetTag2 = 33,
+    /**
+     *  Anchor Beacon
+     */
+    KTKDeviceModelAnchorBeacon2 = 34,
+    
+    /**
+     *  Partner provided name
+     */
+    KTKDeviceModelPartnerDevice = 128
 };
 
 /**
@@ -322,6 +531,7 @@ typedef NS_ENUM(NSInteger, KTKDeviceSymbol) {
     KTKDeviceSymbolBT18_3,
     KTKDeviceSymbolUT19_1,
     KTKDeviceSymbolBT19_4,
+    KTKDeviceSymbolTT20_1 = 19,
     KTKDeviceSymbolM_E5 = 20,
     KTKDeviceSymbolM_E7 = 21,
     KTKDeviceSymbolM_E8 = 22,
@@ -332,6 +542,13 @@ typedef NS_ENUM(NSInteger, KTKDeviceSymbol) {
     KTKDeviceSymbolBT20_1 = 27,
     KTKDeviceSymbolPB20_1 = 28,
     KTKDeviceSymbolGW20_1 = 29,
+    KTKDeviceSymbolSMBA_1 = 30,
+    KTKDeviceSymbolPOBE_1 = 31,
+    KTKDeviceSymbolNASE_1 = 32,
+    KTKDeviceSymbolAST_2 = 33,
+    KTKDeviceSymbolANB_2 = 34,
+    
+    KTKDeviceSymbolPD = 128
 };
 
 /**
@@ -428,6 +645,32 @@ typedef NS_ENUM(NSInteger, KTKDeviceMotionDetectionMode) {
      */
     KTKDeviceMotionDetectionModeAlarm    = 2
 };
+
+typedef NS_ENUM(NSInteger, KTKDeviceOccupancyModel) {
+    /**
+     *  Invalid mode.
+     */
+    KTKDeviceOccupancyModeInvalid  = -1,
+    /**
+     *  Occupancy Mode is occupancy 1.
+     */
+    KTKDeviceOccupancyModeOccupancy1     = 0,
+    /**
+     *  Occupancy Mode is occupancy 2.
+     */
+    
+    KTKDeviceOccupancyModeOccupancy2    =  1,
+    /**
+     *  MOccupancy Mode is footfall door.
+     */
+    
+    KTKDeviceOccupancyModeFootfallDoor = 2,
+    /**
+     *  Occupancy Mode is footfall corridor.
+     */
+    KTKDeviceOccupancyModeFootfallCorridor    = 3
+};
+
 
 /**
  *  A device data logger fields.
