@@ -7,6 +7,11 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Unreleased
 
+### Added
+### Changed
+
+## [v4.1.0] - 2022-10-21
+
 ### Changed
 
 - Update Setup documentation, add formerly undocumented secure profile information
@@ -185,7 +190,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Full changelogs
 
-[unreleased]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v4.0.0...master
+[unreleased]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v4.1.0...master
+[v4.1.0]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v4.0.0...v4.1.0
 [v4.0.0]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v3.1.0...v4.0.0
 [v3.1.0]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v3.0.1...v3.1.0
 [v3.0.1]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v2.10.0...v3.0.1
