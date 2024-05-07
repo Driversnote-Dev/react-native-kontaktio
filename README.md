@@ -231,6 +231,13 @@ export default App;
 
 - Beacons support is part of Android versions 4.3 and up. \* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
 - A physical device must be used for testing and some beacons (Kontakt.io beacons to be able to use all features).
+- If some BLE Beacons are filtered out by the scan on Android 12+, therefore not returned in the list of beacons, try this:
+  ```xml
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" tools:remove="android:usesPermissionFlags" />
+  ```
+  With the **neverForLocation** android:usesPermissionFlags, some BLE beacons are filtered from the scan results. |More information about this on [issue #121](https://github.com/Driversnote-Dev/react-native-kontaktio/issues/121#issuecomment-2098884380).
+
+
 
 ## ToDo:
 
