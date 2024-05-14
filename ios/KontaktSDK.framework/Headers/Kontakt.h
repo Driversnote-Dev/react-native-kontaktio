@@ -1,11 +1,19 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
 
 @import Foundation;
+
+#define NETLOG 1
+
+#if NETLOG == 1
+    #define NetDebugLog(fmt, ...)  NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+    #define NetDebugLog(...)
+#endif
 
 #pragma mark - External Constants
 extern double        KTKSDKVersion;

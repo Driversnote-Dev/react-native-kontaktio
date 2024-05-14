@@ -7,7 +7,7 @@ Kontakt.io SDK Versions of newest release:
 | OS          | SDK Version                                                                                          |
 | :---------- | :--------------------------------------------------------------------------------------------------- |
 | **Android** | [7.0.6](https://kontakt-api-docs.stoplight.io/docs/dev-ctr-sdks/423dcaf4067cc-android-sdk-changelog) |
-| **iOS**     | [3.0.4](https://github.com/kontaktio/kontakt-ios-sdk/tree/v3.0.4)                                    |
+| **iOS**     | [3.0.25](https://github.com/kontaktio/kontakt-ios-sdk/releases/tag/v3.0.25)                          |
 
 ## Advantages
 
@@ -231,6 +231,13 @@ export default App;
 
 - Beacons support is part of Android versions 4.3 and up. \* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
 - A physical device must be used for testing and some beacons (Kontakt.io beacons to be able to use all features).
+- If some BLE Beacons are filtered out by the scan on Android 12+, therefore not returned in the list of beacons, try this:
+  ```xml
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" tools:remove="android:usesPermissionFlags" />
+  ```
+  With the **neverForLocation** android:usesPermissionFlags, some BLE beacons are filtered from the scan results. |More information about this on [issue #121](https://github.com/Driversnote-Dev/react-native-kontaktio/issues/121#issuecomment-2098884380).
+
+
 
 ## ToDo:
 
@@ -257,7 +264,7 @@ export default App;
     ```
 6. Build and run on a real device
 
-### Upgrade Kontakt.io API versions
+### Upgrade to a new version of the Kontakt.io SDK
 
 #### Android
 
@@ -266,3 +273,8 @@ In `build.gradle` file change the version in the following line
 ```
 implementation "io.kontakt.mvn:sdk:7.0.6"
 ```
+
+#### iOS
+
+1. Go to the [Kontakt.io SDK releases page](https://github.com/kontaktio/kontakt-ios-sdk/releases) and download the newest version of  **KontaktSDK.framework.zip**.
+2. Replace the `ios/KontaktSDK.framework` folder of this library with the `Cocoapods/KontaktSDK/iOS/KontaktSDK.xcframework/ios-arm64_armv7/KontaktSDK.framework` folder which you find in the unzipped folder structure.

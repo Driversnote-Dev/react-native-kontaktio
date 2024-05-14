@@ -21,7 +21,9 @@ Some [Kontakt.io beacons prerequisites](https://kontakt-api-docs.stoplight.io/do
 
 ## Add permissions
 
-Go to the **Info** tab and add in the top section **`Custom iOS Target Properties`** the following permissions:
+Open XCode (e.g. via `xed -b ios`) and go to the **Info** tab.
+
+In the top section **`Custom iOS Target Properties`** add the following permissions:
 
 - **Bluetooth**
 

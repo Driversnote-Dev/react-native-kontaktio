@@ -1,15 +1,34 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. If a contribution does not have a mention next to it, [@Andruschenko](https://github.com/Andruschenko) did it.
+All notable changes to this project will be documented in this file. If a contribution does not have a mention next to it, [@andrekovac](https://github.com/andrekovac), [@JonasWho](https://github.com/JonasWho) or [@martinpoulsen](https://github.com/martinpoulsen) did it.
 
 _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/)._
 
+
+## Unreleased
+
+### Added
+### Changed
+
+## [v4.1.0] - 2022-10-21
+
+### Changed
+
+- Update Setup documentation, add formerly undocumented secure profile information
+- fix *new NativeEventEmitter* warning
+- README: New minimal example code, new Contribute section
+- _iOS_: Upgrade Kontakt.io iOS SDK to version `3.0.25`
+
 ## [v4.0.0] - 2022-09-26
+
+### Changed
 
 - _Android_: Update Kontakt.io SDK to version `7.0.6`
 - _Android_: Update target SDK to 31 and add `BLUETOOTH_SCAN` and `BLUETOOTH_CONNECT` to permissions used.
 
 ## [v3.1.0] - 2022-02-17
+
+### Changed
 
 - Improve TypeScript types for secure profiles.
 - _Android_: Update Kontakt.io SDK to version `5.0.25-pre-31`
@@ -171,7 +190,8 @@ _The format is based on [Keep a Changelog](http://keepachangelog.com/) and this 
 
 ## Full changelogs
 
-[unreleased]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v4.0.0...master
+[unreleased]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v4.1.0...master
+[v4.1.0]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v4.0.0...v4.1.0
 [v4.0.0]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v3.1.0...v4.0.0
 [v3.1.0]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v3.0.1...v3.1.0
 [v3.0.1]: https://github.com/Driversnote-Dev/react-native-kontaktio/compare/v2.10.0...v3.0.1
