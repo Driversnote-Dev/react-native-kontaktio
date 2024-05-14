@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -14,6 +14,7 @@
 #import "KTKDeviceCredentials.h"
 #import "KTKDeviceConfiguration.h"
 #import "KTKDeviceDataLoggerReading.h"
+#import "KTKDeviceKontaktRecognitionBox.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -185,6 +186,14 @@ typedef void (^KTKDeviceConnectionUpdateCompletion)(BOOL synchronized, NSError *
 - (void)readConfigurationWithCompletion:(KTKDeviceConnectionReadCompletion)completion;
 
 /**
+ *  Synch the tocken from the connection device.
+ *
+ *  @param firmware   The version firmware object for update device
+ *  @param completion A block object to be executed when the read operation finishes.
+ */
+- (void)synchDeviceConfigurationWithCompletion: (void (^)(__kindof KTKDeviceConfiguration * _Nullable, NSString *firmware, NSError * _Nullable))completion ;
+
+/**
  *  Listens for sensors updates from the connection device.
  *
  *  @param updateBlock A block object to be executed when the sensors values are update.
@@ -204,6 +213,14 @@ typedef void (^KTKDeviceConnectionUpdateCompletion)(BOOL synchronized, NSError *
  *  @param completion A block object to be executed when the update operation finishes.
  */
 - (void)updateWithFirmware:(KTKFirmware*)firmware progress:(void (^)(double))progress completion:(KTKDeviceConnectionUpdateCompletion)completion;
+
+/**
+ *  Get image from a device.
+ *
+ *  @param type   The type object you want to update device to. <code>Has to be equal or grater than current firmware version.</code>
+ *  @param completion A block object to be executed when the update operation finishes download configuration, image and error.
+ */
+- (void)getImage:(KTKKontaktImageType)type completion:(void (^)(NSData * _Nullable, NSArray<KTKDeviceKontaktRecognitionBox *> * _Nullable, KTKDeviceConfiguration * _Nullable configuration, NSError * _Nullable))completion;
 
 /**
  *  Cancels all operations on this connection.
