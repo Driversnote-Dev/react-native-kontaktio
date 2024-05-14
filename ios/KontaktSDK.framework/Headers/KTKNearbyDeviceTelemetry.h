@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright © 2017 Kontakt.io. All rights reserved.
 //
@@ -8,6 +8,7 @@
 @import Foundation;
 
 #import "KTKDeviceDefinitions.h"
+#import "KTKPersonPosition.h"
 
 typedef NS_OPTIONS(uint16_t, KTKNearbyDeviceTelemetryError) {
     /**
@@ -110,6 +111,63 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, copy) NSNumber * _Nullable movementID;
 
+/**
+ *  A Boolean moving or not. (read-only)
+ */
+@property (nonatomic, readonly, assign, getter=isMoving) BOOL moving;
+
+#pragma mark - Vendor
+///--------------------------------------------------------------------
+/// @name Vendor
+///--------------------------------------------------------------------
+
+/**
+ *  Index of current roomNumber. Detected room number via IR detector. 0xFFFF means unknown. After 60s from last detection
+ *
+ *  becomes again 0xFFFF
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable roomNumber;
+
+/**
+ *  Detected number of people in the room. 0xFF means invalid / unknown
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable occupancy;
+
+/**
+ *  Time since last detection. Saturates at 0xFFFF
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable detectionTime;
+
+/**
+ *  Index of the measurement/frame, starting at 0 0xFFFFFFFF means invalid / unknown
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable frameCount;
+
+/**
+ *  Detected number of people in Place the room. 0xFFFF means invalid / unknown
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable inCount;
+
+/**
+ *  Detected number of people out Place the room. 0xFFFF means invalid / unknown
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable outCount;
+
+/**
+ *  Detected number of people in the room for PDF. 0xFF means invalid / unknown
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable occupancyPDF;
+
+/**
+ *  Time since last detection for PDF. Saturates at 0xFFFF
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable detectionTimePDF;
+
+/**
+ *  Position in  Pixels of persons. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSArray <KTKPersonPosition*>  * _Nullable personPositions;
+
 #pragma mark - Button
 ///--------------------------------------------------------------------
 /// @name Button
@@ -126,6 +184,16 @@ NS_ASSUME_NONNULL_BEGIN
  * A number of Click events. Click event is specified in Button Specification Behavior. (read-only)
  */
 @property (nonatomic, readonly, copy) NSNumber * _Nullable singleClickCount;
+
+/**
+ * A number of Click events. Click event is specified in Button id 1. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable clickId1Count;
+
+/**
+ * A number of Click events. Click event is specified in Button id 2. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable clickId2Count;
 
 #pragma mark - Sensors
 ///--------------------------------------------------------------------
@@ -151,6 +219,21 @@ NS_ASSUME_NONNULL_BEGIN
  *  States of GPIOs. (read-only)
  */
 @property (nonatomic, readonly, assign) struct KTKNearbyDeviceGPIOStates GPIOStates;
+
+/**
+ *  Pressure in mBar. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable airPressuer;
+
+/**
+ *  Seconds since last PIR detection. Saturates at 0xFFFF. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable pirDetection;
+
+/**
+ *  Air quality, 0 for good - 255 bad. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable airQuality;
 
 #pragma mark - Scanning
 ///--------------------------------------------------------------------
