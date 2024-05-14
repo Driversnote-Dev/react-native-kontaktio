@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -71,6 +71,11 @@ typedef NS_OPTIONS(NSUInteger, KTKManagerSubscriptionPlan) {
  *  The manager ID. (read-only)
  */
 @property (nonatomic, strong, readonly) NSUUID *managerID;
+
+/**
+ *  The company ID. (read-only)
+ */
+@property (nonatomic, strong, readonly) NSUUID *companyID;
 
 /**
  *  The manager's supervisor ID. (read-only)

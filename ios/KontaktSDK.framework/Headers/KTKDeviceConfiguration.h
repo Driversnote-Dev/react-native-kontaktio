@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.4
+//  Version: 3.0.25
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -84,6 +84,14 @@ __attribute__((deprecated("Please use `packets` property instead")));
  */
 @property (nonatomic, assign, readwrite) BOOL forceOverwrite;
 
+/**
+ *  Telemetry fields flags.
+ *
+ *  @see KTKDeviceTelemetryFields
+ */
+@property (nonatomic, assign, readwrite) KTKDeviceTelemetryFields telemetryFields;
+
+
 #pragma mark - iBeacon Properties
 ///--------------------------------------------------------------------
 /// @name iBeacon Properties
@@ -145,6 +153,63 @@ __attribute__((deprecated("Please use `packets` property instead")));
  *  This property can be used to calibrate temperature readings.
  */
 @property (nonatomic, strong, readwrite) NSNumber * _Nullable temperatureOffset;
+
+#pragma mark - Sensors Config Properties
+///--------------------------------------------------------------------
+/// @name Sensors Properties
+///--------------------------------------------------------------------
+
+/**
+ *  This property can be used to set line for footfall.
+ */
+//@property (nonatomic, strong, readwrite) NSArray <NSNumber *>* _Nullable footfallLine;
+@property (nonatomic, copy, readwrite) NSString * _Nullable footfallLine;
+
+/**
+ *  Bluetooth Scan interval value.
+ *
+ *  This property can be used to set seconds between scans. 0: disabled. Default: 23 (h), 82800 seconds
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable bleScanInterval;
+
+/**
+ *  Bluetooth Scan duration value.
+ *
+ *  This property can be used to set milliseconds to scan for. Default: 10000 ms (10s)
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable bleScanDuration;
+
+/**
+ *  Room number ir value.
+ *
+ *  This property can be used to set room number.
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable irRoomNumber;
+
+/**
+ *  Occupancy mode.
+ *
+ *  @see KTKDeviceOccupancyModel
+ */
+
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable occupancyModel;
+
+
+/**
+ *  Exclusions.
+ *
+ *  @see KTKDeviceOccupancyModel
+ */
+
+@property (nonatomic, strong, readwrite) NSArray <NSDictionary *>*  _Nullable exclusions;
+
+/**
+ *  Inclusions.
+ *
+ *  @see KTKDeviceOccupancyModel
+ */
+
+@property (nonatomic, strong, readwrite) NSArray <NSDictionary *>*  _Nullable inclusions;
 
 #pragma mark - Data Logger Properties
 ///--------------------------------------------------------------------
