@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -186,12 +186,19 @@ typedef void (^KTKDeviceConnectionUpdateCompletion)(BOOL synchronized, NSError *
 - (void)readConfigurationWithCompletion:(KTKDeviceConnectionReadCompletion)completion;
 
 /**
- *  Synch the tocken from the connection device.
+ *  Send the current time to the connected device.
+ *  
+ *  @param completion A block object to be executed when the write operation finishes.
+ */
+- (void)syncTimeWithCompletion: (void (^)(NSError * _Nullable))completion;
+
+/**
+ *  Synch the token from the connection device.
  *
  *  @param firmware   The version firmware object for update device
  *  @param completion A block object to be executed when the read operation finishes.
  */
-- (void)synchDeviceConfigurationWithCompletion: (void (^)(__kindof KTKDeviceConfiguration * _Nullable, NSString *firmware, NSError * _Nullable))completion ;
+- (void)synchDeviceConfigurationWithCompletion: (void (^)(__kindof KTKDeviceConfiguration * _Nullable, NSString *firmware, NSError * _Nullable))completion;
 
 /**
  *  Listens for sensors updates from the connection device.

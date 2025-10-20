@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright © 2017 Kontakt.io. All rights reserved.
 //
@@ -23,6 +23,36 @@ typedef NS_ENUM(uint8_t, KTKDeviceDataLoggerStatus) {
     KTKDeviceDataLoggerStatusEnabled,
 };
 
+/**
+ *  A device gas typ fields.
+ */
+typedef NS_OPTIONS(uint8_t, KTKDeviceGasTypFields) {
+    KTKDeviceGasTypGenericPPM                           = 0x00,
+    KTKDeviceGasTypCarbonMonoxide                       = 0x01,
+    KTKDeviceGasTypEthanol                              = 0x02,
+    KTKDeviceGasTypVolatileOrganicCompounds             = 0x03,
+    KTKDeviceGasTypPM1_0                                = 0x04,
+    KTKDeviceGasTypPM2_5                                = 0x05,
+    KTKDeviceGasTypPM10_0                               = 0x06,
+    KTKDeviceGasTypCarbonDioxide                        = 0x07,
+    KTKDeviceGasTypGasResistance                        = 0x08
+};
+
+/**
+ *  A device Status Soapfields.
+ */
+typedef NS_OPTIONS(uint8_t, KTKDeviceStatusSoapFields) {
+    KTKDeviceStatusSoapFieldsNoEOS                  = 1 << 0,
+    KTKDeviceStatusSoapFieldsNoEkeyCommunication    = 1 << 1,
+    KTKDeviceStatusSoapFieldsWrongEkey              = 1 << 2,
+    KTKDeviceStatusSoapFieldsIncomplete             = 1 << 3,
+    KTKDeviceStatusSoapFieldsLowBackupBattery       = 1 << 4,
+    KTKDeviceStatusSoapFieldsFaultDue               = 1 << 5,
+    KTKDeviceStatusSoapFieldsLowRefill              = 1 << 6,
+    KTKDeviceStatusSoapFieldsLockoutStatus          = 1 << 7,
+};
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - KTKNearbyDeviceTelemetry (Interface)
@@ -34,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///--------------------------------------------------------------------
 
 @property (nonatomic, readonly, copy) NSString * _Nullable uniqueID;
+
 
 @property (nonatomic, readonly, copy) NSNumber * _Nullable channel;
 
@@ -235,6 +266,90 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, copy) NSNumber * _Nullable airQuality;
 
+/**
+ *  Measured distance in [cm]. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable distance;
+
+/**
+ *  Accurancy 0-100%. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable accuracy;
+
+/**
+ *  Gas type. (read-only)
+ *  
+ *  0x00 Generic ppm
+ *  0x01 Carbon Monoxide ppm
+ *  0x02 Ethanol Monoxide ppm
+ *  0x03 Volatile Organic Compounds ppm
+ *  0x04 PM 1.0 ug/m3
+ *  0x05 PM 2.5 ug/m3
+ *  0x06 PM 10.0 ug/m3
+ *  0x07 Carbon Dioxide ppm
+ *  0x08 Gas resistance kOhm
+ */
+
+@property (nonatomic, readonly, assign) KTKDeviceGasTypFields gasTypeFields;
+
+/**
+ *  Signed, 16-bit PPM concentration, can be a positive PPM, or a difference from baseline. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable gasPPM;
+
+/**
+ *  Unsigned, 16-bit light level measured in lux. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable lightLevelLux;
+
+
+// Soap Dispenser
+/**
+ *  Serial number
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable serialNumber;
+
+/**
+ *  Charge
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable charge;
+
+/**
+ *  Activations (/1k)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable activationsCount;
+
+/**
+ *  Activations (kontakt)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable activationsKontakt;
+
+/**
+ *  Refills
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable refills;
+
+/**
+ *  Status
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable statusSoap;
+
+/**
+ *  Status Soap Fields (read-only)
+ */
+@property (nonatomic, readonly, assign) KTKDeviceStatusSoapFields statusSoapFields;
+
+/**
+ *  Config
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable configSoap;
+
+/**
+ *  Distributor
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable distributor;
+
+
 #pragma mark - Scanning
 ///--------------------------------------------------------------------
 /// @name Scanning
@@ -264,6 +379,26 @@ NS_ASSUME_NONNULL_BEGIN
  *  WiFi scanning statistics. Scans/s, 10 seconds average. (read-only)
  */
 @property (nonatomic, readonly, copy) NSNumber * _Nullable wifiScans;
+
+///--------------------------------------------------------------------
+/// @name RSSI scan
+///--------------------------------------------------------------------
+
+/**
+ *  Scan ID - counter that identifies the current scan from the previous ones. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSNumber * _Nullable scanID;
+
+/**
+ *  MAC address. (read-only)
+ */
+@property (nonatomic, readonly, copy) NSString * _Nullable mac;
+
+/**
+ *  RSSI values. Zero (0x00) if not present. The values are in chronological order, as they are scanned. Above 6 values, they are discarded.
+ */
+@property (nonatomic, readonly, copy) NSArray <NSNumber*>  * _Nullable rssiValues;
+
 
 
 #pragma mark - Data Logger
