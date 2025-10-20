@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright © 2017 Kontakt.io. All rights reserved.
 //
@@ -12,14 +12,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
 typedef NS_OPTIONS(NSInteger, KTKDeviceGatewayWiFiNetworkType) {
-    KTKDeviceGatewayWiFiNetworkTypeUnknown           = 0,
+    KTKDeviceGatewayWiFiNetworkTypeUnknown          = 0,
     KTKDeviceGatewayWiFiNetworkTypeOpen             = 1 << 0,
     KTKDeviceGatewayWiFiNetworkTypeWEP              = 1 << 1,
     KTKDeviceGatewayWiFiNetworkTypePersonalWPA      = 1 << 2,
     KTKDeviceGatewayWiFiNetworkTypeEnterpriseWPA    = 1 << 3,
     KTKDeviceGatewayWiFiNetworkTypePersonalWPA2     = 1 << 4,
     KTKDeviceGatewayWiFiNetworkTypeEnterpriseWPA2   = 1 << 5,
+    KTKDeviceGatewayWiFiNetworkTypePersonalWPA3     = 1 << 6,
+    KTKDeviceGatewayWiFiNetworkTypeEnterpriseWPA3   = 1 << 7,
 };
+
+typedef NS_ENUM(uint8_t, KTKDeviceGatewayWiFiNetworkCommand) {
+    KTKKontaktGatewayDiagnosticCommandWIFI                  = 0x00
+};
+
 
 #pragma mark - KTKDeviceGatewayWiFiNetwork (Interface)
 @interface KTKDeviceGatewayWiFiNetwork : NSObject <NSCopying>
@@ -31,6 +38,8 @@ typedef NS_OPTIONS(NSInteger, KTKDeviceGatewayWiFiNetworkType) {
 
 - (instancetype)initWithName:(NSString*)name;
 
+- (BOOL)updateData:(NSData *)serviceData;
+
 #pragma mark - Network Properties
 ///--------------------------------------------------------------------
 /// @name Network Properties
@@ -38,7 +47,7 @@ typedef NS_OPTIONS(NSInteger, KTKDeviceGatewayWiFiNetworkType) {
 
 @property (nonatomic, readonly, strong) NSString *networkSSID;
 
-@property (nonatomic, readonly, assign) NSUInteger signalStrength;
+@property (nonatomic, readonly, assign) NSInteger signalStrength;
 
 @property (nonatomic, readonly, assign) KTKDeviceGatewayWiFiNetworkType type;
 

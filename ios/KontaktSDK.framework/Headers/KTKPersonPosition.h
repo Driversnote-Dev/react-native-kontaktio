@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSUInteger y;
 
 - (nullable instancetype)initWithData:(NSData * _Nullable)data;
+- (nullable instancetype)init: (NSUInteger) y : (NSUInteger)x;
 
 @end
 

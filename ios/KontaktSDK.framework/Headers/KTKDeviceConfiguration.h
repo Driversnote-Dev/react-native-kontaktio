@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -164,6 +164,35 @@ __attribute__((deprecated("Please use `packets` property instead")));
  */
 //@property (nonatomic, strong, readwrite) NSArray <NSNumber *>* _Nullable footfallLine;
 @property (nonatomic, copy, readwrite) NSString * _Nullable footfallLine;
+
+
+/**
+ *  Bluetooth blink Interval value.
+ *
+ *  This property can be used Blink time for IR emitter, in seconds. 0 - disabled. Default: 2 (s)
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable blinkInterval;
+
+/**
+ *  Bluetooth ir detection interval value.
+ *
+ *  This property can be used to set seconds to sleep between detection attempts. Default: 5 (s)
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable irDetectionInterval;
+
+/**
+ *  Bluetooth ir detection duration value.
+ *
+ *  This property can be used to set seconds to try and detect the IR signal, before going to sleep again. Default: 2 (s)
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable irDetectionDuration;
+
+/**
+ *  Bluetooth  ir detection sleep value.
+ *
+ *  This property can be used to set seconds 0: disabled, 1: enabled. Default: 1
+ */
+@property (nonatomic, strong, readwrite) NSNumber * _Nullable irDetectionSleep;
 
 /**
  *  Bluetooth Scan interval value.

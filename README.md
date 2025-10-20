@@ -6,8 +6,8 @@ Kontakt.io SDK Versions of newest release:
 
 | OS          | SDK Version                                                                                          |
 | :---------- | :--------------------------------------------------------------------------------------------------- |
-| **Android** | [7.0.6](https://kontakt-api-docs.stoplight.io/docs/dev-ctr-sdks/423dcaf4067cc-android-sdk-changelog) |
-| **iOS**     | [3.0.25](https://github.com/kontaktio/kontakt-ios-sdk/releases/tag/v3.0.25)                          |
+| **Android** | [7.2.23](https://kontakt-api-docs.stoplight.io/docs/dev-ctr-sdks/423dcaf4067cc-android-sdk-changelog#version-7223) |
+| **iOS**     | [3.1.0](https://github.com/kontaktio/kontakt-ios-sdk/releases/tag/3.1.0)                          |
 
 ## Advantages
 
@@ -203,28 +203,28 @@ export default App;
 
 **Note (March 2020)**: The example in the `Example/` folder is a bit outdated. If you want to try to run the example app anyway, here are some instructions to do so:
 
-1.  Clone this repository, connect an Android and/or Apple device to your computer and have some (Kontakt.io) beacons nearby.
+1. Clone this repository, connect an Android and/or Apple device to your computer and have some (Kontakt.io) beacons nearby.
 
-2.  Open a terminal window, bash to the `Example/` folder, run `npm install` and start the react-native server
+2. Open a terminal window, bash to the `Example/` folder, run `npm install` and start the react-native server
 
     ```bash
-    $ cd react-native-kontaktio/Example
-    $ npm install
-    $ npm start
+    cd react-native-kontaktio/Example
+    npm install
+    npm start
     ```
 
-3.  Build the example and run it on your device. The app will appear under the name `KontaktIoSimpleTest`:
+3. Build the example and run it on your device. The app will appear under the name `KontaktIoSimpleTest`:
 
     - Android:
 
       ```bash
-      $ react-native run-android
+      react-native run-android
       ```
 
     - iOS
 
       ```bash
-      $ react-native run-ios
+      react-native run-ios
       ```
 
 ## Further notes
@@ -232,14 +232,14 @@ export default App;
 - Beacons support is part of Android versions 4.3 and up. \* So far the lowest Android version this library was tested on was a device with Android 4.4.2.
 - A physical device must be used for testing and some beacons (Kontakt.io beacons to be able to use all features).
 - If some BLE Beacons are filtered out by the scan on Android 12+, therefore not returned in the list of beacons, try this:
+
   ```xml
   <uses-permission android:name="android.permission.BLUETOOTH_SCAN" tools:remove="android:usesPermissionFlags" />
   ```
+
   With the **neverForLocation** android:usesPermissionFlags, some BLE beacons are filtered from the scan results. |More information about this on [issue #121](https://github.com/Driversnote-Dev/react-native-kontaktio/issues/121#issuecomment-2098884380).
 
-
-
-## ToDo:
+## ToDo
 
 - Update Android Eddystone feature:
 
@@ -262,6 +262,7 @@ export default App;
       "react-native-kontaktio": "../react-native-kontaktio"
     },
     ```
+
 6. Build and run on a real device
 
 ### Upgrade to a new version of the Kontakt.io SDK

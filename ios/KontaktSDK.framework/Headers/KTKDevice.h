@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -80,6 +80,21 @@ NS_ASSUME_NONNULL_BEGIN
  *  Kontakt order ID. (read-only)
  */
 @property (nonatomic, strong, readonly) NSString *orderID;
+
+/**
+ *  Filtration Mask of the device. (read-only)
+ */
+@property (nonatomic, assign, readonly) KTKDeviceFilteringClass filtrationMask;
+
+/**
+ *  Ble Scan Channel of the device. (read-only)
+ */
+@property (nonatomic, assign, readonly) KTKDeviceBLEChannel bleScanChannel;
+
+/**
+ *  WIFI SSID of the device. (read-only)
+ */
+@property (nonatomic, strong, readonly) NSString *wifiSSID;
 
 /**
  *  Device type. (read-only)

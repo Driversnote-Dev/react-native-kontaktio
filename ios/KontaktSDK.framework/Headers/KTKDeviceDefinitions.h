@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -308,6 +308,11 @@ typedef NS_OPTIONS(NSInteger, KTKDeviceTelemetryFields) {
     KTKDeviceTelemetryFieldsPeopleDetection                 = 1 << 29,
     
     /**
+     *  RSSI Scan.
+     */
+    KTKDeviceTelemetryFieldsRSSIScan                        = 1 << 30,
+    
+    /**
      *  All supprted packets.
      */
     KTKDeviceTelemetryFieldsAll                             = (NSInteger)0b111111111111111111111111
@@ -494,13 +499,37 @@ typedef NS_ENUM(NSInteger, KTKDeviceModel) {
      */
     KTKDeviceModelNanoSeries = 32,
     /**
-     *  Asset Tag
+     *  Asset Tag 2
      */
     KTKDeviceModelAssetTag2 = 33,
     /**
      *  Anchor Beacon
      */
     KTKDeviceModelAnchorBeacon2 = 34,
+    /**
+     *  Mini Beam
+     */
+    KTKDeviceModelMiniBeam = 35,
+    /**
+     *  Portal Beam IR
+     */
+    KTKDeviceModelPortalBeamIR = 36,
+    /**
+     *  Dispenser Beacon
+     */
+    KTKDeviceModelDispenserBeacon = 37,
+    /**
+     *  Portal Light 2S
+     */
+    KTKDeviceModelPortalLight2S = 38,
+    /**
+     *  Portal Light 2
+     */
+    KTKDeviceModelPortalLight2 = 39,
+    /**
+     *  Asset Tag 2 Mini
+     */
+    KTKDeviceModelAssetTag2Mini = 40,
     
     /**
      *  Partner provided name
@@ -547,8 +576,63 @@ typedef NS_ENUM(NSInteger, KTKDeviceSymbol) {
     KTKDeviceSymbolNASE_1 = 32,
     KTKDeviceSymbolAST_2 = 33,
     KTKDeviceSymbolANB_2 = 34,
+    KTKDeviceSymbolMB = 35,
+    KTKDeviceSymbolPB_IR = 36,
+    KTKDeviceSymbolDB = 37,
+    KTKDeviceSymbolPL_2S = 38,
+    KTKDeviceSymbolPL_2 = 39,
+    KTKDeviceSymbolAST_2_M = 40,
     
     KTKDeviceSymbolPD = 128
+};
+
+/**
+ *  A kontakt device channels status.
+ */
+typedef NS_ENUM(NSInteger, KTKDeviceBLEChannel) {
+    /**
+     *  Channel is unknown.
+     */
+    KTKDeviceBLEChannelUknown        = -1,
+    /**
+     *  Device supported all channels.
+     */
+    KTKDeviceBLEChannelALL          = 0,
+    /**
+     *  Device status is channel 37.
+     */
+    KTKDeviceBLEChannel37            = 37,
+    /**
+     *  Device status is channel 38.
+     */
+    KTKDeviceBLEChannel38            = 38,
+    
+    /**
+     *  Device status is channel 39.
+     */
+    KTKDeviceBLEChannel39            = 39
+};
+
+/**
+ *  A kontakt device filtering Class.
+ */
+typedef NS_ENUM(NSInteger, KTKDeviceFilteringClass) {
+    /**
+     *  Class is unknown.
+     */
+    KTKDeviceFilteringClassUknown        = -1,
+    /**
+     *  Device status flitering class  Kontakt.
+     */
+    KTKDeviceFilteringClassKtk           = 1,
+    /**
+     *  Device status flitering class  iBeacon, Eddystone, Kontakt .
+     */
+    KTKDeviceFilteringClassIbEidKtk      = 7,
+    /**
+     *  Device supported all classes.
+     */
+    KTKDeviceFilteringClassALL           = 15
 };
 
 /**
@@ -670,7 +754,6 @@ typedef NS_ENUM(NSInteger, KTKDeviceOccupancyModel) {
      */
     KTKDeviceOccupancyModeFootfallCorridor    = 3
 };
-
 
 /**
  *  A device data logger fields.

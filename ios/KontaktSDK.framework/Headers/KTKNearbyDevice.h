@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -10,6 +10,7 @@
 
 #import "KTKDeviceDefinitions.h"
 #import "KTKNearbyDeviceTelemetry.h"
+#import "KTKKontaktResponse.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -128,6 +129,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, assign) double updatedAt;
 
+
+/**
+ *  Updates force a nearby device object with the specified advertisement dictionary.
+ *
+ */
+- (void)setUpdatedForceCompletion:(KTKKontaktResponseCompletionBlock)completion;
+
 @end
+
+
 
 NS_ASSUME_NONNULL_END

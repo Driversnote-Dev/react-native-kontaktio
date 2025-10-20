@@ -1,6 +1,6 @@
 //
 //  KontaktSDK
-//  Version: 3.0.25
+//  Version: 3.1.0
 //
 //  Copyright (c) 2015 Kontakt.io. All rights reserved.
 //
@@ -37,6 +37,11 @@ typedef void (^KTKKontaktResponseCompletionBlock)(KTKKontaktResponse * _Nullable
  *  The limit of the objects in the response.
  */
 @property (nonatomic, assign, readonly) NSUInteger maxResult;
+
+/**
+ *  The count of the all objects.
+ */
+@property (nonatomic, assign, readonly) NSUInteger allCount;
 
 /**
  *  The count of the received objects.
